@@ -16,8 +16,8 @@ import matt.gui.fxlang.actionitem
 import matt.gui.hotkey.HotKey
 import matt.gui.hotkey.registerInFilter
 import matt.gui.hotkeys.addDefaultHotkeys
-import matt.gui.icon.Icon
-import matt.gui.icon.IconFolder
+import matt.gui.ican.Icon
+import matt.gui.ican.IconFolder
 import matt.gui.win.interact.openInNewWindow
 import matt.gui.lang.onDoubleClickConsume
 import matt.gui.mag.reversed_displays
