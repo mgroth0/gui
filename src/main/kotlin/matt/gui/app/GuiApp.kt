@@ -11,26 +11,26 @@ import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
+import matt.auto.SublimeText
 import matt.auto.openInIntelliJ
 import matt.exec.app.App
 import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse.IGNORE
 import matt.gui.core.scene.MScene
-import matt.gui.win.interact.openInNewWindow
 import matt.gui.lang.ActionButton
 import matt.gui.win.bindgeom.bindGeometry
+import matt.gui.win.interact.openInNewWindow
 import matt.gui.win.stage.MStage
 import matt.json.prim.gson
-import matt.kjlib.SublimeText
+import matt.kjlib.resourceTxt
 import java.io.File
 import kotlin.concurrent.thread
 import kotlin.contracts.ExperimentalContracts
 import kotlin.system.exitProcess
 
-private class Thing
 
-val appName = Thing()::class.java.classLoader.getResourceAsStream("matt/appname.txt")!!.bufferedReader().readText()
+val appName = resourceTxt("matt/appname.txt")!!
 
 @ExperimentalContracts
 class GuiApp(
@@ -71,6 +71,7 @@ class GuiApp(
   fun vbox(op: VBox.()->Unit) {
 	scene = MScene(VBox().apply(op))
   }
+
   fun pane(op: Pane.()->Unit) {
 	scene = MScene(Pane().apply(op))
   }

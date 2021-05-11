@@ -6,13 +6,14 @@ import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
-import matt.kjlib.NEVER
 import matt.kjlib.commons.ROOT_FOLDER
-import matt.kjlib.get
+import matt.kjlib.file.get
+import matt.kjlib.log.NEVER
 import matt.kjlib.str.LineAppender
 import kotlin.reflect.KProperty
 
-val FX_CSS = ROOT_FOLDER["style"]["fx.css"].toURI().toURL().toString()
+val DARK_MODENA_CSS = ROOT_FOLDER["style"]["darkModena.css"].toURI().toURL().toString()
+val CUSTOM_CSS = ROOT_FOLDER["style"]["custom.css"].toURI().toURL().toString()
 
 
 fun Styleable.styleInfo(): String {

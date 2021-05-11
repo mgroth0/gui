@@ -5,7 +5,7 @@ import matt.hurricanefx.eye.lib.onChange
 import matt.json.prim.gson
 import matt.kjlib.Geometry
 import matt.kjlib.commons.WINDOW_GEOMETRY_FOLDER
-import matt.kjlib.get
+import matt.kjlib.file.get
 import java.io.File
 
 fun Stage.bindGeometry(key: String) = bindGeometry(WINDOW_GEOMETRY_FOLDER["$key.json"])

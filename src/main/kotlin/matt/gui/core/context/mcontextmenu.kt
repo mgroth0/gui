@@ -5,6 +5,7 @@ import javafx.event.EventTarget
 import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.Parent
+import javafx.scene.canvas.Canvas
 import javafx.scene.control.CheckMenuItem
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.Menu
@@ -13,8 +14,8 @@ import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.layout.Region
 import javafx.scene.shape.Shape
 import matt.auto.IntelliJNavAction
-import matt.kjlib.NEVER
 import matt.kjlib.commons.ROOT_FOLDER
+import matt.kjlib.log.NEVER
 import matt.kjlib.reflect.jumpToKotlinSourceString
 import java.util.WeakHashMap
 import kotlin.collections.set
@@ -43,6 +44,12 @@ class MContextMenuBuilder(
   }
 
   infix fun String.does(op: ()->Unit) = actionitem(this, op)
+  infix fun String.doesInThread(op: ()->Unit) = actionitem(this) {
+	thread {
+	  op()
+	}
+  }
+
   fun actionitem(s: String, op: ()->Unit) {
 	add(MenuItem(s).apply {
 	  setOnAction {
@@ -58,7 +65,7 @@ class MContextMenuBuilder(
 	})
   }
 
-  infix fun String.toggles(b: BooleanProperty) = checkitem(this,b)
+  infix fun String.toggles(b: BooleanProperty) = checkitem(this, b)
   fun checkitem(s: String, b: BooleanProperty, op: CheckMenuItem.()->Unit = {}) {
 	add(CheckMenuItem(s).apply {
 	  selectedProperty().bindBidirectional(b)
@@ -145,6 +152,7 @@ fun showMContextMenu(
 		  else -> node.parent
 		}
 		is Shape            -> node.parent
+		is Canvas           -> node.parent
 		else                -> break
 	  }
 	}

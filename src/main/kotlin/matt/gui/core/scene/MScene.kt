@@ -18,21 +18,23 @@ import matt.gui.hotkey.registerInFilter
 import matt.gui.hotkeys.addDefaultHotkeys
 import matt.gui.ican.Icon
 import matt.gui.ican.IconFolder
-import matt.gui.win.interact.openInNewWindow
 import matt.gui.lang.onDoubleClickConsume
 import matt.gui.mag.reversed_displays
-import matt.gui.style.FX_CSS
+import matt.gui.style.CUSTOM_CSS
+import matt.gui.style.DARK_MODENA_CSS
 import matt.gui.style.borderFill
 import matt.gui.style.styleInfo
 import matt.gui.win.interact.WinGeom
 import matt.gui.win.interact.WinOwn
+import matt.gui.win.interact.openInNewWindow
 import matt.gui.win.winfun.noDocking
 import matt.hurricanefx.tornadofx.async.runLater
 import matt.hurricanefx.tornadofx.menu.item
+import matt.hurricanefx.tornadofx.menu.menu
 import matt.kjlib.MemReport
-import matt.kjlib.get
-import matt.kjlib.notContainedIn
+import matt.kjlib.file.get
 import matt.kjlib.recurse.recurse
+import matt.kjlib.stream.notContainedIn
 import java.io.File
 import java.net.URL
 import kotlin.contracts.ExperimentalContracts
@@ -57,7 +59,8 @@ open class MScene(
   init {
 	addDefaultHotkeys()
 	this registerInFilter hotkeys // normal event listener isn't strong enough I guess. I have a uhnch javafx controlers are getting some of those events and consuming them first. ... Yup! that solved the issue right away
-	stylesheets.add(FX_CSS)
+	stylesheets.add(DARK_MODENA_CSS)
+	stylesheets.add(CUSTOM_CSS)
 
 
 	//     ensure that even while the screen is loading it is black. So not white flashes or flickering while refreshing
@@ -66,57 +69,67 @@ open class MScene(
 
 
 	mcontextmenu {
-	  actionitem("reload style and open fx.css") {
-		stylesheets.setAll(FX_CSS)
-		File(URL(FX_CSS).file).openInIntelliJ()
+	  menu("style") {
+		actionitem("reload style") {
+		  stylesheets.setAll(DARK_MODENA_CSS, CUSTOM_CSS)
+		}
+		actionitem("open darkModena.css") {
+		  File(URL(DARK_MODENA_CSS).file).openInIntelliJ()
+		}
+		actionitem("open custom.css") {
+		  File(URL(CUSTOM_CSS).file).openInIntelliJ()
+		}
+		actionitem("print style info samples") {
+		  val classesPrinted = mutableListOf<KClass<*>>()
+		  (root as Node).recurse {
+			(it as? Parent)?.childrenUnmodifiable ?: listOf()
+		  }.forEach {
+			if (it::class.notContainedIn(classesPrinted)) {
+			  println(it.styleInfo())
+			  classesPrinted += it::class
+			}
+		  }
+		}
+		/*need this*/
+		this.menu("set border") {
+		  /*specify this here explicitly at least once
+		  * or else it will use the `actionitem` above without import*/
+		  this.actionitem("none") {
+			(root as? Region)?.borderFill = null
+		  }
+		  actionitem("yellow") {
+			(root as? Region)?.borderFill = Color.YELLOW
+		  }
+		  actionitem("blue") {
+			(root as? Region)?.borderFill = Color.BLUE
+		  }
+		  actionitem("red") {
+			(root as? Region)?.borderFill = Color.RED
+		  }
+		  actionitem("green") {
+			(root as? Region)?.borderFill = Color.GREEN
+		  }
+		  actionitem("orange") {
+			(root as? Region)?.borderFill = Color.ORANGE
+		  }
+		  actionitem("purple") {
+			(root as? Region)?.borderFill = Color.PURPLE
+		  }
+		  actionitem("white") {
+			(root as? Region)?.borderFill = Color.WHITE
+		  }
+		}
 	  }
+
 	  actionitem("reverse displays") {
 		reversed_displays = !reversed_displays
 	  }
 	  actionitem("test exception") {
 		throw Exception("test exception")
 	  }
-	  menu("set border") {
-		/*specify this here explicitly at least once
-		* or else it will use the `actionitem` above without import*/
-		this.actionitem("none") {
-		  (root as? Region)?.borderFill = null
-		}
-		actionitem("yellow") {
-		  (root as? Region)?.borderFill = Color.YELLOW
-		}
-		actionitem("blue") {
-		  (root as? Region)?.borderFill = Color.BLUE
-		}
-		actionitem("red") {
-		  (root as? Region)?.borderFill = Color.RED
-		}
-		actionitem("green") {
-		  (root as? Region)?.borderFill = Color.GREEN
-		}
-		actionitem("orange") {
-		  (root as? Region)?.borderFill = Color.ORANGE
-		}
-		actionitem("purple") {
-		  (root as? Region)?.borderFill = Color.PURPLE
-		}
-		actionitem("white") {
-		  (root as? Region)?.borderFill = Color.WHITE
-		}
-	  }
 
 	  actionitem("iconify", ::iconify)
-	  actionitem("print style info samples") {
-		val classesPrinted = mutableListOf<KClass<*>>()
-		(root as Node).recurse {
-		  (it as? Parent)?.childrenUnmodifiable ?: listOf()
-		}.forEach {
-		  if (it::class.notContainedIn(classesPrinted)) {
-			println(it.styleInfo())
-			classesPrinted += it::class
-		  }
-		}
-	  }
+
 	  onRequest {
 		val mreport = MemReport()
 		menu("MemReport") {
@@ -134,8 +147,8 @@ open class MScene(
 	  }
 
 	  /*this doesnt work. lets try insets for right clicking*/
-	  //	  else if (e is MouseEvent) {
-	  //		(e.target as? Node)?.let { showMContextMenu(it, e.screenX to e.screenY) }
+	  //	  else if (matt.kjlib.jmath.e is MouseEvent) {
+	  //		(matt.kjlib.jmath.e.target as? Node)?.let { showMContextMenu(it, matt.kjlib.jmath.e.screenX to matt.kjlib.jmath.e.screenY) }
 	  //		/*dont consume. maybe if I'm lucky I'll get both my context menu and the web one*/
 	  //	  }
 
@@ -146,9 +159,9 @@ open class MScene(
 
 	/*this doesnt work.  lets try insets for right clicking*/
 	//	/*for web view. plese work*/
-	//	addEventFilter(MouseEvent.MOUSE_CLICKED) { e ->
-	//	  if (e.isSecondaryButtonDown) {
-	//		handleContextMenuReq(e)
+	//	addEventFilter(MouseEvent.MOUSE_CLICKED) { matt.kjlib.jmath.e ->
+	//	  if (matt.kjlib.jmath.e.isSecondaryButtonDown) {
+	//		handleContextMenuReq(matt.kjlib.jmath.e)
 	//	  }
 
 	//	}
@@ -187,7 +200,8 @@ open class MScene(
 	  mScene = false,
 	  border = false,
 	  beforeShowing = {
-		scene.stylesheets.add(FX_CSS)
+		scene.stylesheets.add(DARK_MODENA_CSS)
+		scene.stylesheets.add(CUSTOM_CSS)
 	  }
 	).apply {
 	  iconWindow = this

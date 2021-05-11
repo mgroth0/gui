@@ -216,9 +216,11 @@ fun Window.eighth8() {
 
 
 var reversed_displays
-  get() = VAR_JSON.parseJsonObj()["reversed_displays"].asBoolean
+  get() = VAR_JSON.takeIf { it.exists() }?.parseJsonObj()?.get("reversed_displays")?.asBoolean ?: true
   set(b) {
-	VAR_JSON.writeText(VAR_JSON.parseJsonObj().apply {
-	  this["reversed_displays"] = b
-	}.toGson())
+	if (VAR_JSON.exists()) {
+	  VAR_JSON.writeText(VAR_JSON.parseJsonObj().apply {
+		this["reversed_displays"] = b
+	  }.toGson())
+	}
   }

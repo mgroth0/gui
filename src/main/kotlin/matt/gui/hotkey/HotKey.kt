@@ -10,8 +10,8 @@ import javafx.scene.input.KeyEvent
 import javafx.stage.Stage
 import matt.hurricanefx.eye.lang.BProp
 import matt.hurricanefx.toggle
-import matt.kjlib.NEVER
-import matt.kjlib.err
+import matt.kjlib.log.NEVER
+import matt.kjlib.log.err
 import matt.klibexport.klibexport.DSL
 import matt.klibexport.klibexport.go
 import matt.klibexport.lang.applyEach
