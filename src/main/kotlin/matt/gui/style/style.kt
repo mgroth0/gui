@@ -72,6 +72,7 @@ class StyleClassDSL(val s: Styleable) {
   val blueText by StyleClass()
   val darkGreyText by StyleClass()
   val greenBackground by StyleClass()
+  val nodeTextField by StyleClass()
 }
 
 fun Styleable.sty(op: StyleClassDSL.()->Unit) {
