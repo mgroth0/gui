@@ -71,6 +71,7 @@ class StyleClassDSL(val s: Styleable) {
   val yellowText by StyleClass()
   val blueText by StyleClass()
   val darkGreyText by StyleClass()
+  val whiteText by StyleClass()
   val greenBackground by StyleClass()
   val nodeTextField by StyleClass()
 }
