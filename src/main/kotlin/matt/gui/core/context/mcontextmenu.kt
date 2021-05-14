@@ -52,6 +52,7 @@ class MContextMenuBuilder(
 
   fun actionitem(s: String, op: ()->Unit) {
 	add(MenuItem(s).apply {
+	  isMnemonicParsing = false
 	  setOnAction {
 		op()
 		it.consume()
@@ -61,6 +62,7 @@ class MContextMenuBuilder(
 
   fun item(s: String, op: MenuItem.()->Unit) {
 	add(MenuItem(s).apply {
+	  isMnemonicParsing = false
 	  op()
 	})
   }
@@ -68,6 +70,7 @@ class MContextMenuBuilder(
   infix fun String.toggles(b: BooleanProperty) = checkitem(this, b)
   fun checkitem(s: String, b: BooleanProperty, op: CheckMenuItem.()->Unit = {}) {
 	add(CheckMenuItem(s).apply {
+	  isMnemonicParsing = false
 	  selectedProperty().bindBidirectional(b)
 	  op()
 	})
@@ -75,6 +78,7 @@ class MContextMenuBuilder(
 
   fun menu(s: String, op: Menu.()->Unit) {
 	add(Menu(s).apply {
+	  isMnemonicParsing = false
 	  op()
 	})
   }
