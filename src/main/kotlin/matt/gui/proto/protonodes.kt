@@ -1,5 +1,6 @@
 package matt.gui.proto
 
+import javafx.beans.property.BooleanProperty
 import javafx.scene.Node
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
@@ -9,10 +10,13 @@ import javafx.scene.control.TabPane
 import javafx.scene.control.TextField
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
+import javafx.scene.shape.Circle
 import matt.gui.layout.minBind
 import matt.hurricanefx.Scrolls
 import matt.hurricanefx.exactWidthProperty
 import matt.hurricanefx.eye.prop.minus
+import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.tornadofx.layout.vbox
 import matt.hurricanefx.tornadofx.tab.tab
 import matt.klibexport.klibexport.applyIt
@@ -79,11 +83,16 @@ abstract class ScrollVBox(
 	})
   }
 
-//  abstract fun VBox.refreshContent()
-//
-//  final override fun refresh() {
-//	vbox.refreshContent()
-//  }
+  //  abstract fun VBox.refreshContent()
+  //
+  //  final override fun refresh() {
+  //	vbox.refreshContent()
+  //  }
 }
 
 
+fun indicatorCircle(booleanProperty: BooleanProperty) = Circle(8.0).apply {
+  fillProperty().bind(booleanProperty.objectBinding {
+	if (it == true) Color.LIGHTGREEN else Color.DARKRED
+  })
+}
