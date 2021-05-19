@@ -27,11 +27,8 @@ infix fun TextField.withPrompt(s: String): TextField {
 }
 
 fun TabPane.vtab(s: String = "", op: VBox.()->Unit = {}): Tab {
-  return tab(s) {
-	isClosable = false
-	vbox {
-	  op()
-	}
+  return staticTab(s, VBox()) {
+	op()
   }
 }
 
@@ -91,10 +88,55 @@ abstract class ScrollVBox(
 }
 
 
+
+fun EventTarget.scaledCanvas(
+  width: Number,
+  height: Number,
+  scale: Number = 1.0,
+  op: ScaledCanvas.()->Unit = {}
+) =
+	opcr(
+	  this, ScaledCanvas(
+		width = width,
+		height = height,
+		scale = scale.toDouble()
+	  ), op
+	)
+
+fun EventTarget.scaledCanvas(
+  hw: Number,
+  scale: Number = 1.0,
+  op: ScaledCanvas.()->Unit = {}
+) = scaledCanvas(height = hw, width = hw, scale = scale, op = op)
+
+class ScaledCanvas(
+  height: Number,
+  width: Number,
+  val scale: Double
+): Region() {
+  val extraH = (height.toDouble()*scale - height.toDouble())/2
+  val extraW = (width.toDouble()*scale - width.toDouble())/2
+  val canvas = Canvas(
+	width.toDouble(),
+	height.toDouble()
+  ).apply {
+	layoutX = extraW
+	layoutY = extraH
+	scaleX = scale
+	scaleY = scale
+	children.add(this)
+  }
+
+  init {
+	exactHeight = height.toDouble()*scale
+	exactWidth = width.toDouble()*scale
+  }
+
+  private val pw by lazy { canvas.graphicsContext2D.pixelWriter }
+  operator fun set(x: Int, y: Int, c: Color) = pw.setColor(x, y, c)
+}
 fun indicatorCircle(booleanProperty: BooleanProperty) = Circle(8.0).apply {
   fillProperty().bind(booleanProperty.objectBinding {
 	if (it == true) Color.LIGHTGREEN else Color.DARKRED
   })
 }
-
-
