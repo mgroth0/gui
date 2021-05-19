@@ -96,3 +96,5 @@ fun indicatorCircle(booleanProperty: BooleanProperty) = Circle(8.0).apply {
 	if (it == true) Color.LIGHTGREEN else Color.DARKRED
   })
 }
+
+
