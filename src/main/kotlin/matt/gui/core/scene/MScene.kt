@@ -124,6 +124,7 @@ open class MScene(
 	  actionitem("reverse displays") {
 		reversed_displays = !reversed_displays
 	  }
+
 	  actionitem("test exception") {
 		throw Exception("test exception")
 	  }
