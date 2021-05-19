@@ -1,6 +1,10 @@
 package matt.gui.proto
 
+<<<<<<< HEAD
 import javafx.event.EventTarget
+=======
+import javafx.beans.property.BooleanProperty
+>>>>>>> 4167628939cdec826782cefdde778062eb8fd901
 import javafx.scene.Node
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.ScrollPane
@@ -12,14 +16,24 @@ import javafx.scene.control.TextField
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
+<<<<<<< HEAD
+=======
+import javafx.scene.shape.Circle
+>>>>>>> 4167628939cdec826782cefdde778062eb8fd901
 import matt.gui.layout.minBind
 import matt.hurricanefx.Scrolls
 import matt.hurricanefx.exactHeight
 import matt.hurricanefx.exactWidth
 import matt.hurricanefx.exactWidthProperty
 import matt.hurricanefx.eye.prop.minus
+<<<<<<< HEAD
 import matt.hurricanefx.tornadofx.fx.opcr
 import matt.hurricanefx.tornadofx.tab.staticTab
+=======
+import matt.hurricanefx.eye.prop.objectBinding
+import matt.hurricanefx.tornadofx.layout.vbox
+import matt.hurricanefx.tornadofx.tab.tab
+>>>>>>> 4167628939cdec826782cefdde778062eb8fd901
 import matt.klibexport.klibexport.applyIt
 
 infix fun TextField.withPrompt(s: String): TextField {
@@ -89,6 +103,7 @@ abstract class ScrollVBox(
 }
 
 
+<<<<<<< HEAD
 
 fun EventTarget.scaledCanvas(
   width: Number,
@@ -136,3 +151,10 @@ class ScaledCanvas(
   private val pw by lazy { canvas.graphicsContext2D.pixelWriter }
   operator fun set(x: Int, y: Int, c: Color) = pw.setColor(x, y, c)
 }
+=======
+fun indicatorCircle(booleanProperty: BooleanProperty) = Circle(8.0).apply {
+  fillProperty().bind(booleanProperty.objectBinding {
+	if (it == true) Color.LIGHTGREEN else Color.DARKRED
+  })
+}
+>>>>>>> 4167628939cdec826782cefdde778062eb8fd901
