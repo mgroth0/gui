@@ -1,7 +1,11 @@
 package matt.gui.proto
 
 import javafx.beans.property.BooleanProperty
+import javafx.beans.property.DoubleProperty
+import javafx.beans.property.SimpleDoubleProperty
+import javafx.event.EventTarget
 import javafx.scene.Node
+import javafx.scene.canvas.Canvas
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
@@ -14,11 +18,16 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
 import matt.gui.layout.minBind
 import matt.hurricanefx.Scrolls
+import matt.hurricanefx.exactHeight
+import matt.hurricanefx.exactHeightProperty
+import matt.hurricanefx.exactWidth
 import matt.hurricanefx.exactWidthProperty
+import matt.hurricanefx.eye.prop.div
 import matt.hurricanefx.eye.prop.minus
 import matt.hurricanefx.eye.prop.objectBinding
-import matt.hurricanefx.tornadofx.layout.vbox
-import matt.hurricanefx.tornadofx.tab.tab
+import matt.hurricanefx.eye.prop.times
+import matt.hurricanefx.tornadofx.fx.opcr
+import matt.hurricanefx.tornadofx.tab.staticTab
 import matt.klibexport.klibexport.applyIt
 
 infix fun TextField.withPrompt(s: String): TextField {
@@ -88,7 +97,6 @@ abstract class ScrollVBox(
 }
 
 
-
 fun EventTarget.scaledCanvas(
   width: Number,
   height: Number,
@@ -99,7 +107,7 @@ fun EventTarget.scaledCanvas(
 	  this, ScaledCanvas(
 		width = width,
 		height = height,
-		scale = scale.toDouble()
+		initialScale = scale.toDouble()
 	  ), op
 	)
 
@@ -112,29 +120,34 @@ fun EventTarget.scaledCanvas(
 class ScaledCanvas(
   height: Number,
   width: Number,
-  val scale: Double
+  val initialScale: Double = 1.0
 ): Region() {
-  val extraH = (height.toDouble()*scale - height.toDouble())/2
-  val extraW = (width.toDouble()*scale - width.toDouble())/2
+  val awesomeScaleProperty = SimpleDoubleProperty(1.0)
+  val extraH = (height.toDouble()*initialScale - height.toDouble())/2
+  val extraW = (width.toDouble()*initialScale - width.toDouble())/2
+
   val canvas = Canvas(
 	width.toDouble(),
 	height.toDouble()
   ).apply {
-	layoutX = extraW
-	layoutY = extraH
-	scaleX = scale
-	scaleY = scale
+	layoutXProperty().bind((widthProperty()*awesomeScaleProperty - widthProperty())/2)
+	layoutYProperty().bind((heightProperty()*awesomeScaleProperty - heightProperty())/2)
+	scaleXProperty().bind(awesomeScaleProperty)
+	scaleYProperty().bind(awesomeScaleProperty)
 	children.add(this)
   }
 
+
   init {
-	exactHeight = height.toDouble()*scale
-	exactWidth = width.toDouble()*scale
+	exactHeightProperty().bind(awesomeScaleProperty*height)
+	exactWidthProperty().bind(awesomeScaleProperty*width)
   }
 
-  private val pw by lazy { canvas.graphicsContext2D.pixelWriter }
+  val gc by lazy {canvas.graphicsContext2D}
+  private val pw by lazy { gc.pixelWriter }
   operator fun set(x: Int, y: Int, c: Color) = pw.setColor(x, y, c)
 }
+
 fun indicatorCircle(booleanProperty: BooleanProperty) = Circle(8.0).apply {
   fillProperty().bind(booleanProperty.objectBinding {
 	if (it == true) Color.LIGHTGREEN else Color.DARKRED
