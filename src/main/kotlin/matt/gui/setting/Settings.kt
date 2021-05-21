@@ -17,7 +17,7 @@ open class HasSettings(private val jsonFile: File) {
 
 
   inner class Setting(val name: String, defaultValue: Boolean) {
-	private val fxProp = SimpleBooleanProperty(
+	val fxProp = SimpleBooleanProperty(
 	  loaded?.get(name) ?: defaultValue
 	)
 
@@ -61,7 +61,7 @@ open class HasSettings(private val jsonFile: File) {
 	) = setting!!.set(value)
   }
 
-  protected val registeredSettings = mutableListOf<Setting>()
+  val registeredSettings = mutableListOf<Setting>()
 
   val loaded: Map<String, Boolean>? by lazy {
 	jsonFile
