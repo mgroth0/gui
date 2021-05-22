@@ -60,12 +60,13 @@ class MContextMenuBuilder(
 	})
   }
 
-  fun item(s: String, op: MenuItem.()->Unit) {
-	add(MenuItem(s).apply {
+  fun item(s: String, g: Node? = null, op: MenuItem.()->Unit={}) {
+	add(MenuItem(s, g).apply {
 	  isMnemonicParsing = false
 	  op()
 	})
   }
+
 
   infix fun String.toggles(b: BooleanProperty) = checkitem(this, b)
   fun checkitem(s: String, b: BooleanProperty, op: CheckMenuItem.()->Unit = {}) {
