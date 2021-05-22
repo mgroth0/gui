@@ -13,6 +13,7 @@ fun Icon(file: java.io.File): ImageView = Icon(Image(file.toPath().toUri().toURL
 fun Icon(image: Image) = ImageView(image).apply {
   isPreserveRatio = true
   fitWidth = 25.0
+  fitHeight = 25.0
 }
 
 fun Icon(file: String) = Icon(IconFolder[file])
