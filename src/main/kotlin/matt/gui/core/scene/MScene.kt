@@ -16,6 +16,8 @@ import matt.gui.fxlang.actionitem
 import matt.gui.hotkey.HotKey
 import matt.gui.hotkey.registerInFilter
 import matt.gui.hotkeys.addDefaultHotkeys
+import matt.gui.ican.ICON_HEIGHT
+import matt.gui.ican.ICON_WIDTH
 import matt.gui.ican.Icon
 import matt.gui.ican.IconFolder
 import matt.gui.lang.onDoubleClickConsume
@@ -193,10 +195,10 @@ open class MScene(
 	}.openInNewWindow(
 	  own = WinOwn.None,
 	  geom = WinGeom.ManualOr0(
-		width = 20.0,
-		height = 20.0,
-		x = this@MScene.window.x + (this@MScene.window.width/2) - 10.0,
-		y = this@MScene.window.y + (this@MScene.window.height/2) - 10.0,
+		width = ICON_WIDTH,
+		height = ICON_HEIGHT,
+		x = this@MScene.window.x + (this@MScene.window.width/2) - (ICON_WIDTH/2),
+		y = this@MScene.window.y + (this@MScene.window.height/2) - (ICON_HEIGHT/2),
 	  ),
 	  mScene = false,
 	  border = false,

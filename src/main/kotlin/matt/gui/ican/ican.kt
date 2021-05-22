@@ -10,10 +10,13 @@ val IconFolder = ROOT_FOLDER["icon"]
 
 fun Icon(file: java.io.File): ImageView = Icon(Image(file.toPath().toUri().toURL().toString()))
 
+const val ICON_WIDTH = 20.0
+const val ICON_HEIGHT = 20.0
+
 fun Icon(image: Image) = ImageView(image).apply {
   isPreserveRatio = false
-  fitWidth = 25.0
-  fitHeight = 25.0
+  fitWidth = ICON_WIDTH
+  fitHeight = ICON_HEIGHT
 }
 
 fun Icon(file: String) = Icon(IconFolder[file])
