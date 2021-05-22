@@ -11,7 +11,7 @@ val IconFolder = ROOT_FOLDER["icon"]
 fun Icon(file: java.io.File): ImageView = Icon(Image(file.toPath().toUri().toURL().toString()))
 
 fun Icon(image: Image) = ImageView(image).apply {
-  isPreserveRatio = true
+  isPreserveRatio = false
   fitWidth = 25.0
   fitHeight = 25.0
 }
