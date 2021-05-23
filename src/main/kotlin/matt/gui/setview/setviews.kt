@@ -1,7 +1,19 @@
 package matt.gui.setview
 
 import javafx.scene.Node
-import javafx.scene.control.*
+import javafx.scene.control.ChoiceBox
+import javafx.scene.control.ComboBox
+import javafx.scene.control.IndexedCell
+import javafx.scene.control.ListCell
+import javafx.scene.control.ListView
+import javafx.scene.control.TableCell
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
+import javafx.scene.control.TreeCell
+import javafx.scene.control.TreeTableCell
+import javafx.scene.control.TreeTableColumn
+import javafx.scene.control.TreeTableView
+import javafx.scene.control.TreeView
 import javafx.scene.text.Text
 import matt.hurricanefx.tornadofx.async.runLater
 import matt.kjlib.recurse.recurse
@@ -43,6 +55,20 @@ fun <T> ListView<T>.simpleCellFactory(op: (T) -> Pair<String?, Node?>) {
         }
     }
 }
+
+fun <T> ComboBox<T>.simpleCellFactory(op: (T) -> Pair<String?, Node?>) {
+    setCellFactory {
+        object : SimpleListCell<T>() {
+            override fun updateItemExists(item: T) {
+                op(item).let {
+                    text = it.first
+                    graphic = it.second
+                }
+            }
+        }
+    }
+}
+
 
 
 abstract class SimpleTreeTableCell<S, T> : TreeTableCell<S, T>(), SimpleCell<T> {
