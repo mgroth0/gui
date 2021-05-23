@@ -6,6 +6,7 @@ import javafx.application.Platform
 import javafx.scene.Node
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.TextArea
+import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
@@ -134,7 +135,7 @@ class GuiApp(
 		//		println("in runLaterReturn for exception dialog")
 		VBox(
 		  TextArea(st),
-		  HBox(
+		  FlowPane(
 			ActionButton("Open stacktrace in IntelliJ") {
 			  exception_file.openInIntelliJ()
 			},
