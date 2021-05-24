@@ -21,6 +21,7 @@ import kotlin.contracts.contract
 
 sealed class HotKeyContainer {
   abstract fun getHotkeys(): List<HotKey>
+
 }
 
 data class HotKey(
@@ -48,6 +49,11 @@ data class HotKey(
   val shift
 	get() = apply { isShift = true }
   val bare get() = this
+
+  var isIgnoreFix = false
+
+  val ignoreFix
+	get() = apply { isIgnoreFix = true }
 
   fun wrapOp(wrapper: (()->Unit)->Unit) {
 	require(theOp != null)
@@ -104,6 +110,9 @@ class HotKeySet(vararg keys: HotKey): HotKeyContainer() {
 	get() = apply { keys.applyEach { isCtrl = true } }
   val shift
 	get() = apply { keys.applyEach { isShift = true } }
+
+  val ignoreFix
+	get() = apply { keys.applyEach { isIgnoreFix = true } }
 
 
   fun blockFXorOSdefault() = apply {
@@ -189,23 +198,18 @@ fun KeyEvent.runAgainst(hotkeys: Iterable<HotKeyContainer>, last: KeyEvent? = nu
 	  .flatMap { it.getHotkeys() }
 	  .filter {
 		this matches it
-		//		val m = this matches it
-		//				if (debug)
-		//		println("${m} vs ${it}: ${m}")
-		//		m
 	  }
 	  .onEach {
 		ensureConsume = ensureConsume || it.blocksFXorOSdefault
 	  }.forEach { h ->
-		//		println("almost... isConsumed=$isConsumed, eventId=${hashCode()}")
-		fixer.last = this
+		if (!h.isIgnoreFix) {
+		  fixer.last = this
+		}
 		if (isConsumed) return
 		h.theOp?.go {
-		  //		  consume()
 		  it()
 		  runLater { fixer.last = null } /*... finally got it. not to early not too late. wow.*/
 		  return consume()
-		  //		  return
 		}
 		h.theHandler?.invoke(this)
 	  }

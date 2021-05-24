@@ -1,6 +1,9 @@
 package matt.gui.loop
 
+import matt.kjlib.date.Duration
+import java.lang.Thread.sleep
 import java.util.concurrent.Semaphore
+import kotlin.concurrent.thread
 
 fun <T> runLaterReturn(op: ()->T): T {
   var r: T? = null
@@ -20,6 +23,22 @@ fun <T> runLaterReturn(op: ()->T): T {
 
 fun runLater(s: String = "NO MESSAGE", op: ()->Unit) {
   javafx.application.Platform.runLater {
+	op()
+  }
+}
+
+fun runMuchLater(d: Duration, op: ()->Unit) {
+  thread {
+	sleep(d.inMilliseconds.toLong())
+	runLater {
+	  op()
+	}
+  }
+}
+
+fun runMuchLaterReturn(d: Duration, op: ()->Unit) {
+  sleep(d.inMilliseconds.toLong())
+  runLaterReturn {
 	op()
   }
 }
