@@ -13,8 +13,6 @@ import matt.auto.openInIntelliJ
 import matt.gui.core.context.mcontextmenu
 import matt.gui.core.context.showMContextMenu
 import matt.gui.fxlang.actionitem
-import matt.gui.hotkey.HotKey
-import matt.gui.hotkey.registerInFilter
 import matt.gui.hotkeys.addDefaultHotkeys
 import matt.gui.ican.ICON_HEIGHT
 import matt.gui.ican.ICON_WIDTH
@@ -56,11 +54,8 @@ open class MScene(
 	root: Parent
   ): this(root, "chunk")
 
-  val hotkeys = mutableListOf<HotKey>()
-
   init {
 	addDefaultHotkeys()
-	this registerInFilter hotkeys // normal event listener isn't strong enough I guess. I have a uhnch javafx controlers are getting some of those events and consuming them first. ... Yup! that solved the issue right away
 	stylesheets.add(DARK_MODENA_CSS)
 	stylesheets.add(CUSTOM_CSS)
 

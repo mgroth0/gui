@@ -42,7 +42,7 @@ import kotlin.contracts.ExperimentalContracts
 fun MScene.addDefaultHotkeys() {
   val scene = this
 
-  hotkeys {
+  hotkeys(quickPassForNormalTyping = true) {
 
 
 	LEFT.ctrl.opt { window?.left() }

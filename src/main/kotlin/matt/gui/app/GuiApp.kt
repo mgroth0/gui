@@ -50,6 +50,7 @@ class GuiApp(
   }
 
   var shutdown: (GuiApp.()->Unit)? = null
+  var consumeShudown: (GuiApp.()->Unit)? = null
 
 
   var scene: MScene? = null
@@ -91,10 +92,12 @@ class GuiApp(
 	alt_app_interface: Map<String, App.(String)->Unit>? = null,
 	prefx: (App.()->Unit)? = null,
 	shutdown: (App.()->Unit)? = null,
+	consumeShutdown: (App.()->Unit)? = null,
   ) {
 
 
 	this.shutdown = shutdown
+	this.consumeShudown = consumeShutdown
 	this.altPyInterface = alt_py_interface?.let {
 	  when (it) {
 		is InputHandler.FxThread -> fxThreadW
@@ -118,6 +121,7 @@ class GuiApp(
 	t: Thread,
 	e: Throwable,
 	shutdown: (App.()->Unit)?,
+	consumeShutdown: (App.()->Unit)?,
 	st: String,
 	exception_file: File
   ): ExceptionResponse {
@@ -144,6 +148,7 @@ class GuiApp(
 			},
 			ActionButton("Run pre-shutdown operation") {
 			  shutdown?.invoke(this)
+			  consumeShutdown?.invoke(this)
 			},
 			ActionButton("print stack trace") {
 			  e.printStackTrace()
@@ -190,12 +195,28 @@ class GuiApp(
 
   val stage by lazy {
 	MStage().apply {
-	  bindGeometry(name)
-	  setOnCloseRequest {
-		shutdown?.let { sd -> sd() }
-	  }
+	  registerMainStage(this, name)
 	}
   }
+
+  fun registerMainStage(stage: Stage, name: String) {
+	stage.apply {
+	  bindGeometry(name)
+	  if (consumeShudown != null) {
+		require(shutdown == null)
+		setOnCloseRequest {
+		  consumeShudown!!()
+		  it.consume()
+		}
+	  } else {
+		setOnCloseRequest {
+		  shutdown?.let { sd -> sd() }
+		}
+	  }
+
+	}
+  }
+
 }
 
 @ExperimentalContracts

@@ -13,8 +13,10 @@ import matt.hurricanefx.toggle
 import matt.kjlib.log.NEVER
 import matt.kjlib.log.err
 import matt.klibexport.klibexport.DSL
+import matt.klibexport.klibexport.allUnique
 import matt.klibexport.klibexport.go
 import matt.klibexport.lang.applyEach
+import java.util.WeakHashMap
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
 import kotlin.contracts.contract
@@ -131,7 +133,11 @@ infix fun KeyEvent.matches(h: KeyEvent) =
 
 
 @ExperimentalContracts
-fun KeyEvent.runAgainst(hotkeys: Iterable<HotKeyContainer>, last: KeyEvent? = null, fixer: HotKeyEventHandler) {
+fun KeyEvent.runAgainst(
+  hotkeys: Iterable<HotKeyContainer>,
+  last: KeyEvent? = null, fixer: HotKeyEventHandler
+) {
+
   if (this.code.isModifierKey) return consume()
   //  val debug = !this.code.isModifierKey
   //  if (debug) {
@@ -216,7 +222,12 @@ fun KeyEvent.runAgainst(hotkeys: Iterable<HotKeyContainer>, last: KeyEvent? = nu
   if (ensureConsume && !isConsumed) consume()
 }
 
-class HotKeyEventHandler(private val hotkeys: Iterable<HotKeyContainer>): EventHandler<KeyEvent> {
+class HotKeyEventHandler(
+  hks: Iterable<HotKeyContainer>,
+  var quickPassForNormalTyping: Boolean
+): EventHandler<KeyEvent> {
+
+  val hotkeys = hks.toMutableList()
 
   init {
 	hotkeys.flatMap { it.getHotkeys() }.forEach {
@@ -230,31 +241,72 @@ class HotKeyEventHandler(private val hotkeys: Iterable<HotKeyContainer>): EventH
   }
 
   var last: KeyEvent? = null
-  override fun handle(event: KeyEvent?) {
-	event?.runAgainst(hotkeys, last = last, fixer = this)
+  override fun handle(event: KeyEvent) {
+	if (quickPassForNormalTyping && (event.code.isDigitKey || event.code.isLetterKey) && !event.isMetaDown && !event.isControlDown && !event.isAltDown) {
+	  return
+	}
+	event.runAgainst(hotkeys, last = last, fixer = this)
   }
 }
 
-infix fun EventTarget.register(hotkeys: Iterable<HotKeyContainer>) {
-  when (this) {
-	is Node  -> addEventHandler(KeyEvent.KEY_PRESSED, HotKeyEventHandler(hotkeys))
-	is Scene -> addEventHandler(KeyEvent.KEY_PRESSED, HotKeyEventHandler(hotkeys))
-	is Stage -> addEventHandler(KeyEvent.KEY_PRESSED, HotKeyEventHandler(hotkeys))
-	else     -> NEVER
-  }
+fun <K, V> Map<K, V>.invert(): Map<V, K> {
+  require(values.allUnique())
+  return this.map { it.value to it.key }.associate { it.first to it.second }
 }
 
-infix fun EventTarget.registerInFilter(hotkeys: Iterable<HotKeyContainer>) {
-  when (this) {
-	is Node  -> addEventFilter(KeyEvent.KEY_PRESSED, HotKeyEventHandler(hotkeys))
-	is Scene -> addEventFilter(KeyEvent.KEY_PRESSED, HotKeyEventHandler(hotkeys))
-	is Stage -> addEventFilter(KeyEvent.KEY_PRESSED, HotKeyEventHandler(hotkeys))
-	else     -> NEVER
+val handlers = WeakHashMap<EventTarget, HotKeyEventHandler>()
+val filters = WeakHashMap<EventTarget, HotKeyEventHandler>()
+
+fun EventTarget.register(
+  hotkeys: Iterable<HotKeyContainer>,
+  quickPassForNormalTyping: Boolean = false,
+) {
+  val oldHandler = handlers[this]
+  if (oldHandler != null) {
+	oldHandler.hotkeys.addAll(hotkeys.toList())
+	if (quickPassForNormalTyping) {
+	  oldHandler.quickPassForNormalTyping = true
+	}
+  } else {
+	val handler = HotKeyEventHandler(hotkeys, quickPassForNormalTyping)
+	handlers[this] = handler
+	when (this) {
+	  is Node  -> addEventHandler(KeyEvent.KEY_PRESSED, handler)
+	  is Scene -> addEventHandler(KeyEvent.KEY_PRESSED, handler)
+	  is Stage -> addEventHandler(KeyEvent.KEY_PRESSED, handler)
+	  else     -> NEVER
+	}
+  }
+
+}
+
+fun EventTarget.registerInFilter(
+  hotkeys: Iterable<HotKeyContainer>,
+  quickPassForNormalTyping: Boolean = false,
+) {
+
+  val oldHandler = filters[this]
+  if (oldHandler != null) {
+	oldHandler.hotkeys.addAll(hotkeys.toList())
+	if (quickPassForNormalTyping) {
+	  oldHandler.quickPassForNormalTyping = true
+	}
+  } else {
+	val handler = HotKeyEventHandler(hotkeys, quickPassForNormalTyping)
+	filters[this] = handler
+	when (this) {
+	  is Node  -> addEventFilter(KeyEvent.KEY_PRESSED, handler)
+	  is Scene -> addEventFilter(KeyEvent.KEY_PRESSED, handler)
+	  is Stage -> addEventFilter(KeyEvent.KEY_PRESSED, handler)
+	  else     -> NEVER
+	}
   }
 }
 
 @Suppress("PropertyName")
 class HotkeyDSL(): DSL {
+
+
   val hotkeys = mutableListOf<HotKeyContainer>()
 
   val A get() = KeyCode.A.bare
@@ -362,13 +414,14 @@ class HotkeyDSL(): DSL {
 
 inline fun EventTarget.hotkeys(
   filter: Boolean = false,
+  quickPassForNormalTyping: Boolean = false,
   op: HotkeyDSL.()->Unit,
 ) {
   contract {
 	callsInPlace(op, EXACTLY_ONCE)
   }
   HotkeyDSL().apply(op).hotkeys.go {
-	if (filter) this registerInFilter it
-	else this register it
+	if (filter) this.registerInFilter(it, quickPassForNormalTyping)
+	else this.register(it, quickPassForNormalTyping)
   }
 }
