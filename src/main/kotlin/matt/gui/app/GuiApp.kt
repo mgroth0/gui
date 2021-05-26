@@ -15,6 +15,7 @@ import javafx.stage.Stage
 import matt.auto.SublimeText
 import matt.auto.openInIntelliJ
 import matt.exec.app.App
+import matt.exec.app.appName
 import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse.IGNORE
@@ -24,23 +25,15 @@ import matt.gui.win.bindgeom.bindGeometry
 import matt.gui.win.interact.openInNewWindow
 import matt.gui.win.stage.MStage
 import matt.json.prim.gson
-import matt.kjlib.resourceTxt
 import java.io.File
 import kotlin.concurrent.thread
-import kotlin.contracts.ExperimentalContracts
 import kotlin.system.exitProcess
 
 
-val appName = resourceTxt("matt/appname.txt")!!
-
-@ExperimentalContracts
 class GuiApp(
-  name: String = appName,
   args: Array<String> = arrayOf(),
   private val fxThread: GuiApp.(args: List<String>)->Unit
-): App(
-  name, args
-) {
+): App(args) {
   private var javafxRunning = true
   var altPyInterface: (GuiApp.(List<String>)->Unit)? = null
 
@@ -195,7 +188,7 @@ class GuiApp(
 
   val stage by lazy {
 	MStage().apply {
-	  registerMainStage(this, name)
+	  registerMainStage(this, appName)
 	}
   }
 
@@ -219,10 +212,8 @@ class GuiApp(
 
 }
 
-@ExperimentalContracts
 private var app: GuiApp? = null
 
-@ExperimentalContracts
 class FlowFXApp: Application() {
   override fun start(primaryStage: Stage?) {
 	/* dodge "Unsupported JavaFX configuration..." part 2 */
