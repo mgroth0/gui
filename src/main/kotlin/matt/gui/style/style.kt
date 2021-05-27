@@ -76,6 +76,7 @@ class StyleClassDSL(val s: Styleable) {
   val greenBackground by StyleClass()
   val nodeTextField by StyleClass()
   val presentationMode by StyleClass()
+  val flowablePresentationMode by StyleClass()
 }
 
 fun Styleable.sty(op: StyleClassDSL.()->Unit) {
