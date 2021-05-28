@@ -37,10 +37,8 @@ import matt.kjlib.recurse.recurse
 import matt.kjlib.stream.notContainedIn
 import java.io.File
 import java.net.URL
-import kotlin.contracts.ExperimentalContracts
 import kotlin.reflect.KClass
 
-@ExperimentalContracts
 open class MScene(
   root: Parent,
   val icon: File
