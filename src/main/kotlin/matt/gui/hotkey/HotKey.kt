@@ -16,8 +16,8 @@ import matt.klibexport.klibexport.DSL
 import matt.klibexport.klibexport.allUnique
 import matt.klibexport.klibexport.go
 import matt.klibexport.lang.applyEach
+import java.lang.System.currentTimeMillis
 import java.util.WeakHashMap
-import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
 import kotlin.contracts.contract
 
@@ -33,7 +33,9 @@ data class HotKey(
   var isCtrl: Boolean = false,
   var isShift: Boolean = false,
 
-  ): HotKeyContainer() {
+  var previous: HotKey? = null
+
+): HotKeyContainer() {
 
   override fun getHotkeys() = listOf(this)
 
@@ -122,21 +124,30 @@ class HotKeySet(vararg keys: HotKey): HotKeyContainer() {
 	  blocksFXorOSdefault = true
 	}
   }
+
 }
 
 
 infix fun KeyEvent.matches(h: HotKey) =
 	code == h.code && isMetaDown == h.isMeta && isAltDown == h.isOpt && isControlDown == h.isCtrl && isShiftDown == h.isShift
 
+infix fun HotKey.matches(h: HotKey) =
+	code == h.code && isMeta == h.isMeta && isOpt == h.isOpt && isCtrl == h.isCtrl && isShift == h.isShift
+
 infix fun KeyEvent.matches(h: KeyEvent) =
 	code == h.code && isMetaDown == h.isMetaDown && isAltDown == h.isAltDown && isControlDown == h.isControlDown && isShiftDown == h.isShiftDown
 
 
-@ExperimentalContracts
+const val DOUBLE_HOTKEY_WINDOW_MS = 500L
+var lastHotKey: Pair<HotKey, Long>? = null
+
+
 fun KeyEvent.runAgainst(
   hotkeys: Iterable<HotKeyContainer>,
   last: KeyEvent? = null, fixer: HotKeyEventHandler
 ) {
+
+  val pressTime = currentTimeMillis()
 
   if (this.code.isModifierKey) return consume()
   //  val debug = !this.code.isModifierKey
@@ -202,12 +213,15 @@ fun KeyEvent.runAgainst(
   var ensureConsume = false
   hotkeys.asSequence()
 	  .flatMap { it.getHotkeys() }
-	  .filter {
-		this matches it
+	  .filter { h ->
+		this matches h && (h.previous == null || (lastHotKey?.let {
+		  h.previous!!.matches(it.first) && (pressTime - it.second) <= DOUBLE_HOTKEY_WINDOW_MS
+		} ?: false))
 	  }
 	  .onEach {
 		ensureConsume = ensureConsume || it.blocksFXorOSdefault
 	  }.forEach { h ->
+		lastHotKey = h to currentTimeMillis()
 		if (!h.isIgnoreFix) {
 		  fixer.last = this
 		}
@@ -384,6 +398,7 @@ class HotkeyDSL(): DSL {
 	hotkeys.add(this)
   }
 
+
   infix fun HotKey.toggles(b: BProp) = op { b.toggle() }
 
   infix fun HotKey.handle(setHandler: (KeyEvent)->Unit) = apply {
@@ -408,6 +423,11 @@ class HotkeyDSL(): DSL {
 	  theHandler = setHandler
 	}
 	hotkeys.add(this)
+  }
+
+  infix fun HotKey.then(h: HotKey) {
+	hotkeys.add(this)
+	hotkeys.add(h.apply { previous = this@then })
   }
 
 }
