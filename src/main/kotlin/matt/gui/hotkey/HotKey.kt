@@ -53,6 +53,7 @@ data class HotKey(
   val shift
 	get() = apply { isShift = true }
   val bare get() = this
+  infix fun then(h: HotKey) = h.also { it.previous = this }
 
   var isIgnoreFix = false
 
@@ -213,6 +214,12 @@ fun KeyEvent.runAgainst(
   var ensureConsume = false
   hotkeys.asSequence()
 	  .flatMap { it.getHotkeys() }
+	  .flatMap {
+		sequence {
+		  yield(it)
+		  it.previous?.go { yield(it) }
+		}
+	  }
 	  .filter { h ->
 		this matches h && (h.previous == null || (lastHotKey?.let {
 		  h.previous!!.matches(it.first) && (pressTime - it.second) <= DOUBLE_HOTKEY_WINDOW_MS
@@ -321,7 +328,7 @@ fun EventTarget.registerInFilter(
 class HotkeyDSL(): DSL {
 
 
-  val hotkeys = mutableListOf<HotKeyContainer>()
+  val hotkeys = mutableSetOf<HotKeyContainer>()
 
   val A get() = KeyCode.A.bare
   val B get() = KeyCode.B.bare
@@ -378,12 +385,11 @@ class HotkeyDSL(): DSL {
   val EQUALS get() = KeyCode.EQUALS.bare
   val MINUS get() = KeyCode.MINUS.bare
 
-  fun HotKey.meta(h: ()->Unit) = hotkeys.add(this.meta op { h() })
-  fun HotKey.opt(h: ()->Unit) = hotkeys.add(this.opt op { h() })
-  fun HotKey.ctrl(h: ()->Unit) = hotkeys.add(this.ctrl op { h() })
-  fun HotKey.shift(h: ()->Unit) = hotkeys.add(this.shift op { h() })
-  fun HotKey.bare(h: ()->Unit) = hotkeys.add(this op { h() })
-
+  fun HotKey.meta(h: ()->Unit) = apply { hotkeys.add(this.meta op { h() }) }
+  fun HotKey.opt(h: ()->Unit) = apply { hotkeys.add(this.opt op { h() }) }
+  fun HotKey.ctrl(h: ()->Unit) = apply { hotkeys.add(this.ctrl op { h() }) }
+  fun HotKey.shift(h: ()->Unit) = apply { hotkeys.add(this.shift op { h() }) }
+  fun HotKey.bare(h: ()->Unit) = apply { hotkeys.add(this op { h() }) }
 
   fun HotKeySet.meta(h: ()->Unit) = hotkeys.add(this.meta op { h() })
   fun HotKeySet.opt(h: ()->Unit) = hotkeys.add(this.opt op { h() })
@@ -424,12 +430,6 @@ class HotkeyDSL(): DSL {
 	}
 	hotkeys.add(this)
   }
-
-  infix fun HotKey.then(h: HotKey) {
-	hotkeys.add(this)
-	hotkeys.add(h.apply { previous = this@then })
-  }
-
 }
 
 inline fun EventTarget.hotkeys(

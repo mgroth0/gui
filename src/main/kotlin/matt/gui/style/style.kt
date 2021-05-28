@@ -8,7 +8,6 @@ import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
 import matt.kjlib.commons.ROOT_FOLDER
 import matt.kjlib.file.get
-import matt.kjlib.log.NEVER
 import matt.kjlib.str.LineAppender
 import kotlin.reflect.KProperty
 
@@ -42,7 +41,7 @@ fun Styleable.styleInfo(): String {
 }
 
 var Region.borderFill: Paint?
-  get() = NEVER
+  get() = border?.strokes?.firstOrNull()?.topStroke
   set(value) {
 	border = if (value == null) null
 	else {
@@ -51,7 +50,7 @@ var Region.borderFill: Paint?
 
   }
 var Region.borderDashFill: Paint?
-  get() = NEVER
+  get() = border?.strokes?.firstOrNull { it.topStyle == BorderStrokeStyle.DASHED }?.topStroke
   set(value) {
 	border = if (value == null) null
 	else {
