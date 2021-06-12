@@ -1,6 +1,8 @@
 package matt.gui.layout
 
 import javafx.event.EventTarget
+import javafx.geometry.Bounds
+import javafx.geometry.Rectangle2D
 import javafx.scene.Scene
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Region
@@ -115,3 +117,6 @@ fun EventTarget.spacer() {
 	minHeight = 20.0
   }
 }
+
+fun Bounds.toRect() = Rectangle2D(minX, minY, width, height)
+fun Rectangle2D.shrink(n: Int) = Rectangle2D(minX + n, minY + n, width - (n*2), height - (n*2))
