@@ -8,6 +8,8 @@ import javafx.scene.Scene
 import javafx.scene.control.Alert
 import javafx.scene.control.TextInputDialog
 import javafx.scene.image.ImageView
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
@@ -138,12 +140,19 @@ fun <R> dialog(
 	  styleClass += "CancelButton"
 	  d.stage.close()
 	}
-	button("confirm") {
+	val confirmButton = button("confirm") {
 	  styleClass += "ConfirmButton"
 	  disableWhen { d.readyProperty.not() }
 	  setOnAction {
 		r = d.getResult()
 		d.stage.close()
+	  }
+	}
+	d.scene.addEventFilter(KeyEvent.KEY_PRESSED) {
+	  if (it.code == KeyCode.ENTER) {
+		if (d.readyProperty.value) {
+		  confirmButton.fire()
+		}
 	  }
 	}
   }
@@ -252,7 +261,7 @@ fun Parent.openInNewWindow(
   beforeShowing: Stage.()->Unit = {},
   border: Boolean = true
 ): MStage {
-  return MStage(Wclosable = Wclosable, EscClosable = EscClosable,EnterClosable=EnterClosable).apply {
+  return MStage(Wclosable = Wclosable, EscClosable = EscClosable, EnterClosable = EnterClosable).apply {
 	scene = if (mScene) MScene(this@openInNewWindow) else Scene(this@openInNewWindow)
 	own.applyTo(this)
 	geom.applyTo(this)
