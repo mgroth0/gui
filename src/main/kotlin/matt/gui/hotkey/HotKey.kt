@@ -327,6 +327,8 @@ fun EventTarget.registerInFilter(
 @Suppress("PropertyName")
 class HotkeyDSL(): DSL {
 
+  /*fun keyCode(name: String) = KeyCode.getKeyCode(name).bare*/
+  fun keyCode(name: String) = KeyCode.valueOf(name).bare
 
   val hotkeys = mutableSetOf<HotKeyContainer>()
 
