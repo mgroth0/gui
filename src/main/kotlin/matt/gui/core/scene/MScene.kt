@@ -23,6 +23,7 @@ import matt.gui.mag.reversed_displays
 import matt.gui.style.CUSTOM_CSS
 import matt.gui.style.DARK_MODENA_CSS
 import matt.gui.style.borderFill
+import matt.gui.style.darkMode
 import matt.gui.style.styleInfo
 import matt.gui.win.interact.WinGeom
 import matt.gui.win.interact.WinOwn
@@ -54,19 +55,35 @@ open class MScene(
 
   init {
 	addDefaultHotkeys()
-	stylesheets.add(DARK_MODENA_CSS)
-	stylesheets.add(CUSTOM_CSS)
+	if (darkMode) {
+	  stylesheets.add(DARK_MODENA_CSS)
+	  stylesheets.add(CUSTOM_CSS)
+	}
 
 
 	//     ensure that even while the screen is loading it is black. So not white flashes or flickering while refreshing
-	fill = Color.BLACK
+	if (darkMode) {
+	  fill = Color.BLACK
+	}
 	//        maybe also possible by styleing .root in css, but if I remember correctly that also affects other nodes
 
 
 	mcontextmenu {
 	  menu("style") {
 		actionitem("reload style") {
-		  stylesheets.setAll(DARK_MODENA_CSS, CUSTOM_CSS)
+		  if (darkMode) {
+			stylesheets.setAll(DARK_MODENA_CSS, CUSTOM_CSS)
+		  } else {
+			stylesheets.setAll()
+		  }
+		}
+		actionitem("toggle darkMode") {
+		  darkMode = !darkMode
+		  if (darkMode) {
+			stylesheets.setAll(DARK_MODENA_CSS, CUSTOM_CSS)
+		  } else {
+			stylesheets.setAll()
+		  }
 		}
 		actionitem("open darkModena.css") {
 		  File(URL(DARK_MODENA_CSS).file).openInIntelliJ()
@@ -196,8 +213,10 @@ open class MScene(
 	  mScene = false,
 	  border = false,
 	  beforeShowing = {
-		scene.stylesheets.add(DARK_MODENA_CSS)
-		scene.stylesheets.add(CUSTOM_CSS)
+		if (darkMode) {
+		  scene.stylesheets.add(DARK_MODENA_CSS)
+		  scene.stylesheets.add(CUSTOM_CSS)
+		}
 	  }
 	).apply {
 	  iconWindow = this
