@@ -24,6 +24,7 @@ import matt.gui.style.CUSTOM_CSS
 import matt.gui.style.DARK_MODENA_CSS
 import matt.gui.style.borderFill
 import matt.gui.style.darkMode
+import matt.gui.style.darkModeListeners
 import matt.gui.style.styleInfo
 import matt.gui.win.interact.WinGeom
 import matt.gui.win.interact.WinOwn
@@ -84,6 +85,7 @@ open class MScene(
 		  } else {
 			stylesheets.setAll()
 		  }
+		  darkModeListeners.forEach { it() }
 		}
 		actionitem("open darkModena.css") {
 		  File(URL(DARK_MODENA_CSS).file).openInIntelliJ()

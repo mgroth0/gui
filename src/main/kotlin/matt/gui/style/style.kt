@@ -12,6 +12,7 @@ import matt.kjlib.str.LineAppender
 import kotlin.reflect.KProperty
 
 var darkMode = true
+val darkModeListeners = mutableListOf<() -> Unit>()
 
 val MODENA_CSS = ROOT_FOLDER["style"]["modena.css"].toURI().toURL().toString()
 val DARK_MODENA_CSS = ROOT_FOLDER["style"]["darkModena.css"].toURI().toURL().toString()
