@@ -22,6 +22,9 @@ import matt.gui.lang.actionbutton
 import matt.gui.style.borderFill
 import matt.gui.win.bindgeom.bindGeometry
 import matt.gui.win.stage.MStage
+import matt.gui.win.stage.WMode
+import matt.gui.win.stage.WMode.CLOSE
+import matt.gui.win.stage.WMode.NOTHING
 import matt.hurricanefx.exactHeightProperty
 import matt.hurricanefx.eye.lang.BProp
 import matt.hurricanefx.eye.lib.onChange
@@ -56,7 +59,7 @@ fun safe(s: String, op: ()->Unit): Boolean {
 }
 
 class MDialog<R> internal constructor(): VBox() {
-  val stage = MStage(Wclosable = true, EscClosable = true).apply {
+  val stage = MStage(wMode = CLOSE, EscClosable = true).apply {
 	scene = MScene(this@MDialog)
 	width = 400.0
 	height = 400.0
@@ -252,7 +255,7 @@ sealed class WinOwn {
 
 fun Parent.openInNewWindow(
   wait: Boolean = false,
-  Wclosable: Boolean = false,
+  Wclosable: WMode = NOTHING,
   EscClosable: Boolean = false,
   EnterClosable: Boolean = false,
   own: WinOwn = WinOwn.Auto,
@@ -261,7 +264,7 @@ fun Parent.openInNewWindow(
   beforeShowing: Stage.()->Unit = {},
   border: Boolean = true
 ): MStage {
-  return MStage(Wclosable = Wclosable, EscClosable = EscClosable, EnterClosable = EnterClosable).apply {
+  return MStage(wMode = Wclosable, EscClosable = EscClosable, EnterClosable = EnterClosable).apply {
 	scene = if (mScene) MScene(this@openInNewWindow) else Scene(this@openInNewWindow)
 	own.applyTo(this)
 	geom.applyTo(this)
