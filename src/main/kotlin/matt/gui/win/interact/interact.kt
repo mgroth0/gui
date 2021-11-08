@@ -255,7 +255,7 @@ sealed class WinOwn {
 
 fun Parent.openInNewWindow(
   wait: Boolean = false,
-  Wclosable: WMode = NOTHING,
+  wMode: WMode = NOTHING,
   EscClosable: Boolean = false,
   EnterClosable: Boolean = false,
   own: WinOwn = WinOwn.Auto,
@@ -264,7 +264,7 @@ fun Parent.openInNewWindow(
   beforeShowing: Stage.()->Unit = {},
   border: Boolean = true
 ): MStage {
-  return MStage(wMode = Wclosable, EscClosable = EscClosable, EnterClosable = EnterClosable).apply {
+  return MStage(wMode = wMode, EscClosable = EscClosable, EnterClosable = EnterClosable).apply {
 	scene = if (mScene) MScene(this@openInNewWindow) else Scene(this@openInNewWindow)
 	own.applyTo(this)
 	geom.applyTo(this)
