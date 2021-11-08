@@ -23,7 +23,7 @@ open class MStage(
   init {
 	pullBackWhenOffscreen()
 	hotkeys {
-	  W op when (wMode) {
+	  W.meta op when (wMode) {
 		CLOSE   -> ::close
 		NOTHING -> { {} }
 		ICONIFY -> { {
