@@ -8,7 +8,9 @@ import matt.kjlib.file.get
 
 val IconFolder = ROOT_FOLDER["icon"]
 
-fun Icon(file: java.io.File): ImageView = Icon(Image(file.toPath().toUri().toURL().toString()))
+fun IconImage(file: java.io.File): Image = Image(file.toPath().toUri().toURL().toString())
+fun IconImage(file: String) = IconImage(IconFolder[file])
+fun Icon(file: java.io.File): ImageView = Icon(IconImage(file))
 
 const val ICON_WIDTH = 20.0
 const val ICON_HEIGHT = 20.0
@@ -20,6 +22,7 @@ fun Icon(image: Image) = ImageView(image).apply {
 }
 
 fun Icon(file: String) = Icon(IconFolder[file])
+
 
 fun javafx.scene.Node.icon(file: java.io.File) {
   add(Icon(file))
