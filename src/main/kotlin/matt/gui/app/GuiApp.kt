@@ -66,8 +66,8 @@ class GuiApp(
   fun vbox(op: VBox.()->Unit) {
 	scene = MScene(VBox().apply(op))
   }
+	fun pane(op: Pane.()->Unit) {
 
-  fun pane(op: Pane.()->Unit) {
 	scene = MScene(Pane().apply(op))
   }
 

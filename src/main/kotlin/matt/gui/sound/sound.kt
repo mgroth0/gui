@@ -50,50 +50,51 @@ return MediaPlayer(media).apply {
 /*}*/
 
 private val soundsBytes = LRUCache<Pair<String, Number?>, Pair<AudioFormat, ByteArray>>(100)
-	.withStoringDefault {
-	  var s = it.first
-	  if ("." !in s) {
-		s = SoundFolder.listFiles()!!.first { it.name.substringBefore(".") == s }.name
-	  }
-	  val f = SoundFolder[s]
-	  val audioInputStream = AudioSystem.getAudioInputStream(f.absoluteFile)
-	  val format = audioInputStream.format
+        .withStoringDefault {
+            var s = it.first
+            if ("." !in s) {
+                s = SoundFolder.listFiles()!!.first { it.name.substringBefore(".") == s }.name
+            }
+            val f = SoundFolder[s]
+            val audioInputStream = AudioSystem.getAudioInputStream(f.absoluteFile)
+            val format = audioInputStream.format
 
-	  val framesPerSec = audioInputStream.format.frameRate
-	  val bytesPerFrame = audioInputStream.format.frameSize
+            val framesPerSec = audioInputStream.format.frameRate
+            val bytesPerFrame = audioInputStream.format.frameSize
 
-	  if (it.second != null) {
-		val lastFrame = (it.second!!.toDouble()*framesPerSec).roundToInt()
-		format to audioInputStream.readNBytes(lastFrame*bytesPerFrame)
-	  } else {
-		format to audioInputStream.readBytes()
-	  }
-	}
+            if (it.second != null) {
+                val lastFrame = (it.second!!.toDouble() * framesPerSec).roundToInt()
+                format to audioInputStream.readNBytes(lastFrame * bytesPerFrame)
+            } else {
+                format to audioInputStream.readBytes()
+            }
+        }
 
 private val readyClips = LRUCache<Pair<String, Number?>, Clip>(100).withStoringDefault {
-  val clip = AudioSystem.getClip()
-  val s = soundsBytes[it.first to it.second]
-  clip.open(s.first, s.second, 0, s.second.size)
-  clip
+    val clip = AudioSystem.getClip()
+    val s = soundsBytes[it.first to it.second]
+    clip.open(s.first, s.second, 0, s.second.size)
+    clip
 }
 
 val soundSem = Semaphore(1)
 
 fun prepSoundsInThread(vararg ss: Pair<String, Number?>) {
-  thread {
-	soundSem.acquire()
-	ss.forEach {
-	  readyClips[it] /*do nothing, just make it*/
-	}
-	soundSem.release()
-  }
+    thread {
+        soundSem.acquire()
+        ss.forEach {
+//            println("preparing sound: ${it.first}")
+            readyClips[it] /*do nothing, just make it*/
+        }
+        soundSem.release()
+    }
 }
 
 fun playSound(file: String, sec: Number? = null) {
-  soundSem.acquire()
-  readyClips[file to sec].start()
-  readyClips.remove(file to sec)
-  soundSem.release()
+    soundSem.acquire()
+    readyClips[file to sec].start()
+    readyClips.remove(file to sec)
+    soundSem.release()
 }
 
 
