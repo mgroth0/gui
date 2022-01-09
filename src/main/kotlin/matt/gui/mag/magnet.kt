@@ -10,6 +10,11 @@ import matt.kjlib.commons.VAR_JSON
 val Window.screen: Screen?
   get() = Screen.getScreensForRectangle(x, y, 1.0, 1.0).firstOrNull()
 
+data class RectSize(
+  val width: Number,
+  val height: Number
+)
+
 
 fun Window.hhalf() {
   screen?.let {
@@ -55,6 +60,7 @@ fun Window.left() {
 	hhalf()
   }
 }
+
 
 fun Window.right() {
   screen?.let {
