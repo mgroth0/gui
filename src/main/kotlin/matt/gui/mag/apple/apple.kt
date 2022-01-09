@@ -111,10 +111,16 @@ end run
   """.trimIndent()
   )
   val reader = p.inputStream.bufferedReader()
+  val readerE = p.errorStream.bufferedReader()
   val writer = p.outputStream.bufferedWriter()
   thread {
 	reader.forEachLine {
 	  println("READ:$it")
+	}
+  }
+  thread {
+	readerE.forEachLine {
+	  println("ERROR:$it")
 	}
   }
   writer.write("HELLO1")
