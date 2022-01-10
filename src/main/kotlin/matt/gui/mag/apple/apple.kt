@@ -4,6 +4,7 @@ import javafx.geometry.Rectangle2D
 import javafx.stage.Screen
 import javafx.stage.Stage
 import matt.auto.applescript
+import matt.auto.compileAndOrRunApplescript
 import matt.auto.interactiveOsascript
 import matt.gui.mag.left
 import matt.hurricanefx.tornadofx.async.runLater
@@ -11,20 +12,29 @@ import matt.kjlib.date.tic
 import kotlin.concurrent.thread
 
 fun moveFrontmostWindowByApplescript(x: Number, y: Number, width: Number, height: Number) {
-  applescript(
-	"""
-	tell application "System Events"
-		set frontmostProcess to first application process where it is frontmost
-		tell frontmostProcess
-			tell (1st window whose value of attribute "AXMain" is true)
-				set windowTitle to value of attribute "AXTitle"
-				set position to {${x.toInt()}, ${y.toInt()}}
-				set size to {${width.toInt()}, ${height.toInt()}}
-			end tell
-		end tell
-	end tell
-  """.trimIndent()
+  println(
+	"MOVE:" + compileAndOrRunApplescript(
+	  "moveFrontmostWindow",
+	  x.toInt().toString(),
+	  y.toInt().toString(),
+	  width.toInt().toString(),
+	  height.toInt().toString()
+	)
   )
+  /*  applescript(
+	  """
+	  tell application "System Events"
+		  set frontmostProcess to first application process where it is frontmost
+		  tell frontmostProcess
+			  tell (1st window whose value of attribute "AXMain" is true)
+				  set windowTitle to value of attribute "AXTitle"
+				  set position to {${x.toInt()}, ${y.toInt()}}
+				  set size to {${width.toInt()}, ${height.toInt()}}
+			  end tell
+		  end tell
+	  end tell
+	""".trimIndent()
+	)*/
 }
 
 fun moveAppWindowByApplescript(app: String, x: Number, y: Number, width: Number, height: Number) {
@@ -45,7 +55,8 @@ fun moveAppWindowByApplescript(app: String, x: Number, y: Number, width: Number,
 }
 
 fun getFrontmostWindowPositionAndSizeByApplescript(): Rectangle2D {
-  var s = applescript(
+  var s = compileAndOrRunApplescript("getFrontmostWindowPositionAndSize")
+  /*var s = applescript(
 	"""
 	tell application "System Events"
 		set frontmostProcess to first application process where it is frontmost
@@ -56,7 +67,7 @@ fun getFrontmostWindowPositionAndSizeByApplescript(): Rectangle2D {
 		end tell
 	end tell
   """.trimIndent()
-  )
+  )*/
   val x = s.substringBefore(",").trim().toInt()
   s = s.substringAfter(",")
   val y = s.substringBefore(",").trim().toInt()
@@ -91,28 +102,32 @@ fun getAppWindowPositionAndSizeByApplescript(app: String): Rectangle2D {
 }
 
 fun getNameOfFrontmostProcessFromApplescript(): String {
-  return applescript(
+  return compileAndOrRunApplescript(
+	"getNameOfFrontmostProcess",
+  )
+  /*return applescript(
 	"""
 	tell application "System Events"
 		set frontmostProcess to first application process where it is frontmost
 		return name of frontmostProcess
 	end tell
   """.trimIndent()
-  )
+  )*/
 }
 
 fun sdtInTest() {
-  val p = interactiveOsascript(
+  val writerP = interactiveOsascript(
 	"""
-on run argv
+	 log "in script 1"
      set stdin to do shell script "cat 0<&3"
+	 log "in script 2"
      return "hello, " & stdin
-end run
   """.trimIndent()
   )
+  val p = writerP.second
   val reader = p.inputStream.bufferedReader()
   val readerE = p.errorStream.bufferedReader()
-  val writer = p.outputStream.bufferedWriter()
+  val writer = writerP.first
   thread {
 	reader.forEachLine {
 	  println("READ:$it")
@@ -129,7 +144,9 @@ end run
   println("CODE=${p.waitFor()}")
 }
 
+/*https://stackoverflow.com/questions/70647124/how-to-reduce-overhead-and-run-applescripts-faster*/
 fun appleLeft() {
+  /*https://stackoverflow.com/questions/70647124/how-to-reduce-overhead-and-run-applescripts-faster*/
   sdtInTest()
   val t = tic()
   t.toc("toc1")
@@ -143,6 +160,8 @@ fun appleLeft() {
 	t.toc("toc4")
 	applescript("1+1")
 	t.toc("toc4.5")
+	compileAndOrRunApplescript("onePlusOne")
+	t.toc("toc4.6")
 	println("bounds=${bounds}")
 	runLater {
 	  t.toc("toc5")
