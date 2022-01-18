@@ -262,9 +262,10 @@ fun Parent.openInNewWindow(
   geom: WinGeom = WinGeom.Centered(),
   mScene: Boolean = true,
   beforeShowing: Stage.()->Unit = {},
-  border: Boolean = true
+  border: Boolean = true,
+  decorated:  Boolean = false
 ): MStage {
-  return MStage(wMode = wMode, EscClosable = EscClosable, EnterClosable = EnterClosable).apply {
+  return MStage(wMode = wMode, EscClosable = EscClosable, EnterClosable = EnterClosable,decorated=decorated).apply {
 	scene = if (mScene) MScene(this@openInNewWindow) else Scene(this@openInNewWindow)
 	own.applyTo(this)
 	geom.applyTo(this)
