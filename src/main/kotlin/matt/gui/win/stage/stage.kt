@@ -18,17 +18,22 @@ enum class WMode {
 open class MStage(
   wMode: WMode = NOTHING,
   EscClosable: Boolean = false,
-  EnterClosable: Boolean = false
-): Stage(StageStyle.UNDECORATED) {
+  EnterClosable: Boolean = false,
+  decorated: Boolean = false
+): Stage(if (decorated) StageStyle.DECORATED else StageStyle.UNDECORATED) {
   init {
 	pullBackWhenOffscreen()
 	hotkeys {
 	  W.meta op when (wMode) {
 		CLOSE   -> ::close
-		NOTHING -> { {} }
-		ICONIFY -> { {
+		NOTHING -> {
+		  {}
+		}
+		ICONIFY -> {
+		  {
 			(this@MStage.scene as MScene).iconify()
-		  } }
+		  }
+		}
 	  }
 	  if (EscClosable) ESCAPE op ::close
 	  if (EnterClosable) ENTER op ::close
