@@ -1,7 +1,6 @@
 package matt.gui.proto
 
 import javafx.beans.property.BooleanProperty
-import javafx.beans.property.DoubleProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventTarget
 import javafx.scene.Node
@@ -18,9 +17,7 @@ import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
 import matt.gui.layout.minBind
 import matt.hurricanefx.Scrolls
-import matt.hurricanefx.exactHeight
 import matt.hurricanefx.exactHeightProperty
-import matt.hurricanefx.exactWidth
 import matt.hurricanefx.exactWidthProperty
 import matt.hurricanefx.eye.prop.div
 import matt.hurricanefx.eye.prop.minus
