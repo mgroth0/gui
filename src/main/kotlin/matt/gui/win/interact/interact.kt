@@ -28,13 +28,17 @@ import matt.gui.win.stage.WMode.NOTHING
 import matt.hurricanefx.exactHeightProperty
 import matt.hurricanefx.eye.lang.BProp
 import matt.hurricanefx.eye.lib.onChange
+import matt.hurricanefx.eye.prop.booleanBinding
 import matt.hurricanefx.eye.prop.doubleBinding
 import matt.hurricanefx.tornadofx.async.runLater
 import matt.hurricanefx.tornadofx.control.button
+import matt.hurricanefx.tornadofx.control.textarea
 import matt.hurricanefx.tornadofx.dialog.alert
 import matt.hurricanefx.tornadofx.layout.hbox
 import matt.hurricanefx.tornadofx.nodes.disableWhen
 import matt.hurricanefx.tornadofx.nodes.onDoubleClick
+import matt.json.prim.isValidJson
+import matt.json.prim.toPrettyJson
 import java.io.File
 import java.net.URI
 import java.util.Optional
@@ -122,6 +126,22 @@ fun Stage.bindHWToOwner() {
   height = owner.height
   owner.heightProperty().onChange {
 	y = it
+  }
+}
+
+
+fun jsonEditor(json: String? = null) = dialog<String?> {
+  val ta = textarea(json ?: "")
+  val goodBind = ta.textProperty().booleanBinding {
+	it?.isValidJson() ?: false
+  }
+  readyWhen(goodBind)
+  ta.borderFill = Color.BLACK /*so it does not jitter*/
+  goodBind.onChange {
+	ta.borderFill = if (it) Color.BLACK else Color.RED
+  }
+  setResultConverter {
+	ta.text.takeIf { it.isValidJson() }
   }
 }
 
@@ -263,9 +283,9 @@ fun Parent.openInNewWindow(
   mScene: Boolean = true,
   beforeShowing: Stage.()->Unit = {},
   border: Boolean = true,
-  decorated:  Boolean = false
+  decorated: Boolean = false
 ): MStage {
-  return MStage(wMode = wMode, EscClosable = EscClosable, EnterClosable = EnterClosable,decorated=decorated).apply {
+  return MStage(wMode = wMode, EscClosable = EscClosable, EnterClosable = EnterClosable, decorated = decorated).apply {
 	scene = if (mScene) MScene(this@openInNewWindow) else Scene(this@openInNewWindow)
 	own.applyTo(this)
 	geom.applyTo(this)
