@@ -164,13 +164,9 @@ fun KeyEvent.runAgainst(
   /*the solution apparently is to use key released*/
   /*but that feels less responsive to me. heres my custom solution... here goes...*/
   /*potential issue: if I'm typing and I need to type same key multiple times and hjavafx is laggy, it might not clear this and my keys might not go through. So I'm only doing this with keys that are actual hotkeys*/
-  //  println("here1 ${this.hashCode()}")
   if (last != null) {
-	//	println("here2 ${this.hashCode()}")
 	if (this matches last) {
-	  //	  println("here3 ${this.hashCode()}")
 	  if (this.target == last.target) { //this one never passes
-		//		println("here4")
 
 		/*
 
@@ -191,9 +187,6 @@ fun KeyEvent.runAgainst(
 
 	  }
 	} else {
-	  //	  println("no match")
-	  //	  println("me: ${this}")
-	  //	  println("last: ${last}")
 	}
   }
   //  runLater { fixer.last = null }
