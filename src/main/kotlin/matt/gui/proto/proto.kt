@@ -119,9 +119,9 @@ class ScaledCanvas(
   width: Number,
   val initialScale: Double = 1.0
 ): Region() {
-  val awesomeScaleProperty = SimpleDoubleProperty(1.0)
-  val extraH = (height.toDouble()*initialScale - height.toDouble())/2
-  val extraW = (width.toDouble()*initialScale - width.toDouble())/2
+  val awesomeScaleProperty = SimpleDoubleProperty(initialScale)
+  /*val extraH = (height.toDouble()*initialScale - height.toDouble())/2
+  val extraW = (width.toDouble()*initialScale - width.toDouble())/2*/
 
   val canvas = Canvas(
 	width.toDouble(),
