@@ -148,6 +148,8 @@ fun KeyEvent.runAgainst(
   last: KeyEvent? = null, fixer: HotKeyEventHandler
 ) {
 
+//  println("got hotkey: ${this}")
+
   val pressTime = currentTimeMillis()
 
   if (this.code.isModifierKey) return consume()
@@ -214,6 +216,7 @@ fun KeyEvent.runAgainst(
 		}
 	  }
 	  .filter { h ->
+//		println("h(${this matches h}): ${h}")
 		this matches h && (h.previous == null || (lastHotKey?.let {
 		  h.previous!!.matches(it.first) && (pressTime - it.second) <= DOUBLE_HOTKEY_WINDOW_MS
 		} ?: false))
@@ -259,6 +262,8 @@ class HotKeyEventHandler(
 	if (quickPassForNormalTyping && (event.code.isDigitKey || event.code.isLetterKey) && !event.isMetaDown && !event.isControlDown && !event.isAltDown) {
 	  return
 	}
+//	println("event.code: ${event.code}")
+//	println("hotkeys length: ${hotkeys.size}")
 	event.runAgainst(hotkeys, last = last, fixer = this)
   }
 }
