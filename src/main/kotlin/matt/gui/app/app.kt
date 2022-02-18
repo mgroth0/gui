@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
+import javafx.stage.Screen
 import javafx.stage.Stage
 import matt.auto.SublimeText
 import matt.auto.openInIntelliJ
@@ -29,11 +30,15 @@ import java.io.File
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
+val NEW_MAC_MENU_Y_ESTIMATE = 37.0
+val NEW_MAX_MENU_Y_ESTIMATE_SECONDARY = 25.0
 
 class GuiApp(
   args: Array<String> = arrayOf(),
-  private val fxThread: GuiApp.(args: List<String>)->Unit
-): App(args) {
+  val screenIndex: Int? = null,
+  private val fxThread: GuiApp.(args: List<String>)->Unit,
+
+  ): App(args) {
   private var javafxRunning = true
   var altPyInterface: (GuiApp.(List<String>)->Unit)? = null
 
@@ -55,6 +60,14 @@ class GuiApp(
 		scene = this@GuiApp.scene
 		(scene.root as Region).apply {
 		}
+		if (screenIndex != null) {
+		  val screen = Screen.getScreens()[screenIndex]
+		  val menuY = if (screen == Screen.getPrimary()) NEW_MAC_MENU_Y_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
+		  x = screen.bounds.minX
+		  y = screen.bounds.minY + menuY
+		  width = screen.bounds.width
+		  height = screen.bounds.height - menuY
+		}
 	  }.show()
 	}
   }
@@ -66,7 +79,8 @@ class GuiApp(
   fun vbox(op: VBox.()->Unit) {
 	scene = MScene(VBox().apply(op))
   }
-	fun pane(op: Pane.()->Unit) {
+
+  fun pane(op: Pane.()->Unit) {
 
 	scene = MScene(Pane().apply(op))
   }

@@ -100,13 +100,13 @@ fun EventTarget.scaledCanvas(
   scale: Number = 1.0,
   op: ScaledCanvas.()->Unit = {}
 ) =
-	opcr(
-	  this, ScaledCanvas(
-		width = width,
-		height = height,
-		initialScale = scale.toDouble()
-	  ), op
-	)
+  opcr(
+	this, ScaledCanvas(
+	  width = width,
+	  height = height,
+	  initialScale = scale.toDouble()
+	), op
+  )
 
 fun EventTarget.scaledCanvas(
   hw: Number,
@@ -119,6 +119,8 @@ class ScaledCanvas(
   width: Number,
   val initialScale: Double = 1.0
 ): Region() {
+  constructor(hw: Number, scale: Double): this(height = hw.toDouble(), width = hw.toDouble(), initialScale = scale)
+
   val awesomeScaleProperty = SimpleDoubleProperty(initialScale)
   /*val extraH = (height.toDouble()*initialScale - height.toDouble())/2
   val extraW = (width.toDouble()*initialScale - width.toDouble())/2*/
@@ -140,7 +142,7 @@ class ScaledCanvas(
 	exactWidthProperty().bind(awesomeScaleProperty*width)
   }
 
-  val gc by lazy {canvas.graphicsContext2D}
+  val gc by lazy { canvas.graphicsContext2D }
   private val pw by lazy { gc.pixelWriter }
   operator fun set(x: Int, y: Int, c: Color) = pw.setColor(x, y, c)
 }

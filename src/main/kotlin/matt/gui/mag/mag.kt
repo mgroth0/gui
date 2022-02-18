@@ -2,10 +2,12 @@ package matt.gui.mag
 
 import javafx.stage.Screen
 import javafx.stage.Window
+import matt.gui.app.NEW_MAC_MENU_Y_ESTIMATE
 import matt.json.prim.parseJsonObj
 import matt.json.prim.set
 import matt.json.prim.toGson
 import matt.kjlib.commons.VAR_JSON
+import matt.reflect.isNewMac
 
 val Window.screen: Screen?
   get() = Screen.getScreensForRectangle(x, y, 1.0, 1.0).firstOrNull()
@@ -15,48 +17,50 @@ data class RectSize(
   val height: Number
 )
 
+val EXTRA_MIN_Y = if (isNewMac) NEW_MAC_MENU_Y_ESTIMATE else 0.0
+
 
 fun Window.hhalf() {
   screen?.let {
 	width = it.bounds.width/2
-	height = it.bounds.height
+	height = it.bounds.height - EXTRA_MIN_Y
   }
 }
 
 fun Window.vhalf() {
   screen?.let {
 	width = it.bounds.width
-	height = it.bounds.height/2
+	height = it.bounds.height/2 - (EXTRA_MIN_Y / 2.0)
   }
 }
 
 fun Window.corner() {
   screen?.let {
 	width = it.bounds.width/2
-	height = it.bounds.height/2
+	height = it.bounds.height/2 - (EXTRA_MIN_Y / 2.0)
   }
 }
 
 fun Window.eigth() {
   screen?.let {
 	width = it.bounds.width/4
-	height = it.bounds.height/2
+	height = it.bounds.height/2 - (EXTRA_MIN_Y / 2.0)
   }
 }
 
 fun Window.resetPosition() {
   Screen.getPrimary().let {
 	x = it.bounds.minX
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	width = it.bounds.width
-	height = it.bounds.height
+	height = it.bounds.height - EXTRA_MIN_Y
   }
 }
 
 fun Window.left() {
   screen?.let {
 	x = it.bounds.minX
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	hhalf()
   }
 }
@@ -65,7 +69,7 @@ fun Window.left() {
 fun Window.right() {
   screen?.let {
 	x = it.bounds.maxX - (it.bounds.width/2)
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	hhalf()
   }
 }
@@ -73,7 +77,7 @@ fun Window.right() {
 fun Window.top() {
   screen?.let {
 	x = it.bounds.minX
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	vhalf()
   }
 }
@@ -81,7 +85,7 @@ fun Window.top() {
 fun Window.bottom() {
   screen?.let {
 	x = it.bounds.minX
-	y = it.bounds.maxY - (it.bounds.height/2)
+	y = it.bounds.maxY - (it.bounds.height/2) - (EXTRA_MIN_Y / 2.0)
 	vhalf()
   }
 }
@@ -90,7 +94,7 @@ fun Window.bottom() {
 fun Window.topleft() {
   screen?.let {
 	x = it.bounds.minX
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	corner()
   }
 }
@@ -98,7 +102,7 @@ fun Window.topleft() {
 fun Window.topright() {
   screen?.let {
 	x = it.bounds.maxX - (it.bounds.width/2)
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	corner()
   }
 }
@@ -106,7 +110,7 @@ fun Window.topright() {
 fun Window.bottomleft() {
   screen?.let {
 	x = it.bounds.minX
-	y = it.bounds.maxY - (it.bounds.height/2)
+	y = it.bounds.maxY - (it.bounds.height/2) - (EXTRA_MIN_Y / 2.0)
 	corner()
   }
 }
@@ -114,7 +118,7 @@ fun Window.bottomleft() {
 fun Window.bottomright() {
   screen?.let {
 	x = it.bounds.maxX - (it.bounds.width/2)
-	y = it.bounds.maxY - (it.bounds.height/2)
+	y = it.bounds.maxY - (it.bounds.height/2) - (EXTRA_MIN_Y / 2.0)
 	corner()
   }
 }
@@ -123,9 +127,9 @@ fun Window.max() {
   // isMaximized isnt working for undecorated
   screen?.let {
 	x = it.bounds.minX
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	width = it.bounds.width
-	height = it.bounds.height
+	height = it.bounds.height - EXTRA_MIN_Y
   }
 }
 
@@ -145,9 +149,9 @@ fun Window.nextdisplay(reversed: Boolean = false) {
 	  }
 	}
 	x = next.bounds.minX
-	y = next.bounds.minY
+	y = next.bounds.minY + EXTRA_MIN_Y
 	width = next.bounds.width/2
-	height = next.bounds.height/2
+	height = next.bounds.height/2 - (EXTRA_MIN_Y / 2.0)
   }
 }
 
@@ -159,7 +163,7 @@ fun Window.lastdisplay() {
 fun Window.eighth1() {
   screen?.let {
 	x = it.bounds.minX
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	eigth()
   }
 }
@@ -167,7 +171,7 @@ fun Window.eighth1() {
 fun Window.eighth2() {
   screen?.let {
 	x = it.bounds.minX + (it.bounds.width/4)
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	eigth()
   }
 }
@@ -175,7 +179,7 @@ fun Window.eighth2() {
 fun Window.eighth3() {
   screen?.let {
 	x = it.bounds.minX + (it.bounds.width/2)
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	eigth()
   }
 }
@@ -183,7 +187,7 @@ fun Window.eighth3() {
 fun Window.eighth4() {
   screen?.let {
 	x = it.bounds.maxX - (it.bounds.width/4)
-	y = it.bounds.minY
+	y = it.bounds.minY + EXTRA_MIN_Y
 	eigth()
   }
 }
@@ -191,7 +195,7 @@ fun Window.eighth4() {
 fun Window.eighth5() {
   screen?.let {
 	x = it.bounds.minX
-	y = it.bounds.minY + (it.bounds.height/2)
+	y = it.bounds.minY + (it.bounds.height/2) - (EXTRA_MIN_Y / 2.0)
 	eigth()
   }
 }
@@ -199,7 +203,7 @@ fun Window.eighth5() {
 fun Window.eighth6() {
   screen?.let {
 	x = it.bounds.minX + (it.bounds.width/4)
-	y = it.bounds.minY + (it.bounds.height/2)
+	y = it.bounds.minY + (it.bounds.height/2) - (EXTRA_MIN_Y / 2.0)
 	eigth()
   }
 }
@@ -207,7 +211,7 @@ fun Window.eighth6() {
 fun Window.eighth7() {
   screen?.let {
 	x = it.bounds.minX + (it.bounds.width/2)
-	y = it.bounds.minY + (it.bounds.height/2)
+	y = it.bounds.minY + (it.bounds.height/2) - (EXTRA_MIN_Y / 2.0)
 	eigth()
   }
 }
@@ -215,7 +219,7 @@ fun Window.eighth7() {
 fun Window.eighth8() {
   screen?.let {
 	x = it.bounds.maxX - (it.bounds.width/4)
-	y = it.bounds.minY + (it.bounds.height/2)
+	y = it.bounds.minY + (it.bounds.height/2) - (EXTRA_MIN_Y / 2.0)
 	eigth()
   }
 }
