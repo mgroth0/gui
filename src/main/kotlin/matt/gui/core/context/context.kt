@@ -14,7 +14,7 @@ import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.layout.Region
 import javafx.scene.shape.Shape
 import matt.auto.IntelliJNavAction
-import matt.kjlib.commons.ROOT_FOLDER
+import matt.kjlib.commons.FLOW_FOLDER
 import matt.kjlib.log.NEVER
 import matt.kjlib.reflect.jumpToKotlinSourceString
 import java.util.WeakHashMap
@@ -139,7 +139,7 @@ fun showMContextMenu(
 			setOnAction {
 			  thread {
 				jumpToKotlinSourceString(
-				  ROOT_FOLDER,
+				  FLOW_FOLDER,
 				  thisnode::class.simpleName!!,
 				  packageFilter = pack
 				)?.let { fl ->

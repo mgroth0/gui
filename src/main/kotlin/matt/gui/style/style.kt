@@ -6,7 +6,7 @@ import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
-import matt.kjlib.commons.ROOT_FOLDER
+import matt.kjlib.commons.FLOW_FOLDER
 import matt.kjlib.file.get
 import matt.kjlib.str.LineAppender
 import kotlin.reflect.KProperty
@@ -14,9 +14,9 @@ import kotlin.reflect.KProperty
 var darkMode = true
 val darkModeListeners = mutableListOf<() -> Unit>()
 
-val MODENA_CSS = ROOT_FOLDER["style"]["modena.css"].toURI().toURL().toString()
-val DARK_MODENA_CSS = ROOT_FOLDER["style"]["darkModena.css"].toURI().toURL().toString()
-val CUSTOM_CSS = ROOT_FOLDER["style"]["custom.css"].toURI().toURL().toString()
+val MODENA_CSS = FLOW_FOLDER["style"]["modena.css"].toURI().toURL().toString()
+val DARK_MODENA_CSS = FLOW_FOLDER["style"]["darkModena.css"].toURI().toURL().toString()
+val CUSTOM_CSS = FLOW_FOLDER["style"]["custom.css"].toURI().toURL().toString()
 
 
 fun Styleable.styleInfo(): String {

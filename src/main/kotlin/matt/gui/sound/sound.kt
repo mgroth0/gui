@@ -1,7 +1,7 @@
 package matt.gui.sound
 
 import matt.kjlib.cache.LRUCache
-import matt.kjlib.commons.ROOT_FOLDER
+import matt.kjlib.commons.FLOW_FOLDER
 import matt.kjlib.file.get
 import matt.klib.dmap.withStoringDefault
 import java.util.concurrent.Semaphore
@@ -11,7 +11,7 @@ import javax.sound.sampled.Clip
 import kotlin.concurrent.thread
 import kotlin.math.roundToInt
 
-val SoundFolder = ROOT_FOLDER["sound"]
+val SoundFolder = FLOW_FOLDER["sound"]
 
 
 /*
