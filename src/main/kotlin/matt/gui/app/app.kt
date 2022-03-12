@@ -76,20 +76,20 @@ class GuiApp(
 	scene = MScene(VBox()).apply(op) /*vbox is placeholder*/
   }
 
-  fun vbox(op: VBox.()->Unit) {
+  fun rootVbox(op: VBox.()->Unit) {
 	scene = MScene(VBox().apply(op))
   }
 
-  fun pane(op: Pane.()->Unit) {
+  fun rootPane(op: Pane.()->Unit) {
 
 	scene = MScene(Pane().apply(op))
   }
 
-  fun hbox(op: HBox.()->Unit) {
+  fun rootHbox(op: HBox.()->Unit) {
 	scene = MScene(HBox().apply(op))
   }
 
-  fun scrollpane(op: ScrollPane.()->Unit) {
+  fun rootScrollpane(op: ScrollPane.()->Unit) {
 	scene = MScene(ScrollPane().apply(op))
   }
 

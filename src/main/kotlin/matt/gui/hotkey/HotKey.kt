@@ -222,7 +222,7 @@ fun KeyEvent.runAgainst(
             }
         }
         .filter { h ->
-            println("h(${this matches h}): ${h}")
+//            println("h(${this matches h}): ${h}")
             this matches h && (h.previous == null || (lastHotKey?.let {
                 h.previous!!.matches(it.first) && (pressTime - it.second) <= DOUBLE_HOTKEY_WINDOW_MS
             } ?: false))
