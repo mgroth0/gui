@@ -45,6 +45,7 @@ import kotlin.reflect.KClass
 
 //val noContextMenu = WeakSet<Node>()
 
+
 open class MScene(
     root: Parent,
     val icon: File
@@ -163,7 +164,7 @@ open class MScene(
             if (e is ContextMenuEvent) {
                 (e.target as? Node)?.let {
 //                    if (it !in noContextMenu) {
-                        showMContextMenu(it, e.screenX to e.screenY)
+                    showMContextMenu(it, e.screenX to e.screenY)
 //                    }
                 }
                 e.consume()
