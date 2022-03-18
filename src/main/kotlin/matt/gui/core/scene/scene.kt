@@ -59,6 +59,24 @@ open class MScene(
         root: Parent
     ) : this(root, "chunk")
 
+    fun handleContextMenuReq(e: Event) {
+        if (e is ContextMenuEvent) {
+            (e.target as? Node)?.let {
+                //                    if (it !in noContextMenu) {
+                showMContextMenu(it, e.screenX to e.screenY)
+                //                    }
+            }
+            e.consume()
+        }
+
+        /*this doesnt work. lets try insets for right clicking*/
+        //	  else if (matt.kjlib.jmath.e is MouseEvent) {
+        //		(matt.kjlib.jmath.e.target as? Node)?.let { showMContextMenu(it, matt.kjlib.jmath.e.screenX to matt.kjlib.jmath.e.screenY) }
+        //		/*dont consume. maybe if I'm lucky I'll get both my context menu and the web one*/
+        //	  }
+
+    }
+
     init {
         addDefaultHotkeys()
         if (darkMode) {
@@ -160,23 +178,7 @@ open class MScene(
                 }
             }
         }
-        fun handleContextMenuReq(e: Event) {
-            if (e is ContextMenuEvent) {
-                (e.target as? Node)?.let {
-//                    if (it !in noContextMenu) {
-                    showMContextMenu(it, e.screenX to e.screenY)
-//                    }
-                }
-                e.consume()
-            }
 
-            /*this doesnt work. lets try insets for right clicking*/
-            //	  else if (matt.kjlib.jmath.e is MouseEvent) {
-            //		(matt.kjlib.jmath.e.target as? Node)?.let { showMContextMenu(it, matt.kjlib.jmath.e.screenX to matt.kjlib.jmath.e.screenY) }
-            //		/*dont consume. maybe if I'm lucky I'll get both my context menu and the web one*/
-            //	  }
-
-        }
 
 
         /*dont know why I was using a filter here, but it prevented me from blocking context menus on certain nodes*/
