@@ -60,7 +60,7 @@ class GuiApp(
 		scene = this@GuiApp.scene
 		(scene.root as Region).apply {
 		}
-		if (screenIndex != null) {
+		if (screenIndex != null && screenIndex < Screen.getScreens().size) {
 		  val screen = Screen.getScreens()[screenIndex]
 		  val menuY = if (screen == Screen.getPrimary()) NEW_MAC_MENU_Y_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 		  x = screen.bounds.minX
@@ -236,7 +236,6 @@ class FlowFXApp: Application() {
 	if (app!!.altPyInterface != null) {
 	  app!!.setup_python_interface((app!!.altPyInterface)!!)
 	}
-
   }
 }
 
