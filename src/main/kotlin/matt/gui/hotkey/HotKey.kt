@@ -401,6 +401,9 @@ class HotkeyDSL() : DSL {
     val DIGIT9 get() = KeyCode.DIGIT9.bare
     val DIGIT0 get() = KeyCode.DIGIT0.bare
 
+    val BRACELEFT get() = KeyCode.BRACELEFT.bare
+    val BRACERIGHT get() = KeyCode.BRACERIGHT.bare
+
     val PLUS get() = KeyCode.PLUS.bare
     val EQUALS get() = KeyCode.EQUALS.bare
     val MINUS get() = KeyCode.MINUS.bare
