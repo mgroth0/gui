@@ -14,9 +14,12 @@ import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.layout.Region
 import javafx.scene.shape.Shape
 import matt.auto.IntelliJNavAction
+import matt.gui.hotkey.filters
+import matt.gui.hotkey.handlers
 import matt.kjlib.commons.FLOW_FOLDER
 import matt.kjlib.log.NEVER
 import matt.kjlib.reflect.jumpToKotlinSourceString
+import matt.kjlib.str.tab
 import java.util.WeakHashMap
 import kotlin.collections.set
 import kotlin.concurrent.thread
@@ -159,6 +162,32 @@ fun showMContextMenu(
 		is Shape            -> node.parent
 		is Canvas           -> node.parent
 		else                -> break
+	  }
+	}
+	if (items.isNotEmpty()) items += SeparatorMenuItem()
+	items += MenuItem("Print Hotkey Info").apply {
+	  setOnAction {
+		println("\nHOTKEY INFO\n")
+		var hknode: Node? = target
+		while (hknode!=null) {
+		  println(hknode)
+		  tab("HANDLERS")
+		  handlers[hknode]?.let { h ->
+			tab("\tqp=${h.quickPassForNormalTyping}")
+			h.hotkeys.forEach {
+			  tab("\t${it.getHotkeys().joinToString { it.toString() }}")
+			}
+		  }
+		  tab("FILTERS")
+		  filters[hknode]?.let { h ->
+			tab("\tqp=${h.quickPassForNormalTyping}")
+			h.hotkeys.forEach {
+			  tab("\t${it.getHotkeys().joinToString { it.toString() }}")
+			}
+		  }
+		  hknode = hknode.parent
+		}
+		println("\n")
 	  }
 	}
   }.show(target, xy.first, xy.second)
