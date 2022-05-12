@@ -1,18 +1,32 @@
 package matt.gui.style
 
+import com.jthemedetecor.OsThemeDetector
 import javafx.css.Styleable
 import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
+import matt.gui.loop.runLater
 import matt.kjlib.commons.FLOW_FOLDER
 import matt.kjlib.file.get
+import matt.kjlib.prop.BasicBooleanProperty
 import matt.kjlib.str.LineAppender
 import kotlin.reflect.KProperty
 
-var darkMode = true
-val darkModeListeners = mutableListOf<() -> Unit>()
+object DarkModeController {
+  private val detector = OsThemeDetector.getDetector()
+  val darkModeProp = BasicBooleanProperty(detector.isDark)
+
+  init {
+	detector.registerListener { isDark ->
+	  runLater {
+		darkModeProp.value = isDark
+	  }
+	}
+  }
+}
+
 
 val MODENA_CSS = FLOW_FOLDER["style"]["modena.css"].toURI().toURL().toString()
 val DARK_MODENA_CSS = FLOW_FOLDER["style"]["darkModena.css"].toURI().toURL().toString()

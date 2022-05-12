@@ -1,5 +1,6 @@
 package matt.gui.app
 
+import com.jthemedetecor.OsThemeDetector
 import com.sun.javafx.util.Logging
 import javafx.application.Application
 import javafx.application.Platform
@@ -22,13 +23,16 @@ import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse.EXI
 import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse.IGNORE
 import matt.gui.core.scene.MScene
 import matt.gui.lang.ActionButton
+import matt.gui.loop.runLater
 import matt.gui.win.bindgeom.bindGeometry
 import matt.gui.win.interact.openInNewWindow
 import matt.gui.win.stage.MStage
 import matt.json.prim.gson
 import java.io.File
+import javax.swing.SwingUtilities
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
+
 
 val NEW_MAC_MENU_Y_ESTIMATE = 37.0
 val NEW_MAX_MENU_Y_ESTIMATE_SECONDARY = 25.0
@@ -119,8 +123,15 @@ class GuiApp(
 	app = this
 	/* dodge "Unsupported JavaFX configuration..." part 1 */
 	Logging.getJavaFXLogger().disableLogging()
+
+
+
 	Application.launch(FlowFXApp::class.java, *args)
 	javafxRunning = false
+
+
+
+
 
   }
 

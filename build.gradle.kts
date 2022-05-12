@@ -4,4 +4,5 @@ dependencies {
   api(projects.kj.exec)
   api(projects.kj.auto)
   api(projects.kj.hotkey)
+  implementation(libs.jSystemThemeDetector)
 }
