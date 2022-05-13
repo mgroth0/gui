@@ -181,6 +181,15 @@ class GuiApp(
 		  )
 		).openInNewWindow(
 		  wait = true,
+
+
+		  /*yes, if the main window stays up its nicer to use that
+		  * but I tried that withWinOwn.Auto for a while
+		  * and it seems like that was causing serious issues when the bug had actually caused the main window to close
+		  *
+		  * maybe if I really want to try to use the main window as an owner again, I need to first make ABSOLUTE sure it is still open and not bugging out
+		  *  */
+
 		  own = WinOwn.None
 		)
 
