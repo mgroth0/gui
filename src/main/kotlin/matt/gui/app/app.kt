@@ -1,6 +1,5 @@
 package matt.gui.app
 
-import com.jthemedetecor.OsThemeDetector
 import com.sun.javafx.util.Logging
 import javafx.application.Application
 import javafx.application.Platform
@@ -18,18 +17,17 @@ import matt.auto.SublimeText
 import matt.auto.openInIntelliJ
 import matt.exec.app.App
 import matt.exec.app.appName
-import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse
-import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
-import matt.exec.exception.DefaultUncaughtExceptionHandler.ExceptionResponse.IGNORE
+import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
+import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
+import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.IGNORE
 import matt.gui.core.scene.MScene
 import matt.gui.lang.ActionButton
-import matt.gui.loop.runLater
 import matt.gui.win.bindgeom.bindGeometry
+import matt.gui.win.interact.WinOwn
 import matt.gui.win.interact.openInNewWindow
 import matt.gui.win.stage.MStage
 import matt.json.prim.gson
 import java.io.File
-import javax.swing.SwingUtilities
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
@@ -182,7 +180,8 @@ class GuiApp(
 
 		  )
 		).openInNewWindow(
-		  wait = true
+		  wait = true,
+		  own = WinOwn.None
 		)
 
 
