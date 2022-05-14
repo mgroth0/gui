@@ -32,7 +32,7 @@ import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
 
-val NEW_MAC_MENU_Y_ESTIMATE = 37.0
+public const val NEW_MAC_MENU_Y_ESTIMATE = 37.0
 val NEW_MAX_MENU_Y_ESTIMATE_SECONDARY = 25.0
 
 class GuiApp(
