@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
+import javafx.scene.text.Text
 import javafx.stage.Screen
 import javafx.stage.Stage
 import matt.auto.SublimeText
@@ -23,7 +24,6 @@ import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.I
 import matt.gui.core.scene.MScene
 import matt.gui.lang.ActionButton
 import matt.gui.win.bindgeom.bindGeometry
-import matt.gui.win.interact.WinOwn
 import matt.gui.win.interact.openInNewWindow
 import matt.gui.win.stage.MStage
 import matt.json.prim.gson
@@ -128,9 +128,6 @@ class GuiApp(
 	javafxRunning = false
 
 
-
-
-
   }
 
   override fun extraShutdownHook(
@@ -139,7 +136,7 @@ class GuiApp(
 	shutdown: (App.()->Unit)?,
 	consumeShutdown: (App.()->Unit)?,
 	st: String,
-	exception_file: File
+	exceptionFile: File
   ): ExceptionResponse {
 
 	/*dont delete until I find source of disappearing exceptions*/
@@ -150,17 +147,16 @@ class GuiApp(
 	try {
 
 	  if (Platform.isFxApplicationThread()) {
-		println("setting up runLaterReturn for scepction dialog")
-		//		runLaterReturn {
-		//		println("in runLaterReturn for exception dialog")
+		println("setting up runLaterReturn for exception dialog")
 		VBox(
+		  Text("${e::class.simpleName} in $appName"),
 		  TextArea(st),
 		  FlowPane(
 			ActionButton("Open stacktrace in IntelliJ") {
-			  exception_file.openInIntelliJ()
+			  exceptionFile.openInIntelliJ()
 			},
 			ActionButton("Open stacktrace in Sublime Text") {
-			  SublimeText.open(exception_file)
+			  SublimeText.open(exceptionFile)
 			},
 			ActionButton("Run pre-shutdown operation") {
 			  shutdown?.invoke(this)
@@ -179,21 +175,7 @@ class GuiApp(
 			}
 
 		  )
-		).openInNewWindow(
-		  wait = true,
-
-
-		  /*yes, if the main window stays up its nicer to use that
-		  * but I tried that withWinOwn.Auto for a while
-		  * and it seems like that was causing serious issues when the bug had actually caused the main window to close
-		  *
-		  * maybe if I really want to try to use the main window as an owner again, I need to first make ABSOLUTE sure it is still open and not bugging out
-		  *  */
-
-		  own = WinOwn.None
-		)
-
-
+		).openInNewWindow(wait = true)
 	  }
 	} catch (e: Exception) {
 	  println("exception in matt.exec.exception.DefaultUncaughtExceptionHandler Exception Dialog:")
@@ -205,7 +187,7 @@ class GuiApp(
 
   }
 
-  fun setup_python_interface(handle_args: GuiApp.(List<String>)->Unit) {
+  fun setupPythonInterface(handleArgs: GuiApp.(List<String>)->Unit) {
 	thread(isDaemon = true) {
 	  while (javafxRunning) {
 		val stringInput = readLine()
@@ -213,7 +195,7 @@ class GuiApp(
 		  println("input null. guess this isn't from python. exiting input thread.")
 		  break
 		}
-		handle_args(gson.fromJson(stringInput, arrayOf<String>()::class.java).toList())
+		handleArgs(gson.fromJson(stringInput, arrayOf<String>()::class.java).toList())
 	  }
 	}
   }
@@ -253,7 +235,7 @@ class FlowFXApp: Application() {
 	Logging.getJavaFXLogger().enableLogging()
 	app!!.apply { fxThreadW(app!!.args.toList()) }
 	if (app!!.altPyInterface != null) {
-	  app!!.setup_python_interface((app!!.altPyInterface)!!)
+	  app!!.setupPythonInterface((app!!.altPyInterface)!!)
 	}
   }
 }
