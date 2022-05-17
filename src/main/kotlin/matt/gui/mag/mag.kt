@@ -28,9 +28,13 @@ fun Window.maxsize() {
 }
 
 fun Window.hhalf() {
+  println("hhalf")
+  println("screen=${screen}")
   screen?.let {
 	width = it.bounds.width/2
 	height = it.bounds.height - EXTRA_MIN_Y
+	println("width = ${width}")
+	println("height=${height}")
   }
 }
 
@@ -73,18 +77,26 @@ fun Window.myMax() {
 }
 
 fun Window.left() {
+  println("left")
+  println("screen = $screen")
   screen?.let {
 	x = it.bounds.minX
 	y = it.bounds.minY + EXTRA_MIN_Y
+	println("x=${x}")
+	println("y=${y}")
 	hhalf()
   }
 }
 
 
 fun Window.right() {
+  println("right")
+  println("screen = $screen")
   screen?.let {
 	x = it.bounds.maxX - (it.bounds.width/2)
 	y = it.bounds.minY + EXTRA_MIN_Y
+	println("x=${x}")
+	println("y=${y}")
 	hhalf()
   }
 }
