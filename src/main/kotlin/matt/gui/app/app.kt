@@ -32,7 +32,7 @@ import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
 
-public const val NEW_MAC_MENU_Y_ESTIMATE = 37.0
+public const val NEW_MAC_NOTCH_ESTIMATE = 37.0
 val NEW_MAX_MENU_Y_ESTIMATE_SECONDARY = 25.0
 
 class GuiApp(
@@ -64,7 +64,7 @@ class GuiApp(
 		}
 		if (screenIndex != null && screenIndex < Screen.getScreens().size) {
 		  val screen = Screen.getScreens()[screenIndex]
-		  val menuY = if (screen == Screen.getPrimary()) NEW_MAC_MENU_Y_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
+		  val menuY = if (screen == Screen.getPrimary()) NEW_MAC_NOTCH_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 		  x = screen.bounds.minX
 		  y = screen.bounds.minY + menuY
 		  width = screen.bounds.width
