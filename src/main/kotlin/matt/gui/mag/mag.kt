@@ -17,7 +17,8 @@ data class RectSize(
   val height: Number
 )
 
-val EXTRA_MIN_Y = if (isNewMac) NEW_MAC_MENU_Y_ESTIMATE else 0.0
+//val EXTRA_MIN_Y = if (isNewMac) NEW_MAC_MENU_Y_ESTIMATE else 0.0
+val EXTRA_MIN_Y = 0.0 /*I SHOULD ALWAYS HAVE THE MENU BAR ON AUTO-HIDE. FULLSCREEN SPACES ARE ANNOYING.*/
 
 fun Window.maxsize() {
   screen?.let {
