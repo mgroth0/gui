@@ -19,6 +19,12 @@ data class RectSize(
 
 val EXTRA_MIN_Y = if (isNewMac) NEW_MAC_MENU_Y_ESTIMATE else 0.0
 
+fun Window.maxsize() {
+  screen?.let {
+	width = it.bounds.width
+	height = it.bounds.height - EXTRA_MIN_Y
+  }
+}
 
 fun Window.hhalf() {
   screen?.let {
@@ -54,6 +60,14 @@ fun Window.resetPosition() {
 	y = it.bounds.minY + EXTRA_MIN_Y
 	width = it.bounds.width
 	height = it.bounds.height - EXTRA_MIN_Y
+  }
+}
+
+fun Window.myMax() {
+  screen?.let {
+	x = it.bounds.minX
+	y = it.bounds.minY + EXTRA_MIN_Y
+	maxsize()
   }
 }
 
