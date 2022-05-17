@@ -31,8 +31,8 @@ import java.io.File
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
-
-public const val NEW_MAC_NOTCH_ESTIMATE = 37.0
+public const val NEW_MAC_NOTCH_ESTIMATE = 35.0
+public const val NEW_MAC_MENU_BAR_ESTIMATE = NEW_MAC_NOTCH_ESTIMATE + 2.0
 val NEW_MAX_MENU_Y_ESTIMATE_SECONDARY = 25.0
 
 class GuiApp(
