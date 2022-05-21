@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
 import matt.gui.loop.runLater
-import matt.kjlib.commons.FLOW_FOLDER
+import matt.kbuild.FLOW_FOLDER
 import matt.kjlib.file.get
 import matt.kjlib.prop.BasicBooleanProperty
 import matt.kjlib.str.LineAppender

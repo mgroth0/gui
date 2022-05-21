@@ -26,7 +26,7 @@ import matt.gui.lang.ActionButton
 import matt.gui.win.bindgeom.bindGeometry
 import matt.gui.win.interact.openInNewWindow
 import matt.gui.win.stage.MStage
-import matt.json.prim.gson
+import matt.kbuild.gson
 import java.io.File
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess

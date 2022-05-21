@@ -16,7 +16,7 @@ import javafx.scene.shape.Shape
 import matt.auto.IntelliJNavAction
 import matt.gui.hotkey.filters
 import matt.gui.hotkey.handlers
-import matt.kjlib.commons.FLOW_FOLDER
+import matt.kbuild.FLOW_FOLDER
 import matt.kjlib.log.NEVER
 import matt.kjlib.reflect.jumpToKotlinSourceString
 import matt.kjlib.str.tab

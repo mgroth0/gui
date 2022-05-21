@@ -8,8 +8,8 @@ import matt.gui.win.stage.WMode.CLOSE
 import matt.gui.win.stage.WMode.ICONIFY
 import matt.gui.win.stage.WMode.NOTHING
 import matt.gui.win.winfun.pullBackWhenOffscreen
-import matt.reflect.Machine
-import matt.reflect.thisMachine
+import matt.kbuild.Machine
+import matt.kbuild.thisMachine
 
 enum class WMode {
     CLOSE,

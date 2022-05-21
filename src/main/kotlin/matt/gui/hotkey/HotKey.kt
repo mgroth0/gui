@@ -12,14 +12,14 @@ import matt.hotkey.Hotkey
 import matt.hotkey.HotkeyDSL
 import matt.hurricanefx.eye.lang.BProp
 import matt.hurricanefx.toggle
+import matt.kbuild.Machine
+import matt.kbuild.thisMachine
 import matt.kjlib.log.NEVER
 import matt.kjlib.log.err
 import matt.klibexport.klibexport.DSL
 import matt.klibexport.klibexport.allUnique
 import matt.klibexport.klibexport.go
 import matt.klibexport.lang.applyEach
-import matt.reflect.Machine
-import matt.reflect.thisMachine
 import java.lang.System.currentTimeMillis
 import java.util.WeakHashMap
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE

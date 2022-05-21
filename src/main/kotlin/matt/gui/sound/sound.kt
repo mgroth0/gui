@@ -1,7 +1,7 @@
 package matt.gui.sound
 
+import matt.kbuild.FLOW_FOLDER
 import matt.kjlib.cache.LRUCache
-import matt.kjlib.commons.FLOW_FOLDER
 import matt.kjlib.file.get
 import matt.klib.dmap.withStoringDefault
 import java.util.concurrent.Semaphore
