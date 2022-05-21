@@ -12,11 +12,38 @@ import matt.kbuild.FLOW_FOLDER
 import matt.kjlib.file.get
 import matt.kjlib.prop.BasicBooleanProperty
 import matt.kjlib.str.LineAppender
+import matt.klib.log.warn
+import org.slf4j.LoggerFactory
+import java.util.logging.Level
 import kotlin.reflect.KProperty
 
 object DarkModeController {
+
   private val detector = OsThemeDetector.getDetector()
-  val darkModeProp = BasicBooleanProperty(detector.isDark)
+
+  init {
+	//	LoggerFactory.getLogger(MacOSThemeDetector::class.java)
+	warn("asked for help on github...")
+	java.util.logging.LogManager.getLogManager().loggerNames.asIterator().forEach {
+	  println("logger:${it}")
+	}
+	java.util.logging.Logger.getLogger("com.jthemedetecor.MacOSThemeDetector").level = Level.OFF
+	java.util.logging.Logger.getLogger("com.jthemedetecor").level = Level.OFF
+  }
+
+
+  private fun getIsDarkSafe(): Boolean? {
+	warn("this is pointless. The error is caught and annoying logged inside the library")
+	return try {
+	  detector.isDark
+	} catch (e: java.lang.NullPointerException) {
+	  /*https://github.com/Dansoftowner/jSystemThemeDetector/issues/25*/
+	  warn("caught the null jSystemThemeDetector bug again")
+	  null
+	}
+  }
+
+  val darkModeProp = BasicBooleanProperty(getIsDarkSafe() ?: true)
 
   init {
 	detector.registerListener { isDark ->
