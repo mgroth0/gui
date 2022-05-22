@@ -47,9 +47,14 @@ object DarkModeController {
 
   init {
 	detector.registerListener { isDark ->
-	  runLater {
-		darkModeProp.value = isDark
+	  if (isDark != null) {
+		runLater {
+		  darkModeProp.value = isDark
+		}
+	  } else {
+		warn("isDark was null. Guess that thing is still happening")
 	  }
+
 	}
   }
 }
