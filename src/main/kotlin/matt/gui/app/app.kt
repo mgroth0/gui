@@ -3,36 +3,27 @@ package matt.gui.app
 import com.sun.javafx.util.Logging
 import javafx.application.Application
 import javafx.application.Platform
-import javafx.scene.Node
 import javafx.scene.control.ScrollPane
-import javafx.scene.control.TextArea
-import javafx.scene.layout.FlowPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
-import javafx.scene.text.Text
 import javafx.stage.Screen
 import javafx.stage.Stage
-import matt.auto.SublimeText
-import matt.auto.openInIntelliJ
 import matt.exec.app.App
 import matt.exec.app.appName
 import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
-import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.IGNORE
 import matt.gui.core.scene.MScene
-import matt.gui.lang.ActionButton
 import matt.gui.win.bindgeom.bindGeometry
-import matt.gui.win.interact.openInNewWindow
 import matt.gui.win.stage.MStage
 import matt.kbuild.gson
+import matt.gui.exception.showExceptionPopup
 import java.io.File
 import kotlin.concurrent.thread
-import kotlin.system.exitProcess
 
-public const val NEW_MAC_NOTCH_ESTIMATE = 32.0 /*35*/
-public const val NEW_MAC_MENU_BAR_ESTIMATE = NEW_MAC_NOTCH_ESTIMATE + 2.0
+const val NEW_MAC_NOTCH_ESTIMATE = 32.0 /*35*/
+const val NEW_MAC_MENU_BAR_ESTIMATE = NEW_MAC_NOTCH_ESTIMATE + 2.0
 val NEW_MAX_MENU_Y_ESTIMATE_SECONDARY = 25.0
 
 class GuiApp(
@@ -145,46 +136,15 @@ class GuiApp(
 
 	var r = EXIT
 	try {
-
 	  if (Platform.isFxApplicationThread()) {
-		println("setting up runLaterReturn for exception dialog")
-		VBox(
-		  Text("${e::class.simpleName} in $appName"),
-		  TextArea(st),
-		  FlowPane(
-			ActionButton("Open stacktrace in IntelliJ") {
-			  exceptionFile.openInIntelliJ()
-			},
-			ActionButton("Open stacktrace in Sublime Text") {
-			  SublimeText.open(exceptionFile)
-			},
-			ActionButton("Run pre-shutdown operation") {
-			  shutdown?.invoke(this)
-			  consumeShutdown?.invoke(this)
-			},
-			ActionButton("print stack trace") {
-			  e.printStackTrace()
-			},
-			ActionButton("Exit now") {
-			  e.printStackTrace()
-			  exitProcess(1)
-			},
-			ActionButton("ignore") {
-			  r = IGNORE
-			  ((it.target as Node).scene.window as Stage).close()
-			}
-
-		  )
-		).openInNewWindow(wait = true)
+		r = showExceptionPopup(t, e, shutdown, consumeShutdown, st, exceptionFile)
 	  }
 	} catch (e: Exception) {
 	  println("exception in matt.exec.exception.DefaultUncaughtExceptionHandler Exception Dialog:")
 	  e.printStackTrace()
 	  return EXIT
 	}
-
 	return r
-
   }
 
   fun setupPythonInterface(handleArgs: GuiApp.(List<String>)->Unit) {
