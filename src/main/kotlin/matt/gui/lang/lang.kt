@@ -15,9 +15,11 @@ import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.op
 import matt.hurricanefx.tornadofx.menu.item
 import matt.hurricanefx.tornadofx.nodes.add
+import matt.kjlib.log.err
 
 fun Node.setOnFocusLost(op: ()->Unit) {
-  focusedProperty().onChange {
+  focusedProperty().onChange {it: Boolean? ->
+	if (it == null) err("here it is")
 	if (!it) {
 	  op()
 	}
@@ -25,7 +27,8 @@ fun Node.setOnFocusLost(op: ()->Unit) {
 }
 
 fun Node.setOnFocusGained(op: ()->Unit) {
-  focusedProperty().onChange {
+  focusedProperty().onChange {it: Boolean? ->
+	if (it == null) err("here it is")
 	if (it) {
 	  op()
 	}
