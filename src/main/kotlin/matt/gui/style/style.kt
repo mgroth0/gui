@@ -54,11 +54,9 @@ object DarkModeController {
 	  } else {
 		warn("isDark was null. Guess that thing is still happening")
 	  }
-
 	}
   }
 }
-
 
 val MODENA_CSS = FLOW_FOLDER["style"]["modena.css"].toURI().toURL().toString()
 val DARK_MODENA_CSS = FLOW_FOLDER["style"]["darkModena.css"].toURI().toURL().toString()

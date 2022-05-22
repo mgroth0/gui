@@ -21,10 +21,13 @@ open class MStage(
     wMode: WMode = NOTHING,
     EscClosable: Boolean = false,
     EnterClosable: Boolean = false,
-    decorated: Boolean = false
+    decorated: Boolean = false,
+    pullBackWhenOffScreen: Boolean = true
 ) : Stage(if (decorated) StageStyle.DECORATED else StageStyle.UNDECORATED) {
     init {
-        pullBackWhenOffscreen()
+        if (pullBackWhenOffScreen) {
+            pullBackWhenOffscreen()
+        }
         hotkeys {
             if (thisMachine == Machine.WINDOWS) {
                 Q.opt op ::close // on Mac, meta-Q quits program. this an OS feature.

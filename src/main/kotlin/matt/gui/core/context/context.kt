@@ -5,6 +5,7 @@ import javafx.event.EventTarget
 import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.CheckMenuItem
 import javafx.scene.control.ContextMenu
@@ -63,7 +64,7 @@ class MContextMenuBuilder(
 	})
   }
 
-  fun item(s: String, g: Node? = null, op: MenuItem.()->Unit={}) {
+  fun item(s: String, g: Node? = null, op: MenuItem.()->Unit = {}) {
 	add(MenuItem(s, g).apply {
 	  isMnemonicParsing = false
 	  op()
@@ -161,6 +162,7 @@ fun showMContextMenu(
 		}
 		is Shape            -> node.parent
 		is Canvas           -> node.parent
+		is Scene            -> node.window
 		else                -> break
 	  }
 	}
@@ -169,7 +171,7 @@ fun showMContextMenu(
 	  setOnAction {
 		println("\nHOTKEY INFO\n")
 		var hknode: Node? = target
-		while (hknode!=null) {
+		while (hknode != null) {
 		  println(hknode)
 		  tab("HANDLERS")
 		  handlers[hknode]?.let { h ->
