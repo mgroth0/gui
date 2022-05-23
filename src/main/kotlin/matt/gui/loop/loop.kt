@@ -1,5 +1,8 @@
+@file:Suppress("unused")
+
 package matt.gui.loop
 
+import matt.hurricanefx.tornadofx.async.runLater
 import matt.kjlib.date.Duration
 import java.lang.Thread.sleep
 import java.util.concurrent.Semaphore
@@ -21,11 +24,11 @@ fun <T> runLaterReturn(op: ()->T): T {
   return r!!
 }
 
-fun runLater(s: String = "NO MESSAGE", op: ()->Unit) {
-  javafx.application.Platform.runLater {
-	op()
-  }
-}
+//fun runLater(op: ()->Unit) {
+//  javafx.application.Platform.runLater {
+//	op()
+//  }
+//}
 
 fun runMuchLater(d: Duration, op: ()->Unit) {
   thread {
@@ -43,7 +46,7 @@ fun runMuchLaterReturn(d: Duration, op: ()->Unit) {
   }
 }
 
-fun <T> runLaterReturn(s: String, op: ()->T): T {
-  val r = runLaterReturn { op() }
-  return r
-}
+//fun <T> runLaterReturn(op: ()->T): T {
+//  val r = runLaterReturn { op() }
+//  return r
+//}

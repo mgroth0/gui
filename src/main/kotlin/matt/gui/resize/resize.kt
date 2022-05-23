@@ -1,3 +1,5 @@
+@file:Suppress("unused", "UNUSED_PARAMETER", "MemberVisibilityCanBePrivate")
+
 package matt.gui.resize
 
 import javafx.event.EventHandler
@@ -33,11 +35,11 @@ class DragResizer private constructor(
 	if (!dragging) {
 	  return
 	}
-	val mousey = event.y
-	val newHeight = region.minHeight + (mousey - y)
-	op(mousey - y)
+	val mouseY = event.y
+	@Suppress("UNUSED_VARIABLE") val newHeight = region.minHeight + (mouseY - y)
+	op(mouseY - y)
 	/*region.minHeight = newHeight*/
-	y = mousey
+	y = mouseY
   }
 
   fun mousePressed(event: MouseEvent) {

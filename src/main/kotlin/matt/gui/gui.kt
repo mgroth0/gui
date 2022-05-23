@@ -2,18 +2,13 @@ package matt.gui
 
 import javafx.animation.Interpolator
 import javafx.beans.property.DoubleProperty
-import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.TOP_CENTER
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.SKYBLUE
 import javafx.stage.Screen
 import matt.gui.core.scene.MScene
-import matt.gui.fxlang.backgroundColor
 import matt.gui.fxlang.backgroundFill
-import matt.gui.layout.blue
-import matt.gui.layout.red
-import matt.gui.loop.runLater
 import matt.gui.proto.ScaledCanvas
 import matt.gui.win.stage.MStage
 import matt.hurricanefx.drags
@@ -26,6 +21,7 @@ import matt.hurricanefx.intColorToFXColor
 import matt.hurricanefx.toFXDuration
 import matt.hurricanefx.tornadofx.animation.keyframe
 import matt.hurricanefx.tornadofx.animation.timeline
+import matt.hurricanefx.tornadofx.async.runLater
 import matt.hurricanefx.tornadofx.control.text
 import matt.kjlib.date.sec
 import java.awt.image.BufferedImage

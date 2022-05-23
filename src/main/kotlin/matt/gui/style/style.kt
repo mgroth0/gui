@@ -7,13 +7,12 @@ import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
-import matt.gui.loop.runLater
+import matt.hurricanefx.tornadofx.async.runLater
 import matt.kbuild.FLOW_FOLDER
 import matt.kjlib.file.get
 import matt.kjlib.prop.BasicBooleanProperty
 import matt.kjlib.str.LineAppender
 import matt.klib.log.warn
-import org.slf4j.LoggerFactory
 import java.util.logging.Level
 import kotlin.reflect.KProperty
 
