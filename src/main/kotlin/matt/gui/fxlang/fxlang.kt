@@ -12,7 +12,7 @@ import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
 import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.tornadofx.menu.item
-import matt.kjlib.log.err
+import matt.kjlib.lang.err
 
 var Region.backgroundFill: Paint?
     set(value) {

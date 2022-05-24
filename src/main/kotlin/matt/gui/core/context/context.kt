@@ -18,7 +18,7 @@ import matt.auto.IntelliJNavAction
 import matt.gui.hotkey.filters
 import matt.gui.hotkey.handlers
 import matt.kbuild.FLOW_FOLDER
-import matt.kjlib.log.NEVER
+import matt.kjlib.lang.NEVER
 import matt.kjlib.reflect.jumpToKotlinSourceString
 import matt.kjlib.str.tab
 import java.util.WeakHashMap

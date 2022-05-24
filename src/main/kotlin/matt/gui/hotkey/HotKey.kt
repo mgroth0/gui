@@ -14,8 +14,8 @@ import matt.hurricanefx.eye.lang.BProp
 import matt.hurricanefx.toggle
 import matt.kbuild.Machine
 import matt.kbuild.thisMachine
-import matt.kjlib.log.NEVER
-import matt.kjlib.log.err
+import matt.kjlib.lang.NEVER
+import matt.kjlib.lang.err
 import matt.klibexport.klibexport.DSL
 import matt.klibexport.klibexport.allUnique
 import matt.klibexport.klibexport.go
