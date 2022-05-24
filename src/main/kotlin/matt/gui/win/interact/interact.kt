@@ -243,6 +243,22 @@ sealed class WinGeom {
 	}
   }
 
+  object Max: WinGeom() {
+	override fun applyTo(win: Stage) {
+	  win.isMaximized = true
+//	  win.width = width
+//	  win.height = height
+//	  if (win.owner == null) {
+//		win.centerOnScreen()
+//	  } else {
+//		win.bindXYToOwnerCenter()
+//	  }
+	  /*require(win.owner != null) { "use initOwner first" }*/
+
+
+	}
+  }
+
   object CenteredMinWrapContent: WinGeom() {
 	override fun applyTo(win: Stage) {
 	  require(win.owner != null) { "use initOwner first" }
