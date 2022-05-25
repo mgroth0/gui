@@ -3,9 +3,9 @@ package matt.gui.win.bindgeom
 import javafx.stage.Stage
 import matt.hurricanefx.eye.lib.onChange
 import matt.kbuild.gson
-import matt.kjlib.Geometry
 import matt.kjlib.commons.WINDOW_GEOMETRY_FOLDER
 import matt.kjlib.file.get
+import matt.klib.math.Geometry
 import java.io.File
 
 fun Stage.bindGeometry(key: String) = bindGeometry(WINDOW_GEOMETRY_FOLDER["$key.json"])
