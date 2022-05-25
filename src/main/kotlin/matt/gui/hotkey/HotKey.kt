@@ -12,11 +12,10 @@ import matt.hotkey.Hotkey
 import matt.hotkey.HotkeyDSL
 import matt.hurricanefx.eye.lang.BProp
 import matt.hurricanefx.toggle
-import matt.kbuild.Machine
 import matt.kbuild.thisMachine
 import matt.kjlib.lang.NEVER
 import matt.kjlib.lang.err
-import matt.klibexport.klibexport.DSL
+import matt.klib.sys.Machine
 import matt.klibexport.klibexport.allUnique
 import matt.klibexport.klibexport.go
 import matt.klibexport.lang.applyEach
