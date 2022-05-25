@@ -15,7 +15,7 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
 import javafx.scene.text.Text
 import matt.hurricanefx.tornadofx.async.runLater
-import matt.kbuild.recurse
+import matt.kjlib.stream.recurse.recurse
 import matt.kjlib.stream.recurse.recurseToFlat
 import matt.kjlib.stream.recurse.recursionDepth
 
