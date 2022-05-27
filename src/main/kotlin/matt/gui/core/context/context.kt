@@ -17,7 +17,7 @@ import javafx.scene.shape.Shape
 import matt.auto.IntelliJNavAction
 import matt.gui.hotkey.filters
 import matt.gui.hotkey.handlers
-import matt.kbuild.FLOW_FOLDER
+import matt.kjlib.commons.FLOW_FOLDER
 import matt.kjlib.lang.NEVER
 import matt.kjlib.reflect.jumpToKotlinSourceString
 import matt.kjlib.str.tab
@@ -143,7 +143,7 @@ fun showMContextMenu(
 			setOnAction {
 			  thread {
 				jumpToKotlinSourceString(
-				  FLOW_FOLDER,
+				  FLOW_FOLDER!!,
 				  thisnode::class.simpleName!!,
 				  packageFilter = pack
 				)?.let { fl ->

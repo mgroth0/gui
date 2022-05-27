@@ -3,10 +3,10 @@ package matt.gui.ican
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import matt.hurricanefx.tornadofx.nodes.add
-import matt.kbuild.FLOW_FOLDER
+import matt.kjlib.commons.FLOW_FOLDER
 import matt.kjlib.file.get
 
-val IconFolder by lazy { FLOW_FOLDER["icon"] }
+val IconFolder by lazy { FLOW_FOLDER!!["icon"] }
 
 fun IconImage(file: java.io.File): Image = Image(file.toPath().toUri().toURL().toString())
 fun IconImage(file: String) = IconImage(IconFolder[file])

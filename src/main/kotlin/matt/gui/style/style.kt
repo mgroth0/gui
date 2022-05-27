@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
 import matt.hurricanefx.tornadofx.async.runLater
-import matt.kbuild.FLOW_FOLDER
+import matt.kjlib.commons.FLOW_FOLDER
 import matt.kjlib.file.get
 import matt.kjlib.prop.BasicBooleanProperty
 import matt.kjlib.str.LineAppender
@@ -57,9 +57,9 @@ object DarkModeController {
   }
 }
 
-val MODENA_CSS = FLOW_FOLDER["style"]["modena.css"].toURI().toURL().toString()
-val DARK_MODENA_CSS = FLOW_FOLDER["style"]["darkModena.css"].toURI().toURL().toString()
-val CUSTOM_CSS = FLOW_FOLDER["style"]["custom.css"].toURI().toURL().toString()
+val MODENA_CSS = FLOW_FOLDER!!["style"]["modena.css"].toURI().toURL().toString()
+val DARK_MODENA_CSS = FLOW_FOLDER!!["style"]["darkModena.css"].toURI().toURL().toString()
+val CUSTOM_CSS = FLOW_FOLDER!!["style"]["custom.css"].toURI().toURL().toString()
 
 
 fun Styleable.styleInfo(): String {
