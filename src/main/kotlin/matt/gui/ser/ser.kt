@@ -137,6 +137,7 @@ val savableAwareJson = Json {
 	encoder.encodeStructure(descriptor) {
 	  encodeStringElement(descriptor, 0, qname)
 	  println("wrote qname")
+	  @Suppress("UNCHECKED_CAST")
 	  encodeSerializableElement(descriptor, 1, findSerializerFor(value) as SerializationStrategy<Any>, value)
 	  println("probably not getting here")
 	}
@@ -202,6 +203,7 @@ val saveFiles = lazyMap<KClass<*>, File> {
 	encoder.encodeStructure(descriptor) {
 	  println("SerializableWithSavablesSerializer.serialize 2")
 
+	  @Suppress("UNCHECKED_CAST")
 	  encodeSerializableElement(descriptor, 0, findSerializerFor(value.ser) as SerializationStrategy<Any>, value.ser!!)
 	  println("SerializableWithSavablesSerializer.serialize 3")    //	  encoder.encodeStructure(descriptor) {
 	  //
@@ -263,8 +265,9 @@ val saveFiles = lazyMap<KClass<*>, File> {
 	println("MyMapSerializer.serialize 1")
 	encoder.encodeStructure(descriptor) {
 	  println("MyMapSerializer.serialize 2")
-	  value.forEach { (k, v) ->
+	  value.forEach { (_, v) ->
 		println("MyMapSerializer.serialize 3")
+		@Suppress("UNCHECKED_CAST")
 		encodeSerializableElement(descriptor, index, findSerializerFor(v) as SerializationStrategy<Any>, v!!)
 		println("MyMapSerializer.serialize 5")
 		index++
