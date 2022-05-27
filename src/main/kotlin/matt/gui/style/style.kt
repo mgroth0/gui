@@ -22,9 +22,9 @@ object DarkModeController {
 
   init {
 	//	LoggerFactory.getLogger(MacOSThemeDetector::class.java)
-	warn("asked for help on github...")
+	/*warn("asked for help on github...")*/
 	java.util.logging.LogManager.getLogManager().loggerNames.asIterator().forEach {
-	  println("logger:${it}")
+	  /*println("logger:${it}")*/
 	}
 	java.util.logging.Logger.getLogger("com.jthemedetecor.MacOSThemeDetector").level = Level.OFF
 	java.util.logging.Logger.getLogger("com.jthemedetecor").level = Level.OFF
@@ -32,7 +32,7 @@ object DarkModeController {
 
 
   private fun getIsDarkSafe(): Boolean? {
-	warn("this is pointless. The error is caught and annoying logged inside the library")
+	/*warn("this is pointless. The error is caught and annoying logged inside the library")*/
 	return try {
 	  detector.isDark
 	} catch (e: java.lang.NullPointerException) {

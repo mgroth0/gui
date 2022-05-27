@@ -24,6 +24,7 @@ import matt.hurricanefx.eye.delegate.createFxProp
 import matt.hurricanefx.eye.lib.onActualChange
 import matt.klib.commons.get
 import matt.kjlib.lang.NEVER
+import matt.kjlib.lang.err
 import matt.kjlib.map.lazyMap
 import matt.kjlib.str.writeToFile
 import matt.kjlib.weak.bag.WeakBag
@@ -92,7 +93,7 @@ val savableAwareJson = Json {
   }
 
   override fun deserialize(decoder: Decoder): Any {
-	println("deserialize 1")
+//	println("deserialize 1")
 	var theAny: Any? = null    //	decoder.decodeSerializableValue()
 
 	decoder.decodeStructure(descriptor) {
@@ -104,31 +105,27 @@ val savableAwareJson = Json {
 	  var nextIndex = this.decodeElementIndex(descriptor)
 
 
-
-
-	  println("nextIndex2=${nextIndex}")
-	  println("deserialize 2")
+	  //	  println("nextIndex2=${nextIndex}")
+	  //	  println("deserialize 2")
 	  val qname = this.decodeStringElement(descriptor, 0)
-	  println("deserialize 3: $qname")
+	  //	  println("deserialize 3: $qname")
 
 
 	  /*ALL I HAD TO DO WAS CALL THIS. DONT EVEN HAVE TO USE RESULT? THATS HOW YOU SKIP OVER COMMAS I THINK.*/
 	  nextIndex = this.decodeElementIndex(descriptor)
 
 
-
-
-	  println("nextIndex4=${nextIndex}")
+	  //	  println("nextIndex4=${nextIndex}")
 	  theAny = this.decodeSerializableElement(descriptor, 2, findSerializerFor(qname))
-	  println("deserialize 4: $theAny")
+	  //	  println("deserialize 4: $theAny")
 	}
 	return theAny!!
   }
 
   override fun serialize(encoder: Encoder, value: Any) {
-	println("serialize1")
+	//	println("serialize1")
 	val qname = value::class.qualifiedName!!
-	println("qname=${qname}")
+	//	println("qname=${qname}")
 
 	//	val holder = OutHolder(value)
 	//	val theOutAny = value as out Any
@@ -136,10 +133,10 @@ val savableAwareJson = Json {
 
 	encoder.encodeStructure(descriptor) {
 	  encodeStringElement(descriptor, 0, qname)
-	  println("wrote qname")
+	  //	  println("wrote qname")
 	  @Suppress("UNCHECKED_CAST")
 	  encodeSerializableElement(descriptor, 1, findSerializerFor(value) as SerializationStrategy<Any>, value)
-	  println("probably not getting here")
+	  //	  println("probably not getting here")
 	}
 
   }
@@ -198,14 +195,14 @@ val saveFiles = lazyMap<KClass<*>, File> {
 	encoder: Encoder, value: SerializableWithSavables<*>
   ) {    //	value.savs::class.serializer()
 
-	println("SerializableWithSavablesSerializer.serialize 1")
+//	println("SerializableWithSavablesSerializer.serialize 1")
 
 	encoder.encodeStructure(descriptor) {
-	  println("SerializableWithSavablesSerializer.serialize 2")
+//	  println("SerializableWithSavablesSerializer.serialize 2")
 
 	  @Suppress("UNCHECKED_CAST")
 	  encodeSerializableElement(descriptor, 0, findSerializerFor(value.ser) as SerializationStrategy<Any>, value.ser!!)
-	  println("SerializableWithSavablesSerializer.serialize 3")    //	  encoder.encodeStructure(descriptor) {
+//	  println("SerializableWithSavablesSerializer.serialize 3")    //	  encoder.encodeStructure(descriptor) {
 	  //
 	  //	  }
 
@@ -219,7 +216,7 @@ val saveFiles = lazyMap<KClass<*>, File> {
 	  )
 
 
-	  println("SerializableWithSavablesSerializer.serialize 4")    //	  encodeStringElement(descriptor, 0, qname)
+//	  println("SerializableWithSavablesSerializer.serialize 4")    //	  encodeStringElement(descriptor, 0, qname)
 	  //	  encodeSerializableElement(descriptor, 1, theSerializer as SerializationStrategy<Any>, value)
 	}
 
@@ -262,14 +259,14 @@ val saveFiles = lazyMap<KClass<*>, File> {
 
   @OptIn(InternalSerializationApi::class) override fun serialize(encoder: Encoder, value: Map<K, V>) {
 	var index = 0
-	println("MyMapSerializer.serialize 1")
+//	println("MyMapSerializer.serialize 1")
 	encoder.encodeStructure(descriptor) {
-	  println("MyMapSerializer.serialize 2")
+//	  println("MyMapSerializer.serialize 2")
 	  value.forEach { (_, v) ->
-		println("MyMapSerializer.serialize 3")
+//		println("MyMapSerializer.serialize 3")
 		@Suppress("UNCHECKED_CAST")
 		encodeSerializableElement(descriptor, index, findSerializerFor(v) as SerializationStrategy<Any>, v!!)
-		println("MyMapSerializer.serialize 5")
+//		println("MyMapSerializer.serialize 5")
 		index++
 	  }
 	}    //	encoder.encodeStructure(descriptor) {
@@ -291,17 +288,13 @@ val saveFiles = lazyMap<KClass<*>, File> {
 
 
 inline fun <reified T: Any> T.save() {
-  println("save1")
   val savablePropertiesMap = this::class.memberProperties.filter {
 	it.hasAnnotation<Savable>()
   }.associate {
 	it.name to it.call(this) as Any
   }
-  println("save2")
   val whole = SerializableWithSavables(this, savablePropertiesMap)
-  println("save3")
   val serializedWhole = savableAwareJson.encodeToString(SerializableWithSavablesSerializer, whole)
-  println("save4")
   serializedWhole.writeToFile(saveFiles[this::class]!!)
 } // ///*needed for reifying with autosave*/
 //internal inline fun <reified T: Any> T.save(cls: KClass<T>) {
@@ -327,7 +320,7 @@ inline fun <reified R> File.load(): R? = takeIf { it.exists() }?.readText()?.tak
 
   blockAutoSavingOfThese += almost.ser!!
 
-  println("got almost1: $almost")
+//  println("got almost1: $almost")
   almost.savs.forEach { (k, v) ->
 	((almost.ser!!::class as KClass<*>)
 	  .memberProperties
@@ -338,7 +331,7 @@ inline fun <reified R> File.load(): R? = takeIf { it.exists() }?.readText()?.tak
 	//	  }
   }
 
-  println("got almost2: $almost")
+//  println("got almost2: $almost")
   blockAutoSavingOfThese -= almost.ser!!
 
   almost.ser
@@ -400,8 +393,8 @@ class FXProp<V>(
 ) {
   @Suppress("UNCHECKED_CAST") val fxProp: Property<V> = (vCls.createFxProp() as Property<V>).also {
 	if (default != null) it.value = default
-	if (autosave && thisRef !in blockAutoSavingOfThese) it.onActualChange {
-	  thisRef.save()
+	if (autosave) it.onActualChange {
+	  if (thisRef !in blockAutoSavingOfThese) thisRef.save()
 	}
   }
 

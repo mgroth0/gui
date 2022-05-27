@@ -152,7 +152,7 @@ fun <T> TableView<T>.autoResizeColumns() {
     }
 }
 
-// this one is different! it will apply a special width for the first column (which it assumes is for arrows)
+// this one is different! it will apply a special width for the first matt.hurricanefx.tableview.coolColumn (which it assumes is for arrows)
 fun <T> TreeTableView<T>.autoResizeColumns() {
     columnResizePolicy = TreeTableView.UNCONSTRAINED_RESIZE_POLICY
 
