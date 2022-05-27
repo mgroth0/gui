@@ -52,7 +52,7 @@ fun Scene.reloadStyle(darkMode: Boolean) {
 
 	//     ensure that even while the screen is loading it is black. So not white flashes or flickering while refreshing
 	fill =
-	  Color.BLACK	//        maybe also possible by styleing .root in css, but if I remember correctly that also affects other nodes
+	  Color.BLACK    //        maybe also possible by styleing .root in css, but if I remember correctly that also affects other nodes
   }
 }
 
@@ -69,13 +69,13 @@ open class MScene(
 
   fun handleContextMenuReq(e: Event) {
 	if (e is ContextMenuEvent) {
-	  (e.target as? Node)?.let {		//                    if (it !in noContextMenu) {
-		showMContextMenu(it, e.screenX to e.screenY)		//                    }
+	  (e.target as? Node)?.let {        //                    if (it !in noContextMenu) {
+		showMContextMenu(it, e.screenX to e.screenY)        //                    }
 	  }
 	  e.consume()
 	}
 
-	/*this doesnt work. lets try insets for right clicking*/	//	  else if (matt.kjlib.jmath.e is MouseEvent) {
+	/*this doesnt work. lets try insets for right clicking*/    //	  else if (matt.kjlib.jmath.e is MouseEvent) {
 	//		(matt.kjlib.jmath.e.target as? Node)?.let { showMContextMenu(it, matt.kjlib.jmath.e.screenX to matt.kjlib.jmath.e.screenY) }
 	//		/*dont consume. maybe if I'm lucky I'll get both my context menu and the web one*/
 	//	  }
@@ -90,7 +90,13 @@ open class MScene(
 
 
 	reloadStyle(darkModeProp.value)
-	darkModeProp.onChangeWithWeak(this) { reloadStyle(darkModeProp.value) }
+	var old = darkModeProp.value
+	darkModeProp.onChangeWithWeak(this) {
+	  if (it != old) {
+		reloadStyle(darkModeProp.value)
+		old = it
+	  }
+	}
 
 
 
@@ -101,7 +107,7 @@ open class MScene(
 		  reloadStyle(darkModeProp.value)
 		}
 
-		/*this is controlled from the OS from now on*/		/*actionitem("toggle darkMode") {
+		/*this is controlled from the OS from now on*/        /*actionitem("toggle darkMode") {
 		  darkMode = !darkMode
 		  if (darkMode) {
 			stylesheets.setAll(DARK_MODENA_CSS, CUSTOM_CSS)
@@ -128,8 +134,8 @@ open class MScene(
 			  classesPrinted += it::class
 			}
 		  }
-		}		/*need this*/
-		this.menu("set border") {		/*specify this here explicitly at least once
+		}        /*need this*/
+		this.menu("set border") {        /*specify this here explicitly at least once
 		  * or else it will use the `actionitem` above without import*/
 		  this.actionitem("none") {
 			(root as? Region)?.borderFill = null
@@ -170,7 +176,7 @@ open class MScene(
 
 	  onRequest {
 		val mreport = MemReport()
-		menu("MemReport") {		/*need one this to enforce THIS*/
+		menu("MemReport") {        /*need one this to enforce THIS*/
 		  this.item("total:${mreport.total}") {}
 		  item("max:${mreport.max}") {}
 		  item("free:${mreport.free}") {}
@@ -179,14 +185,14 @@ open class MScene(
 	}
 
 
-	/*dont know why I was using a filter here, but it prevented me from blocking context menus on certain nodes*/	//        addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED) { e ->
+	/*dont know why I was using a filter here, but it prevented me from blocking context menus on certain nodes*/    //        addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED) { e ->
 	//            handleContextMenuReq(e)
 	//        }
 	addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED) { e ->
 	  handleContextMenuReq(e)
 	}
 
-	/*this doesnt work.  lets try insets for right clicking*/	//	/*for web view. plese work*/
+	/*this doesnt work.  lets try insets for right clicking*/    //	/*for web view. plese work*/
 	//	addEventFilter(MouseEvent.MOUSE_CLICKED) { matt.kjlib.jmath.e ->
 	//	  if (matt.kjlib.jmath.e.isSecondaryButtonDown) {
 	//		handleContextMenuReq(matt.kjlib.jmath.e)
