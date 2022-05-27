@@ -2,7 +2,7 @@ package matt.gui.win.bindgeom
 
 import javafx.stage.Stage
 import matt.hurricanefx.eye.lib.onChange
-import matt.kbuild.gson
+import matt.json.gson
 import matt.klib.commons.WINDOW_GEOMETRY_FOLDER
 import matt.klib.commons.get
 import matt.klib.math.Geometry

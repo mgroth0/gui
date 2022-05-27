@@ -4,8 +4,8 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.CheckMenuItem
 import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.tornadofx.bind.toBinding
+import matt.json.parseJson
 import matt.json.prim.toGson
-import matt.kbuild.parseJson
 import matt.kjlib.file.text
 import java.io.File
 import kotlin.contracts.ExperimentalContracts
