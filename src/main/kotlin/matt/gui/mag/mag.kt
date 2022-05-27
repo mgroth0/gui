@@ -6,7 +6,7 @@ import matt.gui.app.NEW_MAC_NOTCH_ESTIMATE
 import matt.json.prim.parseJsonObj
 import matt.json.prim.set
 import matt.json.prim.toGson
-import matt.kjlib.commons.VAR_JSON
+import matt.klib.commons.VAR_JSON
 
 val Window.screen: Screen?
   get() = Screen.getScreensForRectangle(x, y, 1.0, 1.0).firstOrNull()

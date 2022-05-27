@@ -3,8 +3,8 @@ package matt.gui.ican
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import matt.hurricanefx.tornadofx.nodes.add
-import matt.kjlib.commons.FLOW_FOLDER
-import matt.kjlib.file.get
+import matt.klib.commons.FLOW_FOLDER
+import matt.klib.commons.get
 
 val IconFolder by lazy { FLOW_FOLDER!!["icon"] }
 

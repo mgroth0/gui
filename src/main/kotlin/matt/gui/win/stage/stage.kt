@@ -8,7 +8,7 @@ import matt.gui.win.stage.WMode.CLOSE
 import matt.gui.win.stage.WMode.ICONIFY
 import matt.gui.win.stage.WMode.NOTHING
 import matt.gui.win.winfun.pullBackWhenOffscreen
-import matt.kbuild.thisMachine
+import matt.klib.commons.thisMachine
 import matt.klib.sys.Machine
 
 enum class WMode {

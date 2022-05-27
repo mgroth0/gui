@@ -12,7 +12,7 @@ import matt.hotkey.Hotkey
 import matt.hotkey.HotkeyDSL
 import matt.hurricanefx.eye.lang.BProp
 import matt.hurricanefx.toggle
-import matt.kbuild.thisMachine
+import matt.klib.commons.thisMachine
 import matt.kjlib.lang.NEVER
 import matt.kjlib.lang.err
 import matt.klib.sys.Machine

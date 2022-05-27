@@ -8,8 +8,8 @@ import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
 import matt.hurricanefx.tornadofx.async.runLater
-import matt.kjlib.commons.FLOW_FOLDER
-import matt.kjlib.file.get
+import matt.klib.commons.FLOW_FOLDER
+import matt.klib.commons.get
 import matt.kjlib.prop.BasicBooleanProperty
 import matt.kjlib.str.LineAppender
 import matt.klib.log.warn
