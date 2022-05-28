@@ -18,9 +18,9 @@ import matt.auto.IntelliJNavAction
 import matt.gui.hotkey.filters
 import matt.gui.hotkey.handlers
 import matt.klib.commons.FLOW_FOLDER
-import matt.kjlib.lang.NEVER
 import matt.kjlib.reflect.jumpToKotlinSourceString
 import matt.kjlib.str.tab
+import matt.klib.lang.NEVER
 import java.util.WeakHashMap
 import kotlin.collections.set
 import kotlin.concurrent.thread

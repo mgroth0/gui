@@ -13,9 +13,9 @@ import matt.hotkey.HotkeyDSL
 import matt.hurricanefx.eye.lang.BProp
 import matt.hurricanefx.toggle
 import matt.klib.commons.thisMachine
-import matt.kjlib.lang.NEVER
-import matt.kjlib.lang.err
 import matt.kjlib.stream.applyEach
+import matt.klib.lang.NEVER
+import matt.klib.lang.err
 import matt.klib.lang.go
 import matt.klib.stream.allUnique
 import matt.klib.sys.Machine

@@ -23,11 +23,10 @@ import matt.exec.app.myDataFolder
 import matt.hurricanefx.eye.delegate.createFxProp
 import matt.hurricanefx.eye.lib.onActualChange
 import matt.klib.commons.get
-import matt.kjlib.lang.NEVER
-import matt.kjlib.lang.err
 import matt.kjlib.map.lazyMap
 import matt.kjlib.str.writeToFile
 import matt.kjlib.weak.bag.WeakBag
+import matt.klib.lang.NEVER
 import java.io.File
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
@@ -93,7 +92,7 @@ val savableAwareJson = Json {
   }
 
   override fun deserialize(decoder: Decoder): Any {
-//	println("deserialize 1")
+	//	println("deserialize 1")
 	var theAny: Any? = null    //	decoder.decodeSerializableValue()
 
 	decoder.decodeStructure(descriptor) {
@@ -195,14 +194,14 @@ val saveFiles = lazyMap<KClass<*>, File> {
 	encoder: Encoder, value: SerializableWithSavables<*>
   ) {    //	value.savs::class.serializer()
 
-//	println("SerializableWithSavablesSerializer.serialize 1")
+	//	println("SerializableWithSavablesSerializer.serialize 1")
 
 	encoder.encodeStructure(descriptor) {
-//	  println("SerializableWithSavablesSerializer.serialize 2")
+	  //	  println("SerializableWithSavablesSerializer.serialize 2")
 
 	  @Suppress("UNCHECKED_CAST")
 	  encodeSerializableElement(descriptor, 0, findSerializerFor(value.ser) as SerializationStrategy<Any>, value.ser!!)
-//	  println("SerializableWithSavablesSerializer.serialize 3")    //	  encoder.encodeStructure(descriptor) {
+	  //	  println("SerializableWithSavablesSerializer.serialize 3")    //	  encoder.encodeStructure(descriptor) {
 	  //
 	  //	  }
 
@@ -216,7 +215,7 @@ val saveFiles = lazyMap<KClass<*>, File> {
 	  )
 
 
-//	  println("SerializableWithSavablesSerializer.serialize 4")    //	  encodeStringElement(descriptor, 0, qname)
+	  //	  println("SerializableWithSavablesSerializer.serialize 4")    //	  encodeStringElement(descriptor, 0, qname)
 	  //	  encodeSerializableElement(descriptor, 1, theSerializer as SerializationStrategy<Any>, value)
 	}
 
@@ -259,14 +258,14 @@ val saveFiles = lazyMap<KClass<*>, File> {
 
   @OptIn(InternalSerializationApi::class) override fun serialize(encoder: Encoder, value: Map<K, V>) {
 	var index = 0
-//	println("MyMapSerializer.serialize 1")
+	//	println("MyMapSerializer.serialize 1")
 	encoder.encodeStructure(descriptor) {
-//	  println("MyMapSerializer.serialize 2")
+	  //	  println("MyMapSerializer.serialize 2")
 	  value.forEach { (_, v) ->
-//		println("MyMapSerializer.serialize 3")
+		//		println("MyMapSerializer.serialize 3")
 		@Suppress("UNCHECKED_CAST")
 		encodeSerializableElement(descriptor, index, findSerializerFor(v) as SerializationStrategy<Any>, v!!)
-//		println("MyMapSerializer.serialize 5")
+		//		println("MyMapSerializer.serialize 5")
 		index++
 	  }
 	}    //	encoder.encodeStructure(descriptor) {
@@ -320,7 +319,7 @@ inline fun <reified R> File.load(): R? = takeIf { it.exists() }?.readText()?.tak
 
   blockAutoSavingOfThese += almost.ser!!
 
-//  println("got almost1: $almost")
+  //  println("got almost1: $almost")
   almost.savs.forEach { (k, v) ->
 	((almost.ser!!::class as KClass<*>)
 	  .memberProperties
@@ -331,7 +330,7 @@ inline fun <reified R> File.load(): R? = takeIf { it.exists() }?.readText()?.tak
 	//	  }
   }
 
-//  println("got almost2: $almost")
+  //  println("got almost2: $almost")
   blockAutoSavingOfThese -= almost.ser!!
 
   almost.ser
