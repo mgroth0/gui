@@ -11,7 +11,7 @@ import matt.hurricanefx.tornadofx.async.runLater
 import matt.klib.commons.FLOW_FOLDER
 import matt.klib.commons.get
 import matt.kjlib.prop.BasicBooleanProperty
-import matt.kjlib.str.LineAppender
+import matt.klib.str.LineAppender
 import matt.klib.log.warn
 import java.util.logging.Level
 import kotlin.reflect.KProperty
