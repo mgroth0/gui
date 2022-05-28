@@ -11,5 +11,5 @@ dependencies {
 
 
 plugins {
-  kotlin("plugin.serialization") version tomlVersion("kotlin")
+  kotlin("plugin.serialization")
 }
