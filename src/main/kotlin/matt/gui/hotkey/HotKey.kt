@@ -15,10 +15,10 @@ import matt.hurricanefx.toggle
 import matt.klib.commons.thisMachine
 import matt.kjlib.lang.NEVER
 import matt.kjlib.lang.err
+import matt.kjlib.stream.applyEach
+import matt.klib.lang.go
+import matt.klib.stream.allUnique
 import matt.klib.sys.Machine
-import matt.klibexport.klibexport.allUnique
-import matt.klibexport.klibexport.go
-import matt.klibexport.lang.applyEach
 import java.lang.System.currentTimeMillis
 import java.util.WeakHashMap
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
@@ -154,7 +154,7 @@ fun KeyEvent.runAgainst(
 
   val pressTime = currentTimeMillis()
 
-  if (this.code.isModifierKey) {	//        println("consume 1")
+  if (this.code.isModifierKey) {    //        println("consume 1")
 	return consume()
   } //  val debug = !this.code.isModifierKey
   //  if (debug) {
@@ -207,32 +207,32 @@ fun KeyEvent.runAgainst(
 
   var ensureConsume = false
   hotkeys.asSequence().flatMap { it.getHotkeys() }.flatMap {
-	  sequence {
-		yield(it)
-		it.previous?.go { yield(it) }
-	  }
-	}.filter { h ->	//            println("h(${this matches h}): ${h}")
-	  this matches h && (h.previous == null || (lastHotKey?.let {
-		h.previous!!.matches(it.first) && (pressTime - it.second) <= DOUBLE_HOTKEY_WINDOW_MS
-	  } ?: false))
-	}.onEach {
-	  ensureConsume = ensureConsume || it.blocksFXorOSdefault
-	}.forEach { h ->
-	  lastHotKey = h to currentTimeMillis()
-	  if (!h.isIgnoreFix) {
-		fixer.last = this
-	  }
-	  if (isConsumed) return
-	  h.theOp?.go {
-		it()
-		runLater {
-		  fixer.last = null
-		} /*... finally got it. not to early not too late. wow.*/		//                println("consume 3")
-		return consume()
-	  }
-	  h.theHandler?.invoke(this)
+	sequence {
+	  yield(it)
+	  it.previous?.go { yield(it) }
 	}
-  if (ensureConsume && !isConsumed) {	//        println("consume 4")
+  }.filter { h ->    //            println("h(${this matches h}): ${h}")
+	this matches h && (h.previous == null || (lastHotKey?.let {
+	  h.previous!!.matches(it.first) && (pressTime - it.second) <= DOUBLE_HOTKEY_WINDOW_MS
+	} ?: false))
+  }.onEach {
+	ensureConsume = ensureConsume || it.blocksFXorOSdefault
+  }.forEach { h ->
+	lastHotKey = h to currentTimeMillis()
+	if (!h.isIgnoreFix) {
+	  fixer.last = this
+	}
+	if (isConsumed) return
+	h.theOp?.go {
+	  it()
+	  runLater {
+		fixer.last = null
+	  } /*... finally got it. not to early not too late. wow.*/        //                println("consume 3")
+	  return consume()
+	}
+	h.theHandler?.invoke(this)
+  }
+  if (ensureConsume && !isConsumed) {    //        println("consume 4")
 	consume()
   }
 }
@@ -243,7 +243,7 @@ class HotKeyEventHandler(
 
   val hotkeys = hks.toMutableList()
 
-  init {	//        println("making handler ${this.hashCode()} with")
+  init {    //        println("making handler ${this.hashCode()} with")
 	//        hotkeys.forEach {
 	//            tab(it)
 	//        }
@@ -263,10 +263,10 @@ class HotKeyEventHandler(
   }
 
   var last: KeyEvent? = null
-  override fun handle(event: KeyEvent) {	//        println("handling with ${this.hashCode()}")
+  override fun handle(event: KeyEvent) {    //        println("handling with ${this.hashCode()}")
 	if (quickPassForNormalTyping && (event.code.isDigitKey || event.code.isLetterKey) && !event.isMetaDown && !event.isControlDown && !event.isAltDown) {
 	  return
-	}	//    println("event.code: ${event.code}")
+	}    //    println("event.code: ${event.code}")
 	//    println("hotkeys length: ${hotkeys.size}")
 	event.runAgainst(hotkeys, last = last, fixer = this)
   }
@@ -308,8 +308,7 @@ fun EventTarget.registerInFilter(
   quickPassForNormalTyping: Boolean = false,
 ) {
 
-  val oldHandler = filters[this] //    println("this=${this}")
-  //    println("oldHandler=${oldHandler}")
+  val oldHandler = filters[this] //    println("this=${this}") //    println("oldHandler=${oldHandler}")
   if (oldHandler != null) {
 	oldHandler.hotkeys.addAll(hotkeys.toList())
 	if (quickPassForNormalTyping) {
@@ -327,8 +326,7 @@ fun EventTarget.registerInFilter(
   }
 }
 
-@Suppress("PropertyName")
-class FXHotkeyDSL: HotkeyDSL<HotKeyContainer>() {
+@Suppress("PropertyName") class FXHotkeyDSL: HotkeyDSL<HotKeyContainer>() {
 
   /*fun keyCode(name: String) = KeyCode.getKeyCode(name).bare*/
   fun keyCode(name: String) = KeyCode.valueOf(name).bare

@@ -31,7 +31,7 @@ import matt.gui.mag.topleft
 import matt.gui.mag.topright
 import matt.gui.style.borderFill
 import matt.klib.dmap.withStoringDefault
-import matt.klibexport.klibexport.go
+import matt.klib.lang.go
 import java.lang.Thread.sleep
 import java.util.WeakHashMap
 import kotlin.concurrent.thread

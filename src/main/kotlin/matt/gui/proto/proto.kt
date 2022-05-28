@@ -25,7 +25,7 @@ import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.tornadofx.fx.opcr
 import matt.hurricanefx.tornadofx.tab.staticTab
-import matt.klibexport.klibexport.applyIt
+import matt.klib.lang.applyIt
 
 infix fun TextField.withPrompt(s: String): TextField {
   promptText = s
