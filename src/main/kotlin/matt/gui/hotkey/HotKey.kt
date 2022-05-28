@@ -13,7 +13,7 @@ import matt.hotkey.HotkeyDSL
 import matt.hurricanefx.eye.lang.BProp
 import matt.hurricanefx.toggle
 import matt.klib.commons.thisMachine
-import matt.kjlib.stream.applyEach
+import matt.stream.applyEach
 import matt.klib.lang.NEVER
 import matt.klib.lang.err
 import matt.klib.lang.go

@@ -15,9 +15,9 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
 import javafx.scene.text.Text
 import matt.hurricanefx.tornadofx.async.runLater
-import matt.kjlib.stream.recurse.recurse
-import matt.kjlib.stream.recurse.recurseToFlat
-import matt.kjlib.stream.recurse.recursionDepth
+import matt.stream.recurse.recurse
+import matt.stream.recurse.recurseToFlat
+import matt.stream.recurse.recursionDepth
 
 interface SimpleCell<T> {
     fun updateItemExists(item: T)

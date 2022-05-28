@@ -32,10 +32,10 @@ import matt.gui.win.winfun.noDocking
 import matt.hurricanefx.tornadofx.async.runLater
 import matt.hurricanefx.tornadofx.menu.item
 import matt.hurricanefx.tornadofx.menu.menu
-import matt.kjlib.stream.recurse.recurse
+import matt.stream.recurse.recurse
 import matt.kjlib.byte.MemReport
 import matt.klib.commons.get
-import matt.kjlib.stream.notContainedIn
+import matt.stream.notContainedIn
 import java.io.File
 import java.net.URL
 import kotlin.reflect.KClass
