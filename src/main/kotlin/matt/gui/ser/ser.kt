@@ -22,9 +22,9 @@ import kotlinx.serialization.serializer
 import matt.exec.app.myDataFolder
 import matt.hurricanefx.eye.delegate.createFxProp
 import matt.hurricanefx.eye.lib.onActualChange
+import matt.kjlib.file.writeToFile
 import matt.klib.commons.get
 import matt.kjlib.map.lazyMap
-import matt.kjlib.str.writeToFile
 import matt.kjlib.weak.bag.WeakBag
 import matt.klib.lang.NEVER
 import java.io.File
@@ -294,7 +294,8 @@ inline fun <reified T: Any> T.save() {
   }
   val whole = SerializableWithSavables(this, savablePropertiesMap)
   val serializedWhole = savableAwareJson.encodeToString(SerializableWithSavablesSerializer, whole)
-  serializedWhole.writeToFile(saveFiles[this::class]!!)
+  serializedWhole.
+  writeToFile(saveFiles[this::class]!!)
 } // ///*needed for reifying with autosave*/
 //internal inline fun <reified T: Any> T.save(cls: KClass<T>) {
 //  println("save1")
