@@ -18,6 +18,11 @@ enum class WMode {
   NOTHING,
   ICONIFY
 }
+enum class ShowMode {
+  SHOW,
+  SHOW_AND_WAIT,
+  DO_NOT_SHOW,
+}
 
 open class MStage(
   wMode: WMode = NOTHING,

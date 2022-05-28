@@ -17,6 +17,7 @@ import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.I
 import matt.gui.app.GuiApp
 import matt.gui.lang.ActionButton
 import matt.gui.win.interact.openInNewWindow
+import matt.gui.win.stage.ShowMode.SHOW_AND_WAIT
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -29,7 +30,7 @@ fun GuiApp.showExceptionPopup(
   exceptionFile: File
 ): ExceptionResponse {
 
-//  ChangeListener
+  //  ChangeListener
 
   var r = EXIT
   println("setting up runLaterReturn for exception dialog")
@@ -61,6 +62,6 @@ fun GuiApp.showExceptionPopup(
 	  }
 
 	)
-  ).openInNewWindow(wait = true)
+  ).openInNewWindow(SHOW_AND_WAIT)
   return r
 }

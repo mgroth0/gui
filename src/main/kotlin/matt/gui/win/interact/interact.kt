@@ -23,6 +23,10 @@ import matt.gui.lang.actionbutton
 import matt.gui.style.borderFill
 import matt.gui.win.bindgeom.bindGeometry
 import matt.gui.win.stage.MStage
+import matt.gui.win.stage.ShowMode
+import matt.gui.win.stage.ShowMode.DO_NOT_SHOW
+import matt.gui.win.stage.ShowMode.SHOW
+import matt.gui.win.stage.ShowMode.SHOW_AND_WAIT
 import matt.gui.win.stage.WMode
 import matt.gui.win.stage.WMode.CLOSE
 import matt.gui.win.stage.WMode.NOTHING
@@ -246,13 +250,13 @@ sealed class WinGeom {
   object Max: WinGeom() {
 	override fun applyTo(win: Stage) {
 	  win.isMaximized = true
-//	  win.width = width
-//	  win.height = height
-//	  if (win.owner == null) {
-//		win.centerOnScreen()
-//	  } else {
-//		win.bindXYToOwnerCenter()
-//	  }
+	  //	  win.width = width
+	  //	  win.height = height
+	  //	  if (win.owner == null) {
+	  //		win.centerOnScreen()
+	  //	  } else {
+	  //		win.bindXYToOwnerCenter()
+	  //	  }
 	  /*require(win.owner != null) { "use initOwner first" }*/
 
 
@@ -301,7 +305,7 @@ sealed class WinOwn {
 }
 
 fun Parent.openInNewWindow(
-  wait: Boolean = false,
+  showMode: ShowMode = SHOW,
   wMode: WMode = NOTHING,
   EscClosable: Boolean = false,
   EnterClosable: Boolean = false,
@@ -325,10 +329,10 @@ fun Parent.openInNewWindow(
 	  (this@openInNewWindow as Region).borderFill = Color.DARKBLUE
 	}
 	beforeShowing()
-	if (wait) {
-	  showAndWait()
-	} else {
-	  show()
+	when (showMode) {
+	  SHOW -> show()
+	  SHOW_AND_WAIT -> showAndWait()
+	  DO_NOT_SHOW -> Unit
 	}
   }
 }
