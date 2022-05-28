@@ -2,8 +2,8 @@
 
 package matt.gui.loop
 
+import matt.async.date.Duration
 import matt.hurricanefx.tornadofx.async.runLater
-import matt.kjlib.date.Duration
 import java.lang.Thread.sleep
 import java.util.concurrent.Semaphore
 import kotlin.concurrent.thread

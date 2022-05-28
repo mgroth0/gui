@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.SKYBLUE
 import javafx.stage.Screen
+import matt.async.date.sec
 import matt.gui.core.scene.MScene
 import matt.gui.fxlang.backgroundFill
 import matt.gui.proto.ScaledCanvas
@@ -23,7 +24,6 @@ import matt.hurricanefx.tornadofx.animation.keyframe
 import matt.hurricanefx.tornadofx.animation.timeline
 import matt.hurricanefx.tornadofx.async.runLater
 import matt.hurricanefx.tornadofx.control.text
-import matt.kjlib.date.sec
 import java.awt.image.BufferedImage
 import java.io.File
 import java.lang.Thread.sleep

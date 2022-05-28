@@ -1,11 +1,11 @@
 package matt.gui.win.winfun
 
 import javafx.stage.Stage
+import matt.async.daemon
 import matt.gui.loop.runLaterReturn
 import matt.gui.mag.screen
 import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.tornadofx.async.runLater
-import matt.kjlib.async.daemon
 import matt.klib.log.warn
 
 fun Stage.pullBackWhenOffscreen() {
