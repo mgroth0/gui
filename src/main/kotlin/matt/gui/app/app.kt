@@ -10,6 +10,8 @@ import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.stage.Screen
 import javafx.stage.Stage
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import matt.exec.app.App
 import matt.exec.app.appName
 import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
@@ -18,7 +20,6 @@ import matt.gui.core.scene.MScene
 import matt.gui.win.bindgeom.bindGeometry
 import matt.gui.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
-import matt.json.gson
 import java.io.File
 import kotlin.concurrent.thread
 
@@ -155,7 +156,7 @@ class GuiApp(
 		  println("input null. guess this isn't from python. exiting input thread.")
 		  break
 		}
-		handleArgs(gson.fromJson(stringInput, arrayOf<String>()::class.java).toList())
+		handleArgs(Json.decodeFromString<List<String>>(stringInput).toList())
 	  }
 	}
   }

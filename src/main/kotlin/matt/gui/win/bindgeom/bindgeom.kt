@@ -2,7 +2,8 @@ package matt.gui.win.bindgeom
 
 import javafx.stage.Stage
 import matt.hurricanefx.eye.lib.onChange
-import matt.json.gson
+import matt.json.prim.readJson
+import matt.json.prim.writeJson
 import matt.klib.commons.WINDOW_GEOMETRY_FOLDER
 import matt.klib.commons.get
 import matt.klib.math.Geometry
@@ -26,7 +27,7 @@ private fun Stage.saveGeometryIfValid(file: File) {
   if (!isShowing || isIconified || isFullScreen || x.isNaN() || y.isNaN() || width.isNaN() || height.isNaN()) {
 	return
   }
-  val r = gson.toJson(
+  file.writeJson(
 	Geometry(
 	  x,
 	  y,
@@ -34,12 +35,11 @@ private fun Stage.saveGeometryIfValid(file: File) {
 	  height
 	)
   )
-  file.writeText(r)
 }
 
 private fun Stage.loadGeometry(file: File) {
   this.apply {
-	val stageGeometry = gson.fromJson(file.readText(), Geometry::class.java)!!
+	val stageGeometry = file.readJson<Geometry>()
 	x = stageGeometry.x
 	y = stageGeometry.y
 	width = stageGeometry.width

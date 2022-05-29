@@ -2,10 +2,13 @@ package matt.gui.setting
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.CheckMenuItem
+import kotlinx.serialization.json.jsonObject
 import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.tornadofx.bind.toBinding
+import matt.json.custom.bool
+import matt.json.custom.jsonObj
 import matt.json.parseJson
-import matt.json.prim.toGson
+import matt.json.prim.writeJson
 import matt.kjlib.file.text
 import java.io.File
 import kotlin.contracts.ExperimentalContracts
@@ -65,20 +68,23 @@ open class HasSettings(private val jsonFile: File) {
 
   val loaded: Map<String, Boolean>? by lazy {
 	jsonFile
-		.takeIf { it.exists() }
-		?.parseJson()
-		?.asJsonObject
-		?.entrySet()
-		?.associate { it.key to it.value.asBoolean }
+	  .takeIf { it.exists() }
+	  ?.parseJson()
+	  ?.jsonObject
+	  ?.entries
+	  ?.associate { it.key to it.value.bool }
   }
 
   fun save() {
-	jsonFile.text = registeredSettings
-		.associate { it.name to it.get() }
-		.toGson()
+	jsonFile.writeJson(
+	  jsonObj(
+		registeredSettings
+		  .associate { it.name to it.get() }
+	  )
+	)
   }
 
   fun checkMenuItems() = registeredSettings
-	  .map { it.CheckItem() }
+	.map { it.CheckItem() }
 }
 

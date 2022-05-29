@@ -3,9 +3,10 @@ package matt.gui.mag
 import javafx.stage.Screen
 import javafx.stage.Window
 import matt.gui.app.NEW_MAC_NOTCH_ESTIMATE
+import matt.json.custom.bool
 import matt.json.prim.parseJsonObj
 import matt.json.prim.set
-import matt.json.prim.toGson
+import matt.json.prim.writeJson
 import matt.klib.commons.VAR_JSON
 
 val Window.screen: Screen?
@@ -257,11 +258,17 @@ fun Window.eighth8() {
 
 
 var reversed_displays
-  get() = VAR_JSON.takeIf { it.exists() }?.parseJsonObj()?.get("reversed_displays")?.asBoolean ?: true
+  get() = VAR_JSON.takeIf { it.exists() }?.parseJsonObj()?.get("reversed_displays")?.bool ?: true
   set(b) {
 	if (VAR_JSON.exists()) {
-	  VAR_JSON.writeText(VAR_JSON.parseJsonObj().apply {
-		this["reversed_displays"] = b
-	  }.toGson())
+
+	  VAR_JSON.writeJson(
+
+
+		VAR_JSON.parseJsonObj().apply {
+		  this["reversed_displays"] = b
+		}
+
+	  )
 	}
   }
