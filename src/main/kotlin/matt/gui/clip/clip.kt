@@ -21,7 +21,7 @@ fun File.copyToClipboard() {
 
 
 fun clipboardString(): String? =
-	Clipboard
-		.getSystemClipboard()
-		.getContent(DataFormat.PLAIN_TEXT) as? String
+  Clipboard
+	.getSystemClipboard()
+	.getContent(DataFormat.PLAIN_TEXT) as? String
 
