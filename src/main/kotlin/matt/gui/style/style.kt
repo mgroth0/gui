@@ -6,6 +6,7 @@ import javafx.scene.layout.Border
 import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.layout.Region
+import javafx.scene.paint.Color
 import javafx.scene.paint.Paint
 import matt.hurricanefx.tornadofx.async.runLater
 import matt.klib.commons.FLOW_FOLDER
@@ -96,6 +97,7 @@ var Region.borderFill: Paint?
 	}
 
   }
+
 var Region.borderDashFill: Paint?
   get() = border?.strokes?.firstOrNull { it.topStyle == BorderStrokeStyle.DASHED }?.topStroke
   set(value) {
@@ -129,3 +131,28 @@ fun Styleable.sty(op: StyleClassDSL.()->Unit) {
   StyleClassDSL(this).apply(op)
 }
 
+
+
+fun Region.yellow() {
+  borderDashFill = Color.YELLOW
+}
+
+fun Region.blue() {
+  borderDashFill = Color.BLUE
+}
+
+fun Region.purple() {
+  borderDashFill = Color.PURPLE
+}
+
+fun Region.green() {
+  borderDashFill = Color.GREEN
+}
+
+fun Region.red() {
+  borderDashFill = Color.RED
+}
+
+fun Region.orange() {
+  borderDashFill = Color.ORANGE
+}
