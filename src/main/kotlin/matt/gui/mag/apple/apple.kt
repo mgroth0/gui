@@ -115,6 +115,8 @@ fun getNameOfFrontmostProcessFromApplescript(): String {
   )*/
 }
 
+
+
 fun sdtInTest() {
   val writerP = interactiveOsascript(
 	"""
