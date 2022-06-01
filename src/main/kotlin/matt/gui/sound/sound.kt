@@ -1,7 +1,7 @@
 package matt.gui.sound
 
 import matt.kjlib.cache.LRUCache
-import matt.klib.commons.FLOW_FOLDER
+import matt.klib.commons.SOUND_FOLDER
 import matt.klib.commons.get
 import matt.klib.dmap.withStoringDefault
 import java.util.concurrent.Semaphore
@@ -10,9 +10,6 @@ import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.Clip
 import kotlin.concurrent.thread
 import kotlin.math.roundToInt
-
-val SoundFolder = FLOW_FOLDER!!["sound"]
-
 
 /*
 fun SoundMedia(file: java.io.matt.klib.file.File): Media = Media(file.toPath().toUri().toURL().toString())
@@ -53,9 +50,9 @@ private val soundsBytes = LRUCache<Pair<String, Number?>, Pair<AudioFormat, Byte
         .withStoringDefault {
             var s = it.first
             if ("." !in s) {
-                s = SoundFolder.listFiles()!!.first { it.name.substringBefore(".") == s }.name
+                s = SOUND_FOLDER.listFiles()!!.first { it.name.substringBefore(".") == s }.name
             }
-            val f = SoundFolder[s]
+            val f = SOUND_FOLDER[s]
             val audioInputStream = AudioSystem.getAudioInputStream(f.absoluteFile)
             val format = audioInputStream.format
 
