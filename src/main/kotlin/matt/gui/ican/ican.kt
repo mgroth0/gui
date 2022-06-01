@@ -5,12 +5,13 @@ import javafx.scene.image.ImageView
 import matt.hurricanefx.tornadofx.nodes.add
 import matt.klib.commons.FLOW_FOLDER
 import matt.klib.commons.get
+import matt.klib.file.MFile
 
 val IconFolder by lazy { FLOW_FOLDER!!["icon"] }
 
-fun IconImage(file: java.io.File): Image = Image(file.toPath().toUri().toURL().toString())
+fun IconImage(file: MFile): Image = Image(file.toPath().toUri().toURL().toString())
 fun IconImage(file: String) = IconImage(IconFolder[file])
-fun Icon(file: java.io.File): ImageView = Icon(IconImage(file))
+fun Icon(file: MFile): ImageView = Icon(IconImage(file))
 
 const val ICON_WIDTH = 20.0
 const val ICON_HEIGHT = 20.0
@@ -24,7 +25,7 @@ fun Icon(image: Image) = ImageView(image).apply {
 fun Icon(file: String) = Icon(IconFolder[file])
 
 
-fun javafx.scene.Node.icon(file: java.io.File) {
+fun javafx.scene.Node.icon(file: MFile) {
   add(Icon(file))
 }
 
