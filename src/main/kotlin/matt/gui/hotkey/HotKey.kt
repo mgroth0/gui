@@ -18,6 +18,7 @@ import matt.klib.lang.NEVER
 import matt.klib.lang.err
 import matt.klib.lang.go
 import matt.klib.stream.allUnique
+import matt.klib.sys.Mac
 import matt.klib.sys.Machine
 import java.lang.System.currentTimeMillis
 import java.util.WeakHashMap
@@ -251,9 +252,7 @@ class HotKeyEventHandler(
 	  if (it.code == KeyCode.H && it.isMeta && !it.isCtrl && !it.isOpt && !it.isShift) {
 		err("meta H is blocked by KM to prevent OS window hiding")
 	  }
-	  if (it.isOpt && !it.code.isArrowKey && !it.isMeta && !it.isCtrl && !it.isShift && (thisMachine in arrayOf(
-		  Machine.OLD_MAC, Machine.NEW_MAC
-		))
+	  if (it.isOpt && !it.code.isArrowKey && !it.isMeta && !it.isCtrl && !it.isShift && (thisMachine is Mac)
 	  ) {
 		err(
 		  "I think MacOS has problems with opt where it sends an extra key typed event. stupid. also seen in intellij"

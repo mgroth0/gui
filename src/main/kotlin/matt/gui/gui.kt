@@ -24,8 +24,9 @@ import matt.hurricanefx.tornadofx.animation.keyframe
 import matt.hurricanefx.tornadofx.animation.timeline
 import matt.hurricanefx.tornadofx.async.runLater
 import matt.hurricanefx.tornadofx.control.text
+import matt.klib.file.MFile
 import java.awt.image.BufferedImage
-import java.io.File
+
 import java.lang.Thread.sleep
 import java.util.WeakHashMap
 import kotlin.concurrent.thread
@@ -46,7 +47,7 @@ fun BufferedImage.toFXCanvas(): ScaledCanvas {
   return canv
 }
 
-fun File.draggableIcon() = fileIcons[this].toFXCanvas().apply {
+fun MFile.draggableIcon() = fileIcons[this].toFXCanvas().apply {
   drags(this@draggableIcon)
 }
 

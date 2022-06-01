@@ -3,7 +3,8 @@ package matt.gui.clip
 import javafx.scene.input.Clipboard
 import javafx.scene.input.ClipboardContent
 import javafx.scene.input.DataFormat
-import java.io.File
+import matt.klib.file.MFile
+
 
 fun String.copyToClipboard() {
   val clipboard = Clipboard.getSystemClipboard()
@@ -12,7 +13,7 @@ fun String.copyToClipboard() {
   clipboard.setContent(content)
 }
 
-fun File.copyToClipboard() {
+fun MFile.copyToClipboard() {
   val clipboard = Clipboard.getSystemClipboard()
   val content = ClipboardContent()
   content.putFiles(listOf(this))

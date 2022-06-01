@@ -1,6 +1,5 @@
 package matt.gui.exception
 
-import javafx.beans.value.ChangeListener
 import javafx.scene.Node
 import javafx.scene.control.TextArea
 import javafx.scene.layout.FlowPane
@@ -18,7 +17,7 @@ import matt.gui.app.GuiApp
 import matt.gui.lang.ActionButton
 import matt.gui.win.interact.openInNewWindow
 import matt.gui.win.stage.ShowMode.SHOW_AND_WAIT
-import java.io.File
+import matt.klib.file.MFile
 import kotlin.system.exitProcess
 
 fun GuiApp.showExceptionPopup(
@@ -27,7 +26,7 @@ fun GuiApp.showExceptionPopup(
   shutdown: (App.()->Unit)?,
   consumeShutdown: (App.()->Unit)?,
   st: String,
-  exceptionFile: File
+  exceptionFile: MFile
 ): ExceptionResponse {
 
   //  ChangeListener

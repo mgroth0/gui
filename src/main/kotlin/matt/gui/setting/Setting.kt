@@ -10,13 +10,14 @@ import matt.json.custom.jsonObj
 import matt.json.parseJson
 import matt.json.prim.writeJson
 import matt.kjlib.file.text
-import java.io.File
+import matt.klib.file.MFile
+
 import kotlin.contracts.ExperimentalContracts
 import kotlin.reflect.KProperty
 
 
 @ExperimentalContracts
-open class HasSettings(private val jsonFile: File) {
+open class HasSettings(private val jsonFile: MFile) {
 
 
   inner class Setting(val name: String, defaultValue: Boolean) {

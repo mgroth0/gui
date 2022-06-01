@@ -35,8 +35,9 @@ import matt.hurricanefx.tornadofx.menu.menu
 import matt.stream.recurse.recurse
 import matt.kjlib.byte.MemReport
 import matt.klib.commons.get
+import matt.klib.file.MFile
 import matt.stream.notContainedIn
-import java.io.File
+
 import java.net.URL
 import kotlin.reflect.KClass
 
@@ -57,7 +58,7 @@ fun Scene.reloadStyle(darkMode: Boolean) {
 }
 
 open class MScene(
-  root: Parent, val icon: File
+  root: Parent, val icon: MFile
 ): Scene(root) {
   constructor(
 	root: Parent, icon: String
@@ -119,10 +120,10 @@ open class MScene(
 
 
 		actionitem("open darkModena.css") {
-		  File(URL(DARK_MODENA_CSS).file).openInIntelliJ()
+		  MFile(URL(DARK_MODENA_CSS).file).openInIntelliJ()
 		}
 		actionitem("open custom.css") {
-		  File(URL(CUSTOM_CSS).file).openInIntelliJ()
+		  MFile(URL(CUSTOM_CSS).file).openInIntelliJ()
 		}
 		actionitem("print style info samples") {
 		  val classesPrinted = mutableListOf<KClass<*>>()

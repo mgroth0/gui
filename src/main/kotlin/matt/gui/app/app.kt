@@ -20,7 +20,8 @@ import matt.gui.core.scene.MScene
 import matt.gui.win.bindgeom.bindGeometry
 import matt.gui.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
-import java.io.File
+import matt.klib.file.MFile
+
 import kotlin.concurrent.thread
 
 const val NEW_MAC_NOTCH_ESTIMATE = 32.0 /*35*/
@@ -128,7 +129,7 @@ class GuiApp(
 	shutdown: (App.()->Unit)?,
 	consumeShutdown: (App.()->Unit)?,
 	st: String,
-	exceptionFile: File
+	exceptionFile: MFile
   ): ExceptionResponse {
 
 	/*dont delete until I find source of disappearing exceptions*/

@@ -44,7 +44,8 @@ import matt.hurricanefx.tornadofx.nodes.disableWhen
 import matt.hurricanefx.tornadofx.nodes.onDoubleClick
 import matt.json.prim.isValidJson
 import matt.json.prim.toPrettyJson
-import java.io.File
+import matt.klib.file.MFile
+
 import java.net.URI
 import java.util.Optional
 import java.util.WeakHashMap
@@ -337,7 +338,7 @@ fun Parent.openInNewWindow(
   }
 }
 
-fun File.openImageInWindow() {
+fun MFile.openImageInWindow() {
   AnchorPane(ImageView(this@openImageInWindow.toURI().toString()).apply {
 	isPreserveRatio = true
 	runLater {
@@ -349,7 +350,7 @@ fun File.openImageInWindow() {
 }
 
 fun ImageView.doubleClickToOpenInWindow() {
-  this.onDoubleClick { File(URI(this.image.url)).openImageInWindow() }
+  this.onDoubleClick { MFile(URI(this.image.url)).openImageInWindow() }
 }
 
 fun showMTextInputDialog(
