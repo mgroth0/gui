@@ -14,7 +14,7 @@ import javafx.scene.control.MenuItem
 import javafx.scene.control.SeparatorMenuItem
 import javafx.scene.layout.Region
 import javafx.scene.shape.Shape
-import matt.auto.IntelliJNavAction
+import matt.auto.openInIntelliJ
 import matt.gui.hotkey.filters
 import matt.gui.hotkey.handlers
 import matt.klib.commons.FLOW_FOLDER
@@ -147,7 +147,7 @@ fun showMContextMenu(
 				  thisnode::class.simpleName!!,
 				  packageFilter = pack
 				)?.let { fl ->
-				  IntelliJNavAction(fl.first.absolutePath, fl.second).start()
+				  openInIntelliJ(fl.first.absolutePath, fl.second)/*.start()*/
 				}
 			  }
 			}
