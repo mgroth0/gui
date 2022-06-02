@@ -17,7 +17,7 @@ import javafx.scene.shape.Shape
 import matt.auto.openInIntelliJ
 import matt.gui.hotkey.filters
 import matt.gui.hotkey.handlers
-import matt.klib.commons.FLOW_FOLDER
+import matt.klib.commons.RootProject.flow
 import matt.kjlib.reflect.jumpToKotlinSourceString
 import matt.klib.str.tab
 import matt.klib.lang.NEVER
@@ -143,7 +143,7 @@ fun showMContextMenu(
 			setOnAction {
 			  thread {
 				jumpToKotlinSourceString(
-				  FLOW_FOLDER!!,
+				  flow.folder!!,
 				  thisnode::class.simpleName!!,
 				  packageFilter = pack
 				)?.let { fl ->
