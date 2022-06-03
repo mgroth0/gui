@@ -58,9 +58,9 @@ object DarkModeController {
   }
 }
 
-val MODENA_CSS = flow.folder!!["style"]["modena.css"].toURI().toURL().toString()
-val DARK_MODENA_CSS = flow.folder!!["style"]["darkModena.css"].toURI().toURL().toString()
-val CUSTOM_CSS = flow.folder!!["style"]["custom.css"].toURI().toURL().toString()
+val MODENA_CSS = flow.folder["style"]["modena.css"].toURI().toURL().toString()
+val DARK_MODENA_CSS = flow.folder["style"]["darkModena.css"].toURI().toURL().toString()
+val CUSTOM_CSS = flow.folder["style"]["custom.css"].toURI().toURL().toString()
 
 
 fun Styleable.styleInfo(): String {
