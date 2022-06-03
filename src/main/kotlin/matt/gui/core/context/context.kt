@@ -143,7 +143,7 @@ fun showMContextMenu(
 			setOnAction {
 			  thread {
 				jumpToKotlinSourceString(
-				  flow.folder!!,
+				  flow.folder,
 				  thisnode::class.simpleName!!,
 				  packageFilter = pack
 				)?.let { fl ->

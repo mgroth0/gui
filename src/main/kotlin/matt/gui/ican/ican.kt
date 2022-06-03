@@ -7,7 +7,7 @@ import matt.klib.commons.RootProject.flow
 import matt.klib.commons.get
 import matt.klib.file.MFile
 
-val IconFolder by lazy { flow.folder!!["icon"] }
+val IconFolder by lazy { flow.folder["icon"] }
 
 fun IconImage(file: MFile): Image = Image(file.toPath().toUri().toURL().toString())
 fun IconImage(file: String) = IconImage(IconFolder[file])
