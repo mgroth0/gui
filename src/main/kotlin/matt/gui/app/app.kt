@@ -28,7 +28,7 @@ const val NEW_MAC_NOTCH_ESTIMATE = 32.0 /*35*/
 const val NEW_MAC_MENU_BAR_ESTIMATE = NEW_MAC_NOTCH_ESTIMATE + 2.0
 val NEW_MAX_MENU_Y_ESTIMATE_SECONDARY = 25.0
 
-class GuiApp(
+open class GuiApp(
   args: Array<String> = arrayOf(),
   val screenIndex: Int? = null,
   private val fxThread: GuiApp.(args: List<String>)->Unit,
