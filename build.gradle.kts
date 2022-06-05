@@ -1,3 +1,5 @@
+modtype = LIB
+
 dependencies {
   implementation(projects.kj.json)
   api(projects.kj.hurricanefx)
