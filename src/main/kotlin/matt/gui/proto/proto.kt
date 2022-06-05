@@ -15,6 +15,7 @@ import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
+import matt.fx.graphics.layout.minBind
 import matt.hurricanefx.Scrolls
 import matt.hurricanefx.exactHeightProperty
 import matt.hurricanefx.exactWidthProperty
