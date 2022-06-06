@@ -12,19 +12,19 @@ import javafx.stage.Stage
 import matt.auto.openInIntelliJ
 import matt.gui.core.context.mcontextmenu
 import matt.gui.core.context.showMContextMenu
-import matt.gui.fxlang.actionitem
 import matt.gui.hotkeys.addDefaultHotkeys
-import matt.gui.ican.ICON_HEIGHT
-import matt.gui.ican.ICON_WIDTH
-import matt.gui.ican.Icon
-import matt.gui.ican.IconFolder
+import matt.fx.graphics.icon.ICON_HEIGHT
+import matt.fx.graphics.icon.ICON_WIDTH
+import matt.fx.graphics.icon.Icon
+import matt.fx.graphics.icon.IconFolder
+import matt.fx.graphics.menu.actionitem
 import matt.gui.lang.onDoubleClickConsume
 import matt.gui.mag.reversed_displays
-import matt.gui.style.CUSTOM_CSS
-import matt.gui.style.DARK_MODENA_CSS
-import matt.gui.style.DarkModeController.darkModeProp
-import matt.gui.style.borderFill
-import matt.gui.style.styleInfo
+import matt.fx.graphics.style.CUSTOM_CSS
+import matt.fx.graphics.style.DARK_MODENA_CSS
+import matt.fx.graphics.style.DarkModeController.darkModeProp
+import matt.fx.graphics.style.borderFill
+import matt.fx.graphics.style.styleInfo
 import matt.gui.win.interact.WinGeom
 import matt.gui.win.interact.WinOwn
 import matt.gui.win.interact.openInNewWindow
@@ -36,7 +36,6 @@ import matt.stream.recurse.recurse
 import matt.kjlib.byte.MemReport
 import matt.klib.commons.get
 import matt.klib.file.MFile
-import matt.stream.notContainedIn
 
 import java.net.URL
 import kotlin.reflect.KClass
@@ -108,7 +107,7 @@ open class MScene(
 		  reloadStyle(darkModeProp.value)
 		}
 
-		/*this is controlled from the OS from now on*/        /*actionitem("toggle darkMode") {
+		/*this is controlled from the OS from now on*/        /*matt.fx.graphics.menu.actionitem("toggle darkMode") {
 		  darkMode = !darkMode
 		  if (darkMode) {
 			stylesheets.setAll(DARK_MODENA_CSS, CUSTOM_CSS)
@@ -130,14 +129,14 @@ open class MScene(
 		  (root as Node).recurse {
 			(it as? Parent)?.childrenUnmodifiable ?: listOf()
 		  }.forEach {
-			if (it::class.notContainedIn(classesPrinted)) {
+			if (it::class !in classesPrinted) {
 			  println(it.styleInfo())
 			  classesPrinted += it::class
 			}
 		  }
 		}        /*need this*/
 		this.menu("set border") {        /*specify this here explicitly at least once
-		  * or else it will use the `actionitem` above without import*/
+		  * or else it will use the `matt.fx.graphics.menu.actionitem` above without import*/
 		  this.actionitem("none") {
 			(root as? Region)?.borderFill = null
 		  }

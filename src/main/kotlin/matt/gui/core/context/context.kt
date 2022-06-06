@@ -24,7 +24,6 @@ import matt.klib.lang.NEVER
 import java.util.WeakHashMap
 import kotlin.collections.set
 import kotlin.concurrent.thread
-import kotlin.contracts.ExperimentalContracts
 
 val contextMenuItems = WeakHashMap<EventTarget, MutableList<MenuItem>>()
 val contextMenuItemGens = WeakHashMap<EventTarget, MutableList<MContextMenuBuilder.()->Unit>>()
@@ -40,10 +39,8 @@ class MContextMenuBuilder(
   val genList = mutableListOf<MenuItem>()
 
   init {
-	if (!isGen) {
-	  if (contextMenuItems[node] == null) {
-		contextMenuItems[node] = mutableListOf()
-	  }
+	if (!isGen && contextMenuItems[node] == null) {
+	  contextMenuItems[node] = mutableListOf()
 	}
   }
 
@@ -116,7 +113,6 @@ private fun getCMItems(node: EventTarget): List<MenuItem>? {
   return ((normal ?: listOf()) + (gen ?: listOf())).takeIf { it.isNotEmpty() }
 }
 
-@ExperimentalContracts
 fun showMContextMenu(
   target: Node,
   xy: Pair<Double, Double>

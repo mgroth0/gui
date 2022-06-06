@@ -20,7 +20,7 @@ import javafx.stage.StageStyle
 import javafx.stage.Window
 import matt.gui.core.scene.MScene
 import matt.gui.lang.actionbutton
-import matt.gui.style.borderFill
+import matt.fx.graphics.style.borderFill
 import matt.gui.win.bindgeom.bindGeometry
 import matt.gui.win.stage.MStage
 import matt.gui.win.stage.ShowMode

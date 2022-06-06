@@ -1,8 +1,6 @@
 package matt.gui.fxlang
 
-import javafx.scene.control.ContextMenu
 import javafx.scene.control.ListView
-import javafx.scene.control.Menu
 import javafx.scene.control.TableView
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
@@ -11,7 +9,6 @@ import javafx.scene.layout.BackgroundFill
 import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
 import matt.hurricanefx.eye.lib.onChange
-import matt.hurricanefx.tornadofx.menu.item
 import matt.klib.lang.err
 
 var Region.backgroundFill: Paint?
@@ -49,21 +46,5 @@ fun <T> TreeView<T>.onSelect(op: (T?) -> Unit) {
 fun <T> TableView<T>.onSelect(op: (T?) -> Unit) {
     selectionModel.selectedItemProperty().onChange {
         op(it)
-    }
-}
-
-fun Menu.actionitem(s: String, op: () -> Unit) {
-    item(s) {
-        setOnAction {
-            op()
-        }
-    }
-}
-
-fun ContextMenu.actionitem(s: String, op: () -> Unit) {
-    item(s) {
-        setOnAction {
-            op()
-        }
     }
 }
