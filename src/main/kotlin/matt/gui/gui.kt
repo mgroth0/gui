@@ -8,10 +8,10 @@ import javafx.scene.paint.Color
 import javafx.scene.paint.Color.SKYBLUE
 import javafx.stage.Screen
 import matt.async.date.sec
-import matt.gui.core.scene.MScene
+import matt.fx.graphics.core.scene.MScene
 import matt.gui.fxlang.backgroundFill
 import matt.gui.proto.ScaledCanvas
-import matt.gui.win.stage.MStage
+import matt.fx.graphics.win.stage.MStage
 import matt.hurricanefx.drags
 import matt.hurricanefx.exactHeight
 import matt.hurricanefx.exactWidth

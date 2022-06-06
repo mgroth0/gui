@@ -14,9 +14,9 @@ import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.IGNORE
 import matt.gui.app.GuiApp
-import matt.gui.lang.ActionButton
-import matt.gui.win.interact.openInNewWindow
-import matt.gui.win.stage.ShowMode.SHOW_AND_WAIT
+import matt.fx.graphics.lang.ActionButton
+import matt.fx.graphics.win.interact.openInNewWindow
+import matt.fx.graphics.win.stage.ShowMode.SHOW_AND_WAIT
 import matt.klib.file.MFile
 import kotlin.system.exitProcess
 

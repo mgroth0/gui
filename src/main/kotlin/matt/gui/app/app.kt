@@ -16,17 +16,15 @@ import matt.exec.app.App
 import matt.exec.app.appName
 import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
-import matt.gui.core.scene.MScene
-import matt.gui.win.bindgeom.bindGeometry
-import matt.gui.win.stage.MStage
+import matt.fx.graphics.core.scene.MScene
+import matt.fx.graphics.win.bindgeom.bindGeometry
+import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
 import matt.klib.file.MFile
 
 import kotlin.concurrent.thread
 
-const val NEW_MAC_NOTCH_ESTIMATE = 32.0 /*35*/
-const val NEW_MAC_MENU_BAR_ESTIMATE = NEW_MAC_NOTCH_ESTIMATE + 2.0
-val NEW_MAX_MENU_Y_ESTIMATE_SECONDARY = 25.0
+
 
 open class GuiApp(
   args: Array<String> = arrayOf(),
