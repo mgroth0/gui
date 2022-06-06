@@ -43,9 +43,7 @@ import matt.hurricanefx.tornadofx.layout.hbox
 import matt.hurricanefx.tornadofx.nodes.disableWhen
 import matt.hurricanefx.tornadofx.nodes.onDoubleClick
 import matt.json.prim.isValidJson
-import matt.json.prim.toPrettyJson
 import matt.klib.file.MFile
-
 import java.net.URI
 import java.util.Optional
 import java.util.WeakHashMap
