@@ -17,6 +17,8 @@ import matt.exec.app.appName
 import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.fx.graphics.core.scene.MScene
+import matt.fx.graphics.mag.NEW_MAC_NOTCH_ESTIMATE
+import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
