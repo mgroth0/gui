@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.control.CheckMenuItem
 import kotlinx.serialization.json.jsonObject
 import matt.hurricanefx.eye.lib.onChange
-import matt.hurricanefx.tornadofx.bind.toBinding
+import matt.hurricanefx.bind.toBinding
 import matt.json.custom.bool
 import matt.json.custom.jsonObj
 import matt.json.parseJson
