@@ -7,7 +7,7 @@ dependencies {
   api(projects.kj.exec)
   api(projects.kj.auto)
 //  api(projects.kj.hotkey)
-  implementation(libs.jSystemThemeDetector)
+//  implementation(libs.jSystemThemeDetector)
   api(libs.kotlinx.serialization.json)
 }
 
