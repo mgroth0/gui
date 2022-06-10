@@ -1,6 +1,7 @@
 package matt.gui
 
 import javafx.animation.Interpolator
+import javafx.application.Platform.runLater
 import javafx.beans.property.DoubleProperty
 import javafx.geometry.Pos.TOP_CENTER
 import javafx.scene.layout.VBox
@@ -22,7 +23,6 @@ import matt.hurricanefx.intColorToFXColor
 import matt.hurricanefx.toFXDuration
 import matt.hurricanefx.tornadofx.animation.keyframe
 import matt.hurricanefx.tornadofx.animation.timeline
-import matt.hurricanefx.tornadofx.async.runLater
 import matt.hurricanefx.tornadofx.control.text
 import matt.klib.file.MFile
 import java.awt.image.BufferedImage
