@@ -1,6 +1,6 @@
 package matt.gui.sound
 
-import matt.kjlib.cache.LRUCache
+import matt.caching.cache.LRUCache
 import matt.klib.commons.SOUND_FOLDER
 import matt.klib.commons.get
 import matt.klib.dmap.withStoringDefault

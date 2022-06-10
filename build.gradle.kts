@@ -9,6 +9,7 @@ dependencies {
 //  api(projects.kj.hotkey)
 //  implementation(libs.jSystemThemeDetector)
   api(libs.kotlinx.serialization.json)
+  implementation(projects.kj.caching)
 }
 
 
