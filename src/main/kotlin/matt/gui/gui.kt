@@ -13,7 +13,7 @@ import matt.fx.graphics.core.scene.MScene
 import matt.gui.fxlang.backgroundFill
 import matt.gui.proto.ScaledCanvas
 import matt.fx.graphics.win.stage.MStage
-import matt.hurricanefx.drags
+import matt.fx.graphics.clip.drags
 import matt.hurricanefx.exactHeight
 import matt.hurricanefx.exactWidth
 import matt.hurricanefx.eye.lang.DProp
