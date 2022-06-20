@@ -14,8 +14,8 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import matt.exec.app.App
 import matt.exec.app.appName
-import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
-import matt.exec.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
+import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
+import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.fx.graphics.core.scene.MScene
 import matt.fx.graphics.mag.NEW_MAC_NOTCH_ESTIMATE
 import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
