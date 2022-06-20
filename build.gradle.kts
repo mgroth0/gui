@@ -5,7 +5,7 @@ dependencies {
   api(projects.kj.hurricanefx)
   api(projects.kj.fx.fxGraphics)
   api(projects.kj.exec)
-  api(projects.kj.auto)
+  api(projects.k.auto)
 //  api(projects.kj.hotkey)
 //  implementation(libs.jSystemThemeDetector)
   api(libs.kotlinx.serialization.json)
