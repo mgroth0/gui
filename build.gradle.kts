@@ -1,7 +1,7 @@
 modtype = LIB
 
 dependencies {
-  implementation(projects.kj.json)
+  implementation(projects.k.json)
   api(projects.k.hurricanefx)
   api(projects.k.fx.fxGraphics)
   api(projects.k.exec)
