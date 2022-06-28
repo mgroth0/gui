@@ -9,7 +9,7 @@ import matt.json.custom.bool
 import matt.json.custom.jsonObj
 import matt.json.parseJson
 import matt.json.prim.writeJson
-import matt.klib.file.MFile
+import matt.file.MFile
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.reflect.KProperty

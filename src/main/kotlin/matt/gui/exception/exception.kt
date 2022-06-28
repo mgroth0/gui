@@ -17,7 +17,7 @@ import matt.gui.app.GuiApp
 import matt.fx.graphics.lang.ActionButton
 import matt.fx.graphics.win.interact.openInNewWindow
 import matt.fx.graphics.win.stage.ShowMode.SHOW_AND_WAIT
-import matt.klib.file.MFile
+import matt.file.MFile
 import kotlin.system.exitProcess
 
 fun GuiApp.showExceptionPopup(

@@ -24,7 +24,7 @@ import matt.hurricanefx.toFXDuration
 import matt.hurricanefx.tornadofx.animation.keyframe
 import matt.hurricanefx.tornadofx.animation.timeline
 import matt.hurricanefx.tornadofx.control.text
-import matt.klib.file.MFile
+import matt.file.MFile
 import java.awt.image.BufferedImage
 
 import java.lang.Thread.sleep
