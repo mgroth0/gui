@@ -1,8 +1,7 @@
 package matt.gui.sound
 
 import matt.caching.cache.LRUCache
-import matt.klib.commons.SOUND_FOLDER
-import matt.klib.commons.get
+import matt.file.commons.SOUND_FOLDER
 import matt.klib.dmap.withStoringDefault
 import java.util.concurrent.Semaphore
 import javax.sound.sampled.AudioFormat
