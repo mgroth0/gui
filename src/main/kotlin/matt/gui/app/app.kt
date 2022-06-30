@@ -4,6 +4,7 @@ import com.sun.javafx.util.Logging
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.scene.control.ScrollPane
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
@@ -23,6 +24,7 @@ import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
 import matt.file.MFile
+import matt.hurricanefx.wrapper.VBoxWrapper
 
 import kotlin.concurrent.thread
 
@@ -71,8 +73,12 @@ open class GuiApp(
 	scene = MScene(VBox()).apply(op) /*vbox is placeholder*/
   }
 
-  fun rootVbox(op: VBox.()->Unit) {
-	scene = MScene(VBox().apply(op))
+  fun rootVbox(op: VBoxWrapper.()->Unit) {
+	scene = MScene(VBoxWrapper().apply(op).node)
+  }
+
+  fun rootBorderPane(op: BorderPane.()->Unit) {
+	scene = MScene(BorderPane().apply(op))
   }
 
   fun rootPane(op: Pane.()->Unit) {
