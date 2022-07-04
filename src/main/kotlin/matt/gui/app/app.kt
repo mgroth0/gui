@@ -122,7 +122,7 @@ open class GuiApp(
 	Logging.getJavaFXLogger().disableLogging()
 
 
-
+//	SvgImageLoaderFactory.install()
 	Application.launch(FlowFXApp::class.java, *args)
 	javafxRunning = false
 

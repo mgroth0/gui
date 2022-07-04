@@ -25,6 +25,7 @@ import matt.hurricanefx.tornadofx.animation.keyframe
 import matt.hurricanefx.tornadofx.animation.timeline
 import matt.hurricanefx.tornadofx.control.text
 import matt.file.MFile
+import matt.fx.graphics.icon.Icon
 import java.awt.image.BufferedImage
 
 import java.lang.Thread.sleep
@@ -47,9 +48,11 @@ fun BufferedImage.toFXCanvas(): ScaledCanvas {
   return canv
 }
 
-fun MFile.draggableIcon() = fileIcons[this].toFXCanvas().apply {
-  drags(this@draggableIcon)
-}
+fun MFile.draggableIcon() =
+  if (isDirectory) Icon("folder") else if (extension.isBlank()) Icon("file/bin") else Icon("file/${extension}")
+	/*fileIcons[this].toFXCanvas()*/.apply {
+	  drags(this@draggableIcon)
+	}
 
 const val NOTIFICATION_WIDTH = 200.0
 const val NOTIFICATION_HEIGHT = 100.0

@@ -15,6 +15,7 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
 import javafx.scene.text.Text
+import matt.hurricanefx.wrapper.TreeTableViewWrapper
 import matt.stream.recurse.recurse
 import matt.stream.recurse.recurseToFlat
 import matt.stream.recurse.recursionDepth
@@ -153,7 +154,7 @@ fun <T> TableView<T>.autoResizeColumns() {
 }
 
 // this one is different! it will apply a special width for the first matt.hurricanefx.tableview.coolColumn (which it assumes is for arrows)
-fun <T> TreeTableView<T>.autoResizeColumns() {
+fun <T> TreeTableViewWrapper<T>.autoResizeColumns() {
     columnResizePolicy = TreeTableView.UNCONSTRAINED_RESIZE_POLICY
 
     columns.forEachIndexed { index, column ->

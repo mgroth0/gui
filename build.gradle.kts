@@ -10,6 +10,7 @@ dependencies {
 //  implementation(libs.jSystemThemeDetector)
   api(libs.kotlinx.serialization.json)
   implementation(projects.k.caching)
+//  implementation(libs.javafxsvg)
 }
 
 

@@ -9,6 +9,7 @@ import javafx.scene.layout.BackgroundFill
 import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
 import matt.hurricanefx.eye.lib.onChange
+import matt.hurricanefx.wrapper.NodeWrapper
 import matt.klib.lang.err
 
 var Region.backgroundFill: Paint?
@@ -25,11 +26,13 @@ var Region.backgroundFill: Paint?
     }
 
 fun backgroundColor(c: Paint) = Background(BackgroundFill(c, null, null))
+
 fun <T> ListView<T>.onSelect(op: (T?) -> Unit) {
     selectionModel.selectedItemProperty().onChange {
         op(it)
     }
 }
+fun <T> NodeWrapper<ListView<T>>.onSelect(op: (T?) -> Unit) = node.onSelect(op)
 
 fun <T> TreeTableView<T>.onSelect(op: (T?) -> Unit) {
     selectionModel.selectedItemProperty().onChange {
@@ -37,14 +40,19 @@ fun <T> TreeTableView<T>.onSelect(op: (T?) -> Unit) {
     }
 }
 
+@JvmName("onSelectTreeTable") fun <T> NodeWrapper<TreeTableView<T>>.onSelect(op: (T?) -> Unit) = node.onSelect(op)
+
 fun <T> TreeView<T>.onSelect(op: (T?) -> Unit) {
     selectionModel.selectedItemProperty().onChange {
         op(it?.value)
     }
 }
+@JvmName("onSelectTree") fun <T> NodeWrapper<TreeView<T>>.onSelect(op: (T?) -> Unit) = node.onSelect(op)
 
 fun <T> TableView<T>.onSelect(op: (T?) -> Unit) {
     selectionModel.selectedItemProperty().onChange {
         op(it)
     }
 }
+
+@JvmName("onSelectTable") fun <T> NodeWrapper<TableView<T>>.onSelect(op: (T?) -> Unit) = node.onSelect(op)
