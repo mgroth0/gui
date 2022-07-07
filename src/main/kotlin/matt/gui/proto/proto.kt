@@ -103,7 +103,7 @@ fun EventTarget.scaledCanvas(
   op: ScaledCanvas.()->Unit = {}
 ) =
   opcr(
-	this, ScaledCanvas(
+	this.wrapped(), ScaledCanvas(
 	  width = width,
 	  height = height,
 	  initialScale = scale.toDouble()
