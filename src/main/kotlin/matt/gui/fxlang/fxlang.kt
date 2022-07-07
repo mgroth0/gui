@@ -6,13 +6,13 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
 import javafx.scene.layout.Background
 import javafx.scene.layout.BackgroundFill
-import javafx.scene.layout.Region
 import javafx.scene.paint.Paint
 import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.wrapper.NodeWrapper
+import matt.hurricanefx.wrapper.RegionWrapper
 import matt.klib.lang.err
 
-var Region.backgroundFill: Paint?
+var RegionWrapper.backgroundFill: Paint?
     set(value) {
         if (value == null) {
             this.background = null

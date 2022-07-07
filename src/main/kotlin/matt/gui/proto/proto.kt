@@ -41,7 +41,7 @@ fun TabPane.vtab(s: String = "", op: VBox.()->Unit = {}): Tab {
 }
 
 
-infix fun RegionWrapper<*>.wrappedIn(sp: ScrollPane): ScrollPane {
+infix fun RegionWrapper.wrappedIn(sp: ScrollPane): ScrollPane {
   this minBind sp.wrapped()
   sp.backgroundProperty().bindBidirectional(backgroundProperty)
   return sp.apply {
@@ -80,7 +80,7 @@ abstract class ScrollVBox(
 		/*matt.hurricanefx.tornadofx.vector.minus 10 here is so everything looks nicer*/
 		/*also neccesary to prevent buggy javafx bug where fitToWidth doesnt work and it trys to hscroll.*/
 		/*needs to be exact or content will flow out of scrollpane (doesnt obey fitToWidth)*/
-		exactWidthProperty().bind(sp.widthProperty().minus(woffset*2))
+		wrapped().exactWidthProperty().bind(sp.widthProperty().minus(woffset*2))
 
 		/*reason: this causes stupid buggy fx vertical scroll bar to properly hide when not needed*/
 		minHeightProperty().bind(sp.heightProperty().minus(50.0))
@@ -140,8 +140,8 @@ class ScaledCanvas(
 
 
   init {
-	exactHeightProperty().bind(awesomeScaleProperty*height)
-	exactWidthProperty().bind(awesomeScaleProperty*width)
+	wrapped().exactHeightProperty().bind(awesomeScaleProperty*height)
+	wrapped().exactWidthProperty().bind(awesomeScaleProperty*width)
   }
 
   val gc by lazy { canvas.graphicsContext2D }

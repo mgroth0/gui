@@ -26,6 +26,7 @@ import matt.hurricanefx.tornadofx.animation.timeline
 import matt.hurricanefx.tornadofx.control.text
 import matt.file.MFile
 import matt.fx.graphics.icon.Icon
+import matt.hurricanefx.wrapper.VBoxWrapper
 import java.awt.image.BufferedImage
 
 import java.lang.Thread.sleep
@@ -73,7 +74,7 @@ fun notification(
 	  isAlwaysOnTop = true
 	}
 	stage.scene = MScene(
-	  VBox().apply {
+	  VBoxWrapper {
 		this.alignment = TOP_CENTER
 		runLater {
 		  backgroundFill = SKYBLUE
@@ -88,7 +89,7 @@ fun notification(
 		setOnMousePressed {
 		  stage.close()
 		}
-	  }
+	  }.node
 	).apply {
 	  this.fill = SKYBLUE
 	}
