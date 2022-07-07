@@ -25,6 +25,8 @@ import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.tornadofx.fx.opcr
 import matt.hurricanefx.tornadofx.tab.staticTab
+import matt.hurricanefx.wrapper.RegionWrapper
+import matt.hurricanefx.wrapper.wrapped
 import matt.klib.lang.applyIt
 
 infix fun TextField.withPrompt(s: String): TextField {
@@ -39,11 +41,11 @@ fun TabPane.vtab(s: String = "", op: VBox.()->Unit = {}): Tab {
 }
 
 
-infix fun Region.wrappedIn(sp: ScrollPane): ScrollPane {
-  this minBind sp
-  sp.backgroundProperty().bindBidirectional(backgroundProperty())
+infix fun RegionWrapper<*>.wrappedIn(sp: ScrollPane): ScrollPane {
+  this minBind sp.wrapped()
+  sp.backgroundProperty().bindBidirectional(backgroundProperty)
   return sp.apply {
-	content = this@wrappedIn
+	content = this@wrappedIn.node
   }
 }
 
