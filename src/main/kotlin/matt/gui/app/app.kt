@@ -24,6 +24,7 @@ import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
 import matt.file.MFile
+import matt.hurricanefx.wrapper.HBoxWrapper
 import matt.hurricanefx.wrapper.VBoxWrapper
 
 import kotlin.concurrent.thread
@@ -86,8 +87,8 @@ open class GuiApp(
 	scene = MScene(Pane().apply(op))
   }
 
-  fun rootHbox(op: HBox.()->Unit) {
-	scene = MScene(HBox().apply(op))
+  fun rootHbox(op: HBoxWrapper.()->Unit) {
+	scene = MScene(HBoxWrapper().apply(op).node)
   }
 
   fun rootScrollpane(op: ScrollPane.()->Unit) {
