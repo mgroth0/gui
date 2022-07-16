@@ -5,7 +5,6 @@ import javafx.application.Application
 import javafx.application.Platform
 import javafx.scene.control.ScrollPane
 import javafx.scene.layout.BorderPane
-import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
@@ -13,27 +12,26 @@ import javafx.stage.Screen
 import javafx.stage.Stage
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import matt.exec.app.App
-import matt.exec.app.appName
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
+import matt.exec.app.App
+import matt.exec.app.appName
+import matt.file.MFile
 import matt.fx.graphics.core.scene.MScene
 import matt.fx.graphics.mag.NEW_MAC_NOTCH_ESTIMATE
 import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
-import matt.file.MFile
 import matt.hurricanefx.wrapper.HBoxWrapper
 import matt.hurricanefx.wrapper.VBoxWrapper
-
 import kotlin.concurrent.thread
-
 
 
 open class GuiApp(
   args: Array<String> = arrayOf(),
   val screenIndex: Int? = null,
+  decorated: Boolean = false,
   private val fxThread: GuiApp.(args: List<String>)->Unit,
 
   ): App(args) {
@@ -123,7 +121,7 @@ open class GuiApp(
 	Logging.getJavaFXLogger().disableLogging()
 
 
-//	SvgImageLoaderFactory.install()
+	//	SvgImageLoaderFactory.install()
 	Application.launch(FlowFXApp::class.java, *args)
 	javafxRunning = false
 
@@ -171,7 +169,7 @@ open class GuiApp(
 
 
   val stage by lazy {
-	MStage().apply {
+	MStage(decorated = decorated).apply {
 	  registerMainStage(this, appName)
 	}
   }
