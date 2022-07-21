@@ -8,7 +8,6 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
-import javafx.scene.shape.Circle
 import matt.fx.graphics.layout.minBind
 import matt.hurricanefx.Scrolls
 import matt.hurricanefx.exactHeightProperty
@@ -20,6 +19,7 @@ import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.tornadofx.fx.opcr
 import matt.hurricanefx.tornadofx.tab.staticTab
 import matt.hurricanefx.wrapper.CanvasWrapper
+import matt.hurricanefx.wrapper.CircleWrapper
 import matt.hurricanefx.wrapper.EventTargetWrapper.Companion.wrapped
 import matt.hurricanefx.wrapper.PaneWrapper
 import matt.hurricanefx.wrapper.RegionWrapper
@@ -150,7 +150,7 @@ class ScaledCanvas(
   operator fun set(x: Int, y: Int, c: Color) = pw.setColor(x, y, c)
 }
 
-fun indicatorCircle(booleanProperty: BooleanProperty) = Circle(8.0).apply {
+fun indicatorCircle(booleanProperty: BooleanProperty) = CircleWrapper(8.0).apply {
   fillProperty().bind(booleanProperty.objectBinding {
 	if (it == true) Color.LIGHTGREEN else Color.DARKRED
   })
