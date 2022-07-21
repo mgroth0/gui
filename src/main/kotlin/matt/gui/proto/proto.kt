@@ -25,6 +25,9 @@ import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.tornadofx.fx.opcr
 import matt.hurricanefx.tornadofx.tab.staticTab
+import matt.hurricanefx.wrapper.CanvasWrapper
+import matt.hurricanefx.wrapper.EventTargetWrapper.Companion.wrapped
+import matt.hurricanefx.wrapper.PaneWrapper
 import matt.hurricanefx.wrapper.RegionWrapper
 import matt.hurricanefx.wrapper.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.TabPaneWrapper
@@ -65,32 +68,32 @@ fun ScrollPaneNoBars(content: Node? = null): ScrollPaneWrapper {
 abstract class ScrollVBox(
   scrollpane: ScrollPaneWrapper = ScrollPaneWrapper(),
   val vbox: VBoxWrapper = VBoxWrapper()
-): RegionWrapper(), Scrolls { //Refreshable
-  override val scrollPaneWrapper = scrollpane
+): PaneWrapper(), Scrolls { //Refreshable
+  override val scrollPane = scrollpane
 
   init {
-	children.add(scrollpaneWrapper.applyIt { sp ->
+	children.add(scrollPane.applyIt { sp ->
 	  /*If I want to configure, make into constructor params?*/
 	  vbarPolicy = AS_NEEDED
 	  hbarPolicy = NEVER
 	  isFitToWidth = true
 
-	  prefWidthProperty().bind(this@ScrollVBox.widthProperty())
-	  prefHeightProperty().bind(this@ScrollVBox.heightProperty())
+	  prefWidthProperty.bind(this@ScrollVBox.widthProperty)
+	  prefHeightProperty.bind(this@ScrollVBox.heightProperty)
 	  val woffset = 25.0
 	  layoutX = woffset
 	  layoutY = 0.0
 
-	  content = vbox.apply {
+	  content = this@ScrollVBox.vbox.apply {
 		/*matt.hurricanefx.tornadofx.vector.minus 10 here is so everything looks nicer*/
 		/*also neccesary to prevent buggy javafx bug where fitToWidth doesnt work and it trys to hscroll.*/
 		/*needs to be exact or content will flow out of scrollpane (doesnt obey fitToWidth)*/
-		wrapped().exactWidthProperty().bind(sp.widthProperty().minus(woffset*2))
+		exactWidthProperty().bind(sp.widthProperty.minus(woffset*2))
 
 		/*reason: this causes stupid buggy fx vertical scroll bar to properly hide when not needed*/
-		minHeightProperty().bind(sp.heightProperty().minus(50.0))
-	  }
-	})
+		minHeightProperty.bind(sp.heightProperty.minus(50.0))
+	  }.node
+	}.node)
   }
 
   //  abstract fun VBox.refreshContent()
@@ -125,22 +128,22 @@ class ScaledCanvas(
   height: Number,
   width: Number,
   val initialScale: Double = 1.0
-): RegionWrapper() {
+): PaneWrapper() {
   constructor(hw: Number, scale: Double): this(height = hw.toDouble(), width = hw.toDouble(), initialScale = scale)
 
   val awesomeScaleProperty = SimpleDoubleProperty(initialScale)
   /*val extraH = (height.toDouble()*initialScale - height.toDouble())/2
   val extraW = (width.toDouble()*initialScale - width.toDouble())/2*/
 
-  val canvas = Canvas(
+  val canvas = CanvasWrapper(
 	width.toDouble(),
 	height.toDouble()
   ).apply {
-	layoutXProperty().bind((widthProperty()*awesomeScaleProperty - widthProperty())/2)
-	layoutYProperty().bind((heightProperty()*awesomeScaleProperty - heightProperty())/2)
-	scaleXProperty().bind(awesomeScaleProperty)
-	scaleYProperty().bind(awesomeScaleProperty)
-	children.add(this)
+	layoutXProperty().bind((widthProperty*this@ScaledCanvas.awesomeScaleProperty - widthProperty)/2)
+	layoutYProperty().bind((heightProperty*this@ScaledCanvas.awesomeScaleProperty - heightProperty)/2)
+	scaleXProperty().bind(this@ScaledCanvas.awesomeScaleProperty)
+	scaleYProperty().bind(this@ScaledCanvas.awesomeScaleProperty)
+	this@ScaledCanvas.children.add(this.node)
   }
 
 
