@@ -26,6 +26,7 @@ import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.wrapper.HBoxWrapper
 import matt.hurricanefx.wrapper.NodeWrapper
+import matt.hurricanefx.wrapper.PaneWrapper
 import matt.hurricanefx.wrapper.TabPaneWrapper
 import matt.hurricanefx.wrapper.VBoxWrapper
 import matt.hurricanefx.wrapper.wrapped
@@ -88,9 +89,9 @@ open class GuiApp(
 	scene = MScene(BorderPane().apply(op))
   }
 
-  fun rootPane(op: Pane.()->Unit) {
+  fun rootPane(op: PaneWrapper.()->Unit) {
 
-	scene = MScene(Pane().apply(op))
+	scene = MScene(PaneWrapper().apply(op).node)
   }
 
   fun rootHbox(op: HBoxWrapper.()->Unit) {
