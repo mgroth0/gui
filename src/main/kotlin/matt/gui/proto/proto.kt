@@ -4,14 +4,8 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventTarget
 import javafx.scene.Node
-import javafx.scene.canvas.Canvas
-import javafx.scene.control.ScrollPane
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
-import javafx.scene.control.Tab
-import javafx.scene.control.TabPane
-import javafx.scene.control.TextField
-import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
@@ -34,7 +28,6 @@ import matt.hurricanefx.wrapper.TabPaneWrapper
 import matt.hurricanefx.wrapper.TabWrapper
 import matt.hurricanefx.wrapper.TextFieldWrapper
 import matt.hurricanefx.wrapper.VBoxWrapper
-import matt.hurricanefx.wrapper.wrapped
 import matt.klib.lang.applyIt
 
 infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {
