@@ -27,8 +27,10 @@ import matt.hurricanefx.tornadofx.fx.opcr
 import matt.hurricanefx.tornadofx.tab.staticTab
 import matt.hurricanefx.wrapper.RegionWrapper
 import matt.hurricanefx.wrapper.ScrollPaneWrapper
+import matt.hurricanefx.wrapper.TabPaneWrapper
 import matt.hurricanefx.wrapper.TabWrapper
 import matt.hurricanefx.wrapper.TextFieldWrapper
+import matt.hurricanefx.wrapper.VBoxWrapper
 import matt.hurricanefx.wrapper.wrapped
 import matt.klib.lang.applyIt
 
@@ -45,15 +47,15 @@ fun TabPaneWrapper.vtab(s: String = "", op: VBox.()->Unit = {}): TabWrapper {
 
 
 infix fun RegionWrapper.wrappedIn(sp: ScrollPaneWrapper): ScrollPaneWrapper {
-  this minBind sp.wrapped()
-  sp.backgroundProperty().bindBidirectional(backgroundProperty)
+  this minBind sp
+  sp.backgroundProperty.bindBidirectional(backgroundProperty)
   return sp.apply {
 	content = this@wrappedIn.node
   }
 }
 
 fun ScrollPaneNoBars(content: Node? = null): ScrollPaneWrapper {
-  return ScrollPane(content).apply {
+  return ScrollPaneWrapper(content).apply {
 	vbarPolicy = NEVER
 	hbarPolicy = NEVER
   }
@@ -62,9 +64,9 @@ fun ScrollPaneNoBars(content: Node? = null): ScrollPaneWrapper {
 
 abstract class ScrollVBox(
   scrollpane: ScrollPaneWrapper = ScrollPaneWrapper(),
-  val vbox: VBox = VBox()
-): Region(), Scrolls { //Refreshable
-  override val scrollPane = scrollpane
+  val vbox: VBoxWrapper = VBoxWrapper()
+): RegionWrapper(), Scrolls { //Refreshable
+  override val scrollPaneWrapper = scrollpane
 
   init {
 	children.add(scrollpaneWrapper.applyIt { sp ->
