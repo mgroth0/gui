@@ -26,22 +26,25 @@ import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.tornadofx.fx.opcr
 import matt.hurricanefx.tornadofx.tab.staticTab
 import matt.hurricanefx.wrapper.RegionWrapper
+import matt.hurricanefx.wrapper.ScrollPaneWrapper
+import matt.hurricanefx.wrapper.TabWrapper
+import matt.hurricanefx.wrapper.TextFieldWrapper
 import matt.hurricanefx.wrapper.wrapped
 import matt.klib.lang.applyIt
 
-infix fun TextField.withPrompt(s: String): TextField {
+infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {
   promptText = s
   return this
 }
 
-fun TabPane.vtab(s: String = "", op: VBox.()->Unit = {}): Tab {
+fun TabPaneWrapper.vtab(s: String = "", op: VBox.()->Unit = {}): TabWrapper {
   return staticTab(s, VBox()) {
 	op()
   }
 }
 
 
-infix fun RegionWrapper.wrappedIn(sp: ScrollPane): ScrollPane {
+infix fun RegionWrapper.wrappedIn(sp: ScrollPaneWrapper): ScrollPaneWrapper {
   this minBind sp.wrapped()
   sp.backgroundProperty().bindBidirectional(backgroundProperty)
   return sp.apply {
@@ -49,7 +52,7 @@ infix fun RegionWrapper.wrappedIn(sp: ScrollPane): ScrollPane {
   }
 }
 
-fun ScrollPaneNoBars(content: Node? = null): ScrollPane {
+fun ScrollPaneNoBars(content: Node? = null): ScrollPaneWrapper {
   return ScrollPane(content).apply {
 	vbarPolicy = NEVER
 	hbarPolicy = NEVER
@@ -58,13 +61,13 @@ fun ScrollPaneNoBars(content: Node? = null): ScrollPane {
 
 
 abstract class ScrollVBox(
-  scrollpane: ScrollPane = ScrollPane(),
+  scrollpane: ScrollPaneWrapper = ScrollPaneWrapper(),
   val vbox: VBox = VBox()
 ): Region(), Scrolls { //Refreshable
   override val scrollPane = scrollpane
 
   init {
-	children.add(scrollpane.applyIt { sp ->
+	children.add(scrollpaneWrapper.applyIt { sp ->
 	  /*If I want to configure, make into constructor params?*/
 	  vbarPolicy = AS_NEEDED
 	  hbarPolicy = NEVER
@@ -120,7 +123,7 @@ class ScaledCanvas(
   height: Number,
   width: Number,
   val initialScale: Double = 1.0
-): Region() {
+): RegionWrapper() {
   constructor(hw: Number, scale: Double): this(height = hw.toDouble(), width = hw.toDouble(), initialScale = scale)
 
   val awesomeScaleProperty = SimpleDoubleProperty(initialScale)
@@ -140,8 +143,8 @@ class ScaledCanvas(
 
 
   init {
-	wrapped().exactHeightProperty().bind(awesomeScaleProperty*height)
-	wrapped().exactWidthProperty().bind(awesomeScaleProperty*width)
+	exactHeightProperty().bind(awesomeScaleProperty*height)
+	exactWidthProperty().bind(awesomeScaleProperty*width)
   }
 
   val gc by lazy { canvas.graphicsContext2D }
