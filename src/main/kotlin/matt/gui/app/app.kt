@@ -4,9 +4,7 @@ import com.sun.javafx.util.Logging
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.scene.control.ScrollPane
-import javafx.scene.control.TabPane
 import javafx.scene.layout.BorderPane
-import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.layout.VBox
 import javafx.stage.Screen
@@ -25,11 +23,9 @@ import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.wrapper.HBoxWrapper
-import matt.hurricanefx.wrapper.NodeWrapper
 import matt.hurricanefx.wrapper.PaneWrapper
 import matt.hurricanefx.wrapper.TabPaneWrapper
 import matt.hurricanefx.wrapper.VBoxWrapper
-import matt.hurricanefx.wrapper.wrapped
 import kotlin.concurrent.thread
 
 

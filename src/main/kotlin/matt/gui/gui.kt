@@ -4,7 +4,6 @@ import javafx.animation.Interpolator
 import javafx.application.Platform.runLater
 import javafx.beans.property.DoubleProperty
 import javafx.geometry.Pos.TOP_CENTER
-import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.SKYBLUE
 import javafx.stage.Screen
@@ -18,7 +17,6 @@ import matt.hurricanefx.exactHeight
 import matt.hurricanefx.exactWidth
 import matt.hurricanefx.eye.lang.DProp
 import matt.hurricanefx.eye.lib.onChange
-import matt.hurricanefx.fileIcons
 import matt.hurricanefx.intColorToFXColor
 import matt.hurricanefx.toFXDuration
 import matt.hurricanefx.tornadofx.animation.keyframe
