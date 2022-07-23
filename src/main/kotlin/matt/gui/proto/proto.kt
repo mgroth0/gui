@@ -152,6 +152,9 @@ class ScaledCanvas(
 
 fun indicatorCircle(booleanProperty: BooleanProperty) = CircleWrapper(8.0).apply {
   fillProperty().bind(booleanProperty.objectBinding {
-	if (it == true) Color.LIGHTGREEN else Color.DARKRED
+	val colo = if (it == true) Color.LIGHTGREEN else Color.DARKRED
+//	val colo = if (it == true) null else Color.DARKRED
+	println("colo=$colo")
+	colo
   })
 }
