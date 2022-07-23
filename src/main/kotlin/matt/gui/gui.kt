@@ -87,10 +87,10 @@ fun notification(
 		setOnMousePressed {
 		  stage.close()
 		}
-	  }.node
+	  }
 	).apply {
 	  this.fill = SKYBLUE
-	}
+	}.node
 	val screen = Screen.getScreens().minByOrNull { it.bounds.minX }!!
 	//	stage.x = screen.bounds.minX - 110.0
 	//	stage.y = screen.bounds.minY + 50.0

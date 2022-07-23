@@ -3,10 +3,7 @@ package matt.gui.app
 import com.sun.javafx.util.Logging
 import javafx.application.Application
 import javafx.application.Platform
-import javafx.scene.control.ScrollPane
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Region
-import javafx.scene.layout.VBox
 import javafx.stage.Screen
 import javafx.stage.Stage
 import kotlinx.serialization.decodeFromString
@@ -26,6 +23,7 @@ import matt.hurricanefx.wrapper.BorderPaneWrapper
 import matt.hurricanefx.wrapper.HBoxWrapper
 import matt.hurricanefx.wrapper.PaneWrapper
 import matt.hurricanefx.wrapper.ScrollPaneWrapper
+import matt.hurricanefx.wrapper.StageWrapper
 import matt.hurricanefx.wrapper.TabPaneWrapper
 import matt.hurricanefx.wrapper.VBoxWrapper
 import kotlin.concurrent.thread
@@ -177,11 +175,11 @@ open class GuiApp(
 
   val stage by lazy {
 	MStage(decorated = decorated).apply {
-	  registerMainStage(this.node, appName)
+	  registerMainStage(this, appName)
 	}
   }
 
-  fun registerMainStage(stage: Stage, name: String) {
+  fun registerMainStage(stage: StageWrapper, name: String) {
 	stage.apply {
 	  bindGeometry(name)
 	  if (consumeShudown != null) {
