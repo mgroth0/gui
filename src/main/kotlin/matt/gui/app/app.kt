@@ -22,8 +22,10 @@ import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
+import matt.hurricanefx.wrapper.BorderPaneWrapper
 import matt.hurricanefx.wrapper.HBoxWrapper
 import matt.hurricanefx.wrapper.PaneWrapper
+import matt.hurricanefx.wrapper.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.TabPaneWrapper
 import matt.hurricanefx.wrapper.VBoxWrapper
 import kotlin.concurrent.thread
@@ -54,7 +56,7 @@ open class GuiApp(
 	fxThread(it)
 	if (scene != null) {
 	  stage.apply {
-		scene = this@GuiApp.scene
+		scene = this@GuiApp.scene!!.node
 		(scene.root as Region).apply {
 		}
 		if (screenIndex != null && screenIndex < Screen.getScreens().size) {
@@ -70,32 +72,32 @@ open class GuiApp(
   }
 
   fun scene(op: MScene.()->Unit) {
-	scene = MScene(VBox()).apply(op) /*vbox is placeholder*/
+	scene = MScene(VBoxWrapper()).apply(op) /*vbox is placeholder*/
   }
 
   fun rootVbox(op: VBoxWrapper.()->Unit) {
-	scene = MScene(VBoxWrapper().apply(op).node)
+	scene = MScene(VBoxWrapper().apply(op))
   }
 
   fun rootTabPane(op: TabPaneWrapper.()->Unit) {
-	scene = MScene(TabPaneWrapper(op = op).node)
+	scene = MScene(TabPaneWrapper(op = op))
   }
 
-  fun rootBorderPane(op: BorderPane.()->Unit) {
-	scene = MScene(BorderPane().apply(op))
+  fun rootBorderPane(op: BorderPaneWrapper.()->Unit) {
+	scene = MScene(BorderPaneWrapper().apply(op))
   }
 
   fun rootPane(op: PaneWrapper.()->Unit) {
 
-	scene = MScene(PaneWrapper().apply(op).node)
+	scene = MScene(PaneWrapper().apply(op))
   }
 
   fun rootHbox(op: HBoxWrapper.()->Unit) {
-	scene = MScene(HBoxWrapper().apply(op).node)
+	scene = MScene(HBoxWrapper().apply(op))
   }
 
-  fun rootScrollpane(op: ScrollPane.()->Unit) {
-	scene = MScene(ScrollPane().apply(op))
+  fun rootScrollpane(op: ScrollPaneWrapper.()->Unit) {
+	scene = MScene(ScrollPaneWrapper().apply(op))
   }
 
   fun start(
@@ -175,7 +177,7 @@ open class GuiApp(
 
   val stage by lazy {
 	MStage(decorated = decorated).apply {
-	  registerMainStage(this, appName)
+	  registerMainStage(this.node, appName)
 	}
   }
 
