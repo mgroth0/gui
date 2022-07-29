@@ -16,7 +16,7 @@ import kotlin.reflect.KProperty
 
 
 @ExperimentalContracts
-open class HasSettings(private val jsonFile: MFile) {
+open class HasSettings(val jsonFile: MFile) {
 
 
   inner class Setting(val name: String, defaultValue: Boolean) {
