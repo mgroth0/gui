@@ -80,7 +80,8 @@ open class HasSettings(val jsonFile: MFile) {
 	  jsonObj(
 		registeredSettings
 		  .associate { it.name to it.get() }
-	  )
+	  ),
+	  pretty = true
 	)
   }
 
