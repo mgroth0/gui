@@ -18,16 +18,16 @@ import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.tornadofx.fx.opcr
 import matt.hurricanefx.tornadofx.tab.staticTab
-import matt.hurricanefx.wrapper.CanvasWrapper
-import matt.hurricanefx.wrapper.CircleWrapper
-import matt.hurricanefx.wrapper.EventTargetWrapper.Companion.wrapped
-import matt.hurricanefx.wrapper.PaneWrapper
-import matt.hurricanefx.wrapper.RegionWrapper
-import matt.hurricanefx.wrapper.ScrollPaneWrapper
-import matt.hurricanefx.wrapper.TabPaneWrapper
-import matt.hurricanefx.wrapper.TabWrapper
-import matt.hurricanefx.wrapper.TextFieldWrapper
-import matt.hurricanefx.wrapper.VBoxWrapper
+import matt.hurricanefx.wrapper.canvas.CanvasWrapper
+import matt.hurricanefx.wrapper.control.tab.TabWrapper
+import matt.hurricanefx.wrapper.shape.circle.CircleWrapper
+import matt.hurricanefx.wrapper.target.EventTargetWrapper.Companion.wrapped
+import matt.hurricanefx.wrapper.pane.PaneWrapper
+import matt.hurricanefx.wrapper.region.RegionWrapper
+import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
+import matt.hurricanefx.wrapper.pane.tab.TabPaneWrapper
+import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
+import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.klib.lang.applyIt
 
 infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {

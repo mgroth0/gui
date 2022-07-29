@@ -19,13 +19,13 @@ import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
-import matt.hurricanefx.wrapper.BorderPaneWrapper
-import matt.hurricanefx.wrapper.HBoxWrapper
-import matt.hurricanefx.wrapper.PaneWrapper
-import matt.hurricanefx.wrapper.ScrollPaneWrapper
-import matt.hurricanefx.wrapper.StageWrapper
-import matt.hurricanefx.wrapper.TabPaneWrapper
-import matt.hurricanefx.wrapper.VBoxWrapper
+import matt.hurricanefx.wrapper.pane.border.BorderPaneWrapper
+import matt.hurricanefx.wrapper.pane.hbox.HBoxWrapper
+import matt.hurricanefx.wrapper.pane.PaneWrapper
+import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
+import matt.hurricanefx.wrapper.stage.StageWrapper
+import matt.hurricanefx.wrapper.pane.tab.TabPaneWrapper
+import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import kotlin.concurrent.thread
 
 

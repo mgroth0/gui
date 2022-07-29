@@ -14,11 +14,11 @@ import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
 import javafx.scene.text.Text
-import matt.hurricanefx.wrapper.ComboBoxWrapper
-import matt.hurricanefx.wrapper.ListViewWrapper
-import matt.hurricanefx.wrapper.TableViewWrapper
-import matt.hurricanefx.wrapper.TreeTableViewWrapper
-import matt.hurricanefx.wrapper.TreeViewWrapper
+import matt.hurricanefx.wrapper.control.combo.ComboBoxWrapper
+import matt.hurricanefx.wrapper.control.list.ListViewWrapper
+import matt.hurricanefx.wrapper.control.table.TableViewWrapper
+import matt.hurricanefx.wrapper.control.treetable.TreeTableViewWrapper
+import matt.hurricanefx.wrapper.control.tree.TreeViewWrapper
 import matt.stream.recurse.recurse
 import matt.stream.recurse.recurseToFlat
 import matt.stream.recurse.recursionDepth

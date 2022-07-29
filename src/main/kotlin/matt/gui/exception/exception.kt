@@ -17,7 +17,7 @@ import matt.fx.graphics.win.stage.ShowMode.SHOW_AND_WAIT
 import matt.gui.app.GuiApp
 import matt.hurricanefx.tornadofx.control.text
 import matt.hurricanefx.tornadofx.control.textarea
-import matt.hurricanefx.wrapper.VBoxWrapper
+import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import kotlin.system.exitProcess
 
 fun GuiApp.showExceptionPopup(

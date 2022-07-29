@@ -4,10 +4,10 @@ import javafx.scene.layout.Background
 import javafx.scene.layout.BackgroundFill
 import javafx.scene.paint.Paint
 import matt.hurricanefx.eye.lib.onChange
-import matt.hurricanefx.wrapper.ListViewWrapper
-import matt.hurricanefx.wrapper.RegionWrapper
-import matt.hurricanefx.wrapper.TableViewWrapper
-import matt.hurricanefx.wrapper.TreeLikeWrapper
+import matt.hurricanefx.wrapper.control.list.ListViewWrapper
+import matt.hurricanefx.wrapper.control.table.TableViewWrapper
+import matt.hurricanefx.wrapper.region.RegionWrapper
+import matt.hurricanefx.wrapper.control.tree.TreeLikeWrapper
 import matt.klib.lang.err
 
 var RegionWrapper.backgroundFill: Paint?

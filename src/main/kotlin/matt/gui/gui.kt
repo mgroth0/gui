@@ -24,7 +24,7 @@ import matt.hurricanefx.tornadofx.animation.timeline
 import matt.hurricanefx.tornadofx.control.text
 import matt.file.MFile
 import matt.fx.graphics.icon.Icon
-import matt.hurricanefx.wrapper.VBoxWrapper
+import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import java.awt.image.BufferedImage
 
 import java.lang.Thread.sleep
