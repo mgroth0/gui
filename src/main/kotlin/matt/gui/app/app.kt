@@ -19,19 +19,14 @@ import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
-import matt.hurricanefx.wrapper.node.NodeWrapper
-import matt.hurricanefx.wrapper.pane.border.BorderPaneWrapper
-import matt.hurricanefx.wrapper.pane.hbox.HBoxWrapper
-import matt.hurricanefx.wrapper.pane.PaneWrapper
-import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
-import matt.hurricanefx.wrapper.stage.StageWrapper
-import matt.hurricanefx.wrapper.pane.tab.TabPaneWrapper
+import matt.hurricanefx.wrapper.FXNodeWrapperDSL
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapper
+import matt.hurricanefx.wrapper.stage.StageWrapper
 import kotlin.concurrent.thread
 import kotlin.reflect.full.createInstance
 
-
+@FXNodeWrapperDSL
 open class GuiApp(
   args: Array<String> = arrayOf(),
   val screenIndex: Int? = null,
@@ -39,6 +34,13 @@ open class GuiApp(
   private val fxThread: GuiApp.(args: List<String>)->Unit,
 
   ): App(args) {
+
+  var alwaysOnTop
+	get() = stage.isAlwaysOnTop
+	set(value) {
+	  stage.isAlwaysOnTop = value
+	}
+
   private var javafxRunning = true
   var altPyInterface: (GuiApp.(List<String>)->Unit)? = null
 
