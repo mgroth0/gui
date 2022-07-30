@@ -19,6 +19,7 @@ import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
+import matt.hurricanefx.wrapper.node.NodeWrapper
 import matt.hurricanefx.wrapper.pane.border.BorderPaneWrapper
 import matt.hurricanefx.wrapper.pane.hbox.HBoxWrapper
 import matt.hurricanefx.wrapper.pane.PaneWrapper
@@ -26,7 +27,9 @@ import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.stage.StageWrapper
 import matt.hurricanefx.wrapper.pane.tab.TabPaneWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
+import matt.hurricanefx.wrapper.parent.ParentWrapper
 import kotlin.concurrent.thread
+import kotlin.reflect.full.createInstance
 
 
 open class GuiApp(
@@ -73,29 +76,8 @@ open class GuiApp(
 	scene = MScene(VBoxWrapper()).apply(op) /*vbox is placeholder*/
   }
 
-  fun rootVbox(op: VBoxWrapper.()->Unit) {
-	scene = MScene(VBoxWrapper().apply(op))
-  }
-
-  fun rootTabPane(op: TabPaneWrapper.()->Unit) {
-	scene = MScene(TabPaneWrapper(op = op))
-  }
-
-  fun rootBorderPane(op: BorderPaneWrapper.()->Unit) {
-	scene = MScene(BorderPaneWrapper().apply(op))
-  }
-
-  fun rootPane(op: PaneWrapper.()->Unit) {
-
-	scene = MScene(PaneWrapper().apply(op))
-  }
-
-  fun rootHbox(op: HBoxWrapper.()->Unit) {
-	scene = MScene(HBoxWrapper().apply(op))
-  }
-
-  fun rootScrollpane(op: ScrollPaneWrapper.()->Unit) {
-	scene = MScene(ScrollPaneWrapper().apply(op))
+  inline fun <reified N: ParentWrapper> root(op: N.()->Unit) {
+	scene = MScene(N::class.createInstance().apply(op))
   }
 
   fun start(

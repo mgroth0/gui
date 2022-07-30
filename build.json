@@ -37,7 +37,11 @@
             "type": "matt.mstruct.BuildJsonProjectDependency",
             "cfg": "implementation",
             "path": ":k:caching"
+        },
+        {
+            "type": "matt.mstruct.BuildJsonProjectDependency",
+            "cfg": "implementation",
+            "path": ":k:reflect"
         }
-    ],
-    "note": null
+    ]
 }
