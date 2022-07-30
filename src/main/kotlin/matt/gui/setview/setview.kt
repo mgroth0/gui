@@ -1,139 +1,16 @@
 package matt.gui.setview
 
 import javafx.application.Platform.runLater
-import javafx.scene.Node
-import javafx.scene.control.IndexedCell
-import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
-import javafx.scene.control.TableCell
-import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
-import javafx.scene.control.TreeCell
-import javafx.scene.control.TreeTableCell
-import javafx.scene.control.TreeTableColumn
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
 import javafx.scene.text.Text
-import matt.hurricanefx.wrapper.control.combo.ComboBoxWrapper
-import matt.hurricanefx.wrapper.control.list.ListViewWrapper
 import matt.hurricanefx.wrapper.control.table.TableViewWrapper
 import matt.hurricanefx.wrapper.control.treetable.TreeTableViewWrapper
-import matt.hurricanefx.wrapper.control.tree.TreeViewWrapper
 import matt.stream.recurse.recurse
 import matt.stream.recurse.recurseToFlat
 import matt.stream.recurse.recursionDepth
-
-interface SimpleCell<T> {
-  fun updateItemExists(item: T)
-}
-
-@Suppress("UNCHECKED_CAST")
-private fun <T> IndexedCell<T>.simpleUpdateLogic(item: T, empty: Boolean) {
-  if (empty || item == null) {
-	text = null
-	graphic = null
-  } else {
-	(this as SimpleCell<T>).updateItemExists(item)
-  }
-}
-
-
-abstract class SimpleListCell<T>: ListCell<T>(), SimpleCell<T> {
-  final override fun updateItem(item: T, empty: Boolean) {
-	super.updateItem(item, empty)
-	simpleUpdateLogic(item, empty)
-  }
-
-}
-
-fun <T> ListViewWrapper<T>.simpleCellFactory(op: (T)->Pair<String?, Node?>) {
-  setCellFactory {
-	object: SimpleListCell<T>() {
-	  override fun updateItemExists(item: T) {
-		op(item).let {
-		  text = it.first
-		  graphic = it.second
-		}
-	  }
-	}
-  }
-}
-
-fun <T> ComboBoxWrapper<T>.simpleCellFactory(op: (T)->Pair<String?, Node?>) {
-  setCellFactory {
-	object: SimpleListCell<T>() {
-	  override fun updateItemExists(item: T) {
-		op(item).let {
-		  text = it.first
-		  graphic = it.second
-		}
-	  }
-	}
-  }
-}
-
-
-abstract class SimpleTreeTableCell<S, T>: TreeTableCell<S, T>(), SimpleCell<T> {
-  final override fun updateItem(item: T, empty: Boolean) {
-	super.updateItem(item, empty)
-	simpleUpdateLogic(item, empty)
-  }
-}
-
-fun <S, T> TreeTableColumn<S, T>.simpleCellFactory(op: (T)->Pair<String?, Node?>) {
-  setCellFactory {
-	object: SimpleTreeTableCell<S, T>() {
-	  override fun updateItemExists(item: T) {
-		op(item).let {
-		  text = it.first
-		  graphic = it.second
-		}
-	  }
-	}
-  }
-}
-
-
-abstract class SimpleTableCell<S, T>: TableCell<S, T>(), SimpleCell<T> {
-  final override fun updateItem(item: T, empty: Boolean) {
-	super.updateItem(item, empty)
-	simpleUpdateLogic(item, empty)
-  }
-}
-
-fun <S, T> TableColumn<S, T>.simpleCellFactory(op: (T)->Pair<String?, Node?>) {
-  setCellFactory {
-	object: SimpleTableCell<S, T>() {
-	  override fun updateItemExists(item: T) {
-		op(item).let {
-		  text = it.first
-		  graphic = it.second
-		}
-	  }
-	}
-  }
-}
-
-
-abstract class SimpleTreeCell<T>: TreeCell<T>(), SimpleCell<T> {
-  final override fun updateItem(item: T, empty: Boolean) {
-	super.updateItem(item, empty)
-	simpleUpdateLogic(item, empty)
-  }
-}
-
-fun <T> TreeViewWrapper<T>.simpleCellFactory(op: (T)->Pair<String?, Node?>) {
-  setCellFactory {
-	object: SimpleTreeCell<T>() {
-	  override fun updateItemExists(item: T) {
-		op(item).let {
-		  text = it.first
-		  graphic = it.second
-		}
-	  }
-	}
-  }
-}
 
 
 val String.fxWidth: Double
