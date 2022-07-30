@@ -62,8 +62,9 @@ open class GuiApp(
 		scene = this@GuiApp.scene!!.node
 		(scene.root as Region).apply {
 		}
-		if (screenIndex != null && screenIndex < Screen.getScreens().size) {
-		  val screen = Screen.getScreens()[screenIndex]
+
+		if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
+		  val screen = Screen.getScreens()[this@GuiApp.screenIndex]
 		  val menuY = if (screen == Screen.getPrimary()) NEW_MAC_NOTCH_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 		  x = screen.bounds.minX
 		  y = screen.bounds.minY + menuY
@@ -159,22 +160,24 @@ open class GuiApp(
 
   val stage by lazy {
 	MStage(decorated = decorated).apply {
-	  registerMainStage(this, appName)
+	  this@GuiApp.registerMainStage(this, appName)
 	}
   }
 
   fun registerMainStage(stage: StageWrapper, name: String) {
 	stage.apply {
 	  bindGeometry(name)
-	  if (consumeShudown != null) {
-		require(shutdown == null)
+	  if (this@GuiApp.consumeShudown != null) {
+		require(this@GuiApp.shutdown == null)
 		setOnCloseRequest {
-		  consumeShudown!!()
+		  this@GuiApp.run {
+			consumeShudown!!()
+		  }
 		  it.consume()
 		}
 	  } else {
 		setOnCloseRequest {
-		  shutdown?.let { sd -> sd() }
+		  this@GuiApp.shutdown?.let { sd -> this@GuiApp.sd() }
 		}
 	  }
 
