@@ -13,32 +13,21 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.reflect.KProperty
 
 
+
 @ExperimentalContracts
 open class HasSettings(val jsonFile: MFile) {
 
 
-  inner class Setting(private val settingName: String, defaultValue: Boolean): BooleanPropertyBase(loaded?.get(settingName) ?: defaultValue) {
-
-
+  inner class Setting(private val settingName: String, defaultValue: Boolean):
+	BooleanPropertyBase(loaded?.get(settingName) ?: defaultValue) {
 	init {
-	  /*fxProp.*/onChange { save() }
+	  onChange { save() }
 	  registeredSettings += this
 	}
 
 	override fun getBean() = NEVER
 
 	override fun getName() = settingName
-
-	//	fun set(v: Boolean) = fxProp.set(v)
-//
-//	fun get() = fxProp.get()
-
-//	fun CheckItem() = CheckMenuItem(name).apply {
-//	  selectedProperty().bindBidirectional(fxProp)
-//	}
-
-//	fun weakBinding() = fxProp.toBinding()
-
   }
 
   inner class SettingDelegate(private val defaultValue: Boolean) {
