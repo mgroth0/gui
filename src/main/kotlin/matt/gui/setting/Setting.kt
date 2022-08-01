@@ -41,7 +41,7 @@ open class HasSettings(val jsonFile: MFile) {
 
   }
 
-  inner class SettingDelegate(val defaultValue: Boolean) {
+  inner class SettingDelegate(private val defaultValue: Boolean) {
 	private var setting: Setting? = null
 	operator fun provideDelegate(
 	  thisRef: HasSettings,
