@@ -1,16 +1,14 @@
 package matt.gui.setting
 
-import javafx.beans.property.SimpleBooleanProperty
-import javafx.scene.control.CheckMenuItem
+import javafx.beans.property.BooleanPropertyBase
 import kotlinx.serialization.json.jsonObject
+import matt.file.MFile
 import matt.hurricanefx.eye.lib.onChange
-import matt.hurricanefx.eye.bind.toBinding
 import matt.json.custom.bool
 import matt.json.custom.jsonObj
 import matt.json.parseJson
 import matt.json.prim.writeJson
-import matt.file.MFile
-
+import matt.klib.lang.NEVER
 import kotlin.contracts.ExperimentalContracts
 import kotlin.reflect.KProperty
 
@@ -19,25 +17,27 @@ import kotlin.reflect.KProperty
 open class HasSettings(val jsonFile: MFile) {
 
 
-  inner class Setting(val name: String, defaultValue: Boolean) {
-	val fxProp = SimpleBooleanProperty(
-	  loaded?.get(name) ?: defaultValue
-	)
+  inner class Setting(private val settingName: String, defaultValue: Boolean): BooleanPropertyBase(loaded?.get(settingName) ?: defaultValue) {
+
 
 	init {
-	  fxProp.onChange { save() }
+	  /*fxProp.*/onChange { save() }
 	  registeredSettings += this
 	}
 
-	fun set(v: Boolean) = fxProp.set(v)
+	override fun getBean() = NEVER
 
-	fun get() = fxProp.get()
+	override fun getName() = settingName
 
-	fun CheckItem() = CheckMenuItem(name).apply {
-	  selectedProperty().bindBidirectional(fxProp)
-	}
+	//	fun set(v: Boolean) = fxProp.set(v)
+//
+//	fun get() = fxProp.get()
 
-	fun weakBinding() = fxProp.toBinding()
+//	fun CheckItem() = CheckMenuItem(name).apply {
+//	  selectedProperty().bindBidirectional(fxProp)
+//	}
+
+//	fun weakBinding() = fxProp.toBinding()
 
   }
 
