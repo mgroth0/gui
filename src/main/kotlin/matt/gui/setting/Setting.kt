@@ -1,20 +1,37 @@
 package matt.gui.setting
 
+import javafx.beans.property.BooleanProperty
 import javafx.beans.property.BooleanPropertyBase
 import kotlinx.serialization.json.jsonObject
 import matt.file.MFile
+import matt.hurricanefx.eye.delegate.FX
+import matt.hurricanefx.eye.delegate.FXB
 import matt.hurricanefx.eye.lib.onChange
 import matt.json.custom.bool
 import matt.json.custom.jsonObj
 import matt.json.parseJson
 import matt.json.prim.writeJson
 import matt.klib.lang.NEVER
-import kotlin.contracts.ExperimentalContracts
 import kotlin.reflect.KProperty
 
+open class BoolPropSet {
+  private val _properties = mutableListOf<BooleanProperty>()
+  val properties: List<BooleanProperty> = _properties
+
+  inner class RegisteredProp(private val defaultValue: Boolean) {
+	operator fun provideDelegate(
+	  thisRef: BoolPropSet,
+	  prop: KProperty<*>
+	): FX<Boolean, BooleanProperty> {
+	  val fx = FXB(defaultValue).provideDelegate(thisRef, prop)
+	  _properties.add(fx.observable)
+	  return fx
+	}
+
+  }
+}
 
 
-@ExperimentalContracts
 open class HasSettings(val jsonFile: MFile) {
 
 
