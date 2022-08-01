@@ -84,8 +84,5 @@ open class HasSettings(val jsonFile: MFile) {
 	  pretty = true
 	)
   }
-
-  fun checkMenuItems() = registeredSettings
-	.map { it.CheckItem() }
 }
 
