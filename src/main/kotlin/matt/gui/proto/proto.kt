@@ -8,7 +8,6 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
-import matt.fx.graphics.layout.minBind
 import matt.hurricanefx.Scrolls
 import matt.hurricanefx.exactHeightProperty
 import matt.hurricanefx.exactWidthProperty
