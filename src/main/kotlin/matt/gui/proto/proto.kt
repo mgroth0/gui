@@ -18,7 +18,7 @@ import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
 import matt.hurricanefx.wrapper.pane.PaneWrapper
 import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
-import matt.hurricanefx.wrapper.region.RegionWrapper
+import matt.hurricanefx.wrapper.region.RegionWrapperImpl
 import matt.hurricanefx.wrapper.shape.circle.CircleWrapper
 import matt.hurricanefx.wrapper.target.EventTargetWrapperImpl.Companion.wrapped
 import matt.klib.lang.applyIt
@@ -29,7 +29,7 @@ infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {
 }
 
 
-infix fun RegionWrapper.wrappedIn(sp: ScrollPaneWrapper): ScrollPaneWrapper {
+infix fun RegionWrapperImpl.wrappedIn(sp: ScrollPaneWrapper): ScrollPaneWrapper {
   this minBind sp
   sp.backgroundProperty.bindBidirectional(backgroundProperty)
   return sp.apply {

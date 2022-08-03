@@ -21,7 +21,7 @@ import matt.fx.graphics.win.stage.MStage
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.wrapper.FXNodeWrapperDSL
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
-import matt.hurricanefx.wrapper.parent.ParentWrapper
+import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.stage.StageWrapper
 import kotlin.concurrent.thread
 import kotlin.reflect.full.createInstance
@@ -79,7 +79,7 @@ open class GuiApp(
 	scene = MScene(VBoxWrapper()).apply(op) /*vbox is placeholder*/
   }
 
-  inline fun <reified N: ParentWrapper<*>> root(op: N.()->Unit) {
+  inline fun <reified N: ParentWrapperImpl<*>> root(op: N.()->Unit) {
 	scene = MScene(N::class.createInstance().apply(op))
   }
 
