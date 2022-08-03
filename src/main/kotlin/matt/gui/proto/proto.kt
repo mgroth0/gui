@@ -6,7 +6,6 @@ import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
-import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import matt.hurricanefx.Scrolls
 import matt.hurricanefx.eye.prop.div
@@ -14,28 +13,19 @@ import matt.hurricanefx.eye.prop.minus
 import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.tornadofx.fx.opcr
-import matt.hurricanefx.tornadofx.tab.staticTab
 import matt.hurricanefx.wrapper.canvas.CanvasWrapper
-import matt.hurricanefx.wrapper.control.tab.TabWrapper
+import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
+import matt.hurricanefx.wrapper.pane.PaneWrapper
+import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
+import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
+import matt.hurricanefx.wrapper.region.RegionWrapper
 import matt.hurricanefx.wrapper.shape.circle.CircleWrapper
 import matt.hurricanefx.wrapper.target.EventTargetWrapper.Companion.wrapped
-import matt.hurricanefx.wrapper.pane.PaneWrapper
-import matt.hurricanefx.wrapper.region.RegionWrapper
-import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
-import matt.hurricanefx.wrapper.pane.tab.TabPaneWrapper
-import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
-import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.klib.lang.applyIt
 
 infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {
   promptText = s
   return this
-}
-
-fun TabPaneWrapper.vtab(s: String = "", op: VBox.()->Unit = {}): TabWrapper {
-  return staticTab(s, VBox()) {
-	op()
-  }
 }
 
 

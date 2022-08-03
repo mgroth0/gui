@@ -79,7 +79,7 @@ open class GuiApp(
 	scene = MScene(VBoxWrapper()).apply(op) /*vbox is placeholder*/
   }
 
-  inline fun <reified N: ParentWrapper> root(op: N.()->Unit) {
+  inline fun <reified N: ParentWrapper<*>> root(op: N.()->Unit) {
 	scene = MScene(N::class.createInstance().apply(op))
   }
 
