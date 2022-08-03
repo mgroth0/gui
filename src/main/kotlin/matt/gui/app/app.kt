@@ -53,7 +53,7 @@ open class GuiApp(
   var consumeShudown: (GuiApp.()->Unit)? = null
 
 
-  var scene: MScene? = null
+  var scene: MScene<*>? = null
 
   val fxThreadW: GuiApp.(List<String>)->Unit = {
 	fxThread(it)
@@ -75,7 +75,7 @@ open class GuiApp(
 	}
   }
 
-  fun scene(op: MScene.()->Unit) {
+  fun scene(op: MScene<*>.()->Unit) {
 	scene = MScene(VBoxWrapper()).apply(op) /*vbox is placeholder*/
   }
 
