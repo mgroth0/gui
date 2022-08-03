@@ -76,7 +76,7 @@ open class GuiApp(
 	}
   }
 
-  fun scene(op: MScene<*>.()->Unit) {
+  fun scene(op: MScene<ParentWrapper>.()->Unit) {
 	scene = MScene<ParentWrapper>(VBoxWrapper()).apply(op) /*vbox is placeholder*/
   }
 
