@@ -20,7 +20,7 @@ import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.hurricanefx.wrapper.region.RegionWrapper
 import matt.hurricanefx.wrapper.shape.circle.CircleWrapper
-import matt.hurricanefx.wrapper.target.EventTargetWrapper.Companion.wrapped
+import matt.hurricanefx.wrapper.target.EventTargetWrapperImpl.Companion.wrapped
 import matt.klib.lang.applyIt
 
 infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {
