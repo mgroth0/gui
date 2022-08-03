@@ -18,7 +18,6 @@ import matt.hurricanefx.intColorToFXColor
 import matt.hurricanefx.toFXDuration
 import matt.hurricanefx.tornadofx.animation.keyframe
 import matt.hurricanefx.tornadofx.animation.timeline
-import matt.hurricanefx.tornadofx.control.text
 import matt.file.MFile
 import matt.fx.graphics.icon.Icon
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper

@@ -14,8 +14,6 @@ import matt.fx.graphics.lang.actionbutton
 import matt.fx.graphics.win.interact.openInNewWindow
 import matt.fx.graphics.win.stage.ShowMode.SHOW_AND_WAIT
 import matt.gui.app.GuiApp
-import matt.hurricanefx.tornadofx.control.text
-import matt.hurricanefx.tornadofx.control.textarea
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import kotlin.system.exitProcess
 
