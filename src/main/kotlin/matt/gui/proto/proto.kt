@@ -14,7 +14,7 @@ import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.wrapper.canvas.CanvasWrapper
 import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
-import matt.hurricanefx.wrapper.node.opcr
+import matt.hurricanefx.wrapper.node.opConnectAndReturn
 import matt.hurricanefx.wrapper.pane.PaneWrapper
 import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
@@ -90,7 +90,7 @@ fun EventTarget.scaledCanvas(
   scale: Number = 1.0,
   op: ScaledCanvas.()->Unit = {}
 ) =
-  opcr(
+  opConnectAndReturn(
 	this.wrapped(), ScaledCanvas(
 	  width = width,
 	  height = height,
