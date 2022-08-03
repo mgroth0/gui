@@ -12,15 +12,15 @@ import matt.hurricanefx.eye.prop.div
 import matt.hurricanefx.eye.prop.minus
 import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.eye.prop.times
-import matt.hurricanefx.tornadofx.fx.opcr
 import matt.hurricanefx.wrapper.canvas.CanvasWrapper
 import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
+import matt.hurricanefx.wrapper.node.opcr
 import matt.hurricanefx.wrapper.pane.PaneWrapper
 import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.hurricanefx.wrapper.region.RegionWrapperImpl
 import matt.hurricanefx.wrapper.shape.circle.CircleWrapper
-import matt.hurricanefx.wrapper.target.EventTargetWrapperImpl.Companion.wrapped
+import matt.hurricanefx.wrapper.wrapped
 import matt.klib.lang.applyIt
 
 infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {

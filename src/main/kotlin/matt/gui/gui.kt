@@ -69,7 +69,7 @@ fun notification(
 	  isAlwaysOnTop = true
 	}
 	stage.scene = MScene(
-	  VBoxWrapper {
+	  VBoxWrapper().apply {
 		this.alignment = TOP_CENTER
 		runLater {
 		  backgroundFill = SKYBLUE

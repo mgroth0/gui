@@ -29,7 +29,7 @@ fun GuiApp.showExceptionPopup(
 ): ExceptionResponse {
   var r = EXIT
   println("setting up runLaterReturn for exception dialog")
-  VBoxWrapper {
+  VBoxWrapper().apply {
 	text("${e::class.simpleName} in $appName")
 	text("thread=${t.name}")
 	textarea(st)
