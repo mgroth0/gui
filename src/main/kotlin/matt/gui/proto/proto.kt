@@ -6,6 +6,7 @@ import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
+import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import matt.hurricanefx.Scrolls
 import matt.hurricanefx.eye.prop.div
@@ -18,7 +19,7 @@ import matt.hurricanefx.wrapper.node.opConnectAndReturn
 import matt.hurricanefx.wrapper.pane.PaneWrapper
 import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
-import matt.hurricanefx.wrapper.region.RegionWrapperImpl
+import matt.hurricanefx.wrapper.region.RegionWrapper
 import matt.hurricanefx.wrapper.shape.circle.CircleWrapper
 import matt.hurricanefx.wrapper.wrapped
 import matt.klib.lang.applyIt
@@ -29,7 +30,7 @@ infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {
 }
 
 
-infix fun RegionWrapperImpl.wrappedIn(sp: ScrollPaneWrapper): ScrollPaneWrapper {
+infix fun RegionWrapper.wrappedIn(sp: ScrollPaneWrapper): ScrollPaneWrapper {
   this minBind sp
   sp.backgroundProperty.bindBidirectional(backgroundProperty)
   return sp.apply {
@@ -48,7 +49,7 @@ fun ScrollPaneNoBars(content: Node? = null): ScrollPaneWrapper {
 abstract class ScrollVBox(
   scrollpane: ScrollPaneWrapper = ScrollPaneWrapper(),
   val vbox: VBoxWrapper = VBoxWrapper()
-): PaneWrapper(), Scrolls { //Refreshable
+): PaneWrapper<Pane>(Pane()), Scrolls { //Refreshable
   override val scrollPane = scrollpane
 
   init {
@@ -108,7 +109,7 @@ class ScaledCanvas(
   height: Number,
   width: Number,
   val initialScale: Double = 1.0
-): PaneWrapper() {
+): PaneWrapper<Pane>(Pane()) {
   constructor(hw: Number, scale: Double): this(height = hw.toDouble(), width = hw.toDouble(), initialScale = scale)
 
   val awesomeScaleProperty = SimpleDoubleProperty(initialScale)
