@@ -9,8 +9,6 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import matt.hurricanefx.Scrolls
-import matt.hurricanefx.exactHeightProperty
-import matt.hurricanefx.exactWidthProperty
 import matt.hurricanefx.eye.prop.div
 import matt.hurricanefx.eye.prop.minus
 import matt.hurricanefx.eye.prop.objectBinding

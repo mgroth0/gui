@@ -12,8 +12,6 @@ import matt.fx.graphics.core.scene.MScene
 import matt.gui.proto.ScaledCanvas
 import matt.fx.graphics.win.stage.MStage
 import matt.fx.graphics.clip.drags
-import matt.hurricanefx.exactHeight
-import matt.hurricanefx.exactWidth
 import matt.hurricanefx.eye.lang.DProp
 import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.intColorToFXColor
