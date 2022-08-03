@@ -15,6 +15,7 @@ import matt.fx.graphics.win.interact.openInNewWindow
 import matt.fx.graphics.win.stage.ShowMode.SHOW_AND_WAIT
 import matt.gui.app.GuiApp
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
+import matt.klib.str.taball
 import kotlin.system.exitProcess
 
 fun GuiApp.showExceptionPopup(
@@ -26,11 +27,16 @@ fun GuiApp.showExceptionPopup(
   exceptionFile: MFile
 ): ExceptionResponse {
   var r = EXIT
+  taball("stacktrace", e.stackTrace)
   println("setting up runLaterReturn for exception dialog")
   VBoxWrapper().apply {
+	println("setting up vbox1")
 	text("${e::class.simpleName} in $appName")
+	println("setting up vbox2")
 	text("thread=${t.name}")
+	println("setting up vbox3: ${st}")
 	textarea(st)
+	println("setting up vbox4")
 	flowpane {
 	  actionbutton("Open stacktrace in IntelliJ") {
 		exceptionFile.openInIntelliJ()

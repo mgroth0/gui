@@ -113,7 +113,9 @@ open class GuiApp(
 
 
 	//	SvgImageLoaderFactory.install()
+	println("launching!!!")
 	Application.launch(FlowFXApp::class.java, *args)
+	println("done with launch!!!")
 	javafxRunning = false
 
 
@@ -135,6 +137,7 @@ open class GuiApp(
 	var r = EXIT
 	try {
 	  if (Platform.isFxApplicationThread()) {
+		println("showing exception popup for t=$t, e=$e")
 		r = showExceptionPopup(t, e, shutdown, consumeShutdown, st, exceptionFile)
 	  }
 	} catch (e: Exception) {

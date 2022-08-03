@@ -142,7 +142,7 @@ fun indicatorCircle(booleanProperty: BooleanProperty) = CircleWrapper(8.0).apply
   fillProperty().bind(booleanProperty.objectBinding {
 	val colo = if (it == true) Color.LIGHTGREEN else Color.DARKRED
 //	val colo = if (it == true) null else Color.DARKRED
-	println("colo=$colo")
+//	println("colo=$colo")
 	colo
   })
 }
