@@ -2,10 +2,10 @@ package matt.gui.exception
 
 import javafx.scene.Node
 import javafx.stage.Stage
-import matt.auto.SublimeText
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.IGNORE
+import matt.auto.macapp.SublimeText
 import matt.auto.openInIntelliJ
 import matt.exec.app.App
 import matt.exec.app.appName
@@ -34,7 +34,7 @@ fun GuiApp.showExceptionPopup(
 	text("${e::class.simpleName} in $appName")
 	println("setting up vbox2")
 	text("thread=${t.name}")
-	println("setting up vbox3: ${st}")
+	println("setting up vbox3: $st")
 	textarea(st)
 	println("setting up vbox4")
 	flowpane {
