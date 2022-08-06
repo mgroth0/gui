@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 import matt.async.thread.daemon
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
-import matt.auto.interapp.InterAppResult
+import matt.auto.interapp.result.InterAppResult
 import matt.exec.app.App
 import matt.exec.app.appName
 import matt.file.MFile
