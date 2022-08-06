@@ -12,6 +12,7 @@ import kotlinx.serialization.json.Json
 import matt.async.thread.daemon
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
+import matt.auto.interapp.InterAppMessage
 import matt.exec.app.App
 import matt.exec.app.appName
 import matt.file.MFile
@@ -111,7 +112,7 @@ import kotlin.reflect.full.createInstance
   fun start(
 	implicitExit: Boolean = true,
 	alt_py_interface: InputHandler? = null,
-	alt_app_interface: Map<String, App.(String)->Unit>? = null,
+	alt_app_interface: Map<String, App.(String)->InterAppMessage>? = null,
 	prefx: (App.()->Unit)? = null,
 	shutdown: (App.()->Unit)? = null,
 	consumeShutdown: (App.()->Unit)? = null,
