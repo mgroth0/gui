@@ -6,8 +6,10 @@ import javafx.application.Platform
 import javafx.scene.layout.Region
 import javafx.stage.Screen
 import javafx.stage.Stage
+import javafx.stage.Window
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import matt.async.thread.daemon
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.exec.app.App
@@ -18,20 +20,27 @@ import matt.fx.graphics.mag.NEW_MAC_NOTCH_ESTIMATE
 import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
+import matt.fx.graphics.win.stage.WMode
+import matt.fx.graphics.win.stage.WMode.NOTHING
 import matt.gui.exception.showExceptionPopup
+import matt.hurricanefx.async.runLaterReturn
 import matt.hurricanefx.wrapper.FXNodeWrapperDSL
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.stage.StageWrapper
+import matt.hurricanefx.wrapper.wrapped
+import matt.klib.log.warn
 import kotlin.concurrent.thread
 import kotlin.reflect.full.createInstance
 
-@FXNodeWrapperDSL
-open class GuiApp(
+@FXNodeWrapperDSL open class GuiApp(
   args: Array<String> = arrayOf(),
   val screenIndex: Int? = null,
   decorated: Boolean = false,
+  wMode: WMode = NOTHING,
+  EscClosable: Boolean = false,
+  EnterClosable: Boolean = false,
   private val fxThread: GuiApp.(args: List<String>)->Unit,
 
   ): App(args) {
@@ -41,6 +50,8 @@ open class GuiApp(
 	set(value) {
 	  stage.isAlwaysOnTop = value
 	}
+
+  fun requestFocus() = scene!!.root.requestFocus()
 
   private var javafxRunning = true
   var altPyInterface: (GuiApp.(List<String>)->Unit)? = null
@@ -58,11 +69,24 @@ open class GuiApp(
 
   val fxThreadW: GuiApp.(List<String>)->Unit = {
 	fxThread(it)
+	daemon {
+	  Window.getWindows().map { it.wrapped() }.forEach {
+		if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
+		  warn("resetting offscreen window")
+		  runLaterReturn {
+			it.x = 0.0
+			it.y = 0.0
+			it.width = 500.0
+			it.height = 500.0
+		  }
+		}
+	  }
+	  Thread.sleep(5000)
+	}
 	if (scene != null) {
 	  stage.apply {
 		scene = this@GuiApp.scene!!.node
-		(scene.root as Region).apply {
-		}
+		(scene.root as Region).apply { }
 
 		if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
 		  val screen = Screen.getScreens()[this@GuiApp.screenIndex]
@@ -107,8 +131,7 @@ open class GuiApp(
 	)
 
 	Platform.setImplicitExit(implicitExit)
-	app = this
-	/* dodge "Unsupported JavaFX configuration..." part 1 */
+	app = this    /* dodge "Unsupported JavaFX configuration..." part 1 */
 	Logging.getJavaFXLogger().disableLogging()
 
 
@@ -163,7 +186,9 @@ open class GuiApp(
 
 
   val stage by lazy {
-	MStage(decorated = decorated).apply {
+	MStage(
+	  decorated = decorated, wMode = wMode, EscClosable = EscClosable, EnterClosable = EnterClosable
+	).apply {
 	  this@GuiApp.registerMainStage(this, appName)
 	}
   }
@@ -193,8 +218,7 @@ open class GuiApp(
 private var app: GuiApp? = null
 
 class FlowFXApp: Application() {
-  override fun start(primaryStage: Stage?) {
-	/* dodge "Unsupported JavaFX configuration..." part 2 */
+  override fun start(primaryStage: Stage?) {    /* dodge "Unsupported JavaFX configuration..." part 2 */
 	Logging.getJavaFXLogger().enableLogging()
 	app!!.apply { fxThreadW(app!!.args.toList()) }
 	if (app!!.altPyInterface != null) {

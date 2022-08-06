@@ -8,21 +8,20 @@ import javafx.scene.paint.Color
 import javafx.scene.paint.Color.SKYBLUE
 import javafx.stage.Screen
 import matt.async.date.sec
-import matt.fx.graphics.core.scene.MScene
-import matt.gui.proto.ScaledCanvas
-import matt.fx.graphics.win.stage.MStage
+import matt.file.MFile
 import matt.fx.graphics.clip.drags
+import matt.fx.graphics.core.scene.MScene
+import matt.fx.graphics.icon.Icon
+import matt.fx.graphics.win.stage.MStage
+import matt.gui.proto.ScaledCanvas
 import matt.hurricanefx.eye.lang.DProp
 import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.intColorToFXColor
 import matt.hurricanefx.toFXDuration
 import matt.hurricanefx.tornadofx.animation.keyframe
 import matt.hurricanefx.tornadofx.animation.timeline
-import matt.file.MFile
-import matt.fx.graphics.icon.Icon
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import java.awt.image.BufferedImage
-
 import java.lang.Thread.sleep
 import java.util.WeakHashMap
 import kotlin.concurrent.thread
@@ -62,9 +61,8 @@ fun notification(
 ) {
 
   runLater {
-	val stage = MStage(
+	val stage = MStage().apply {
 	  pullBackWhenOffScreen = false
-	).apply {
 	  isAlwaysOnTop = true
 	}
 	stage.scene = MScene(
