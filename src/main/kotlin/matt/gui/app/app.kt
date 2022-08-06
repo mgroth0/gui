@@ -31,6 +31,7 @@ import matt.hurricanefx.wrapper.parent.ParentWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.stage.StageWrapper
 import matt.hurricanefx.wrapper.wrapped
+import matt.kjlib.socket.message.ActionResult
 import matt.klib.log.warn
 import kotlin.concurrent.thread
 import kotlin.reflect.full.createInstance
@@ -112,7 +113,7 @@ import kotlin.reflect.full.createInstance
   fun start(
 	implicitExit: Boolean = true,
 	alt_py_interface: InputHandler? = null,
-	alt_app_interface: Map<String, App.(String)->InterAppResult>? = null,
+	alt_app_interface: Map<String, App.(String)->ActionResult>? = null,
 	prefx: (App.()->Unit)? = null,
 	shutdown: (App.()->Unit)? = null,
 	consumeShutdown: (App.()->Unit)? = null,
