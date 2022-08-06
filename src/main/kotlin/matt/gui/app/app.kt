@@ -12,7 +12,6 @@ import kotlinx.serialization.json.Json
 import matt.async.thread.daemon
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
-import matt.kjlib.socket.message.InterAppResult
 import matt.exec.app.App
 import matt.exec.app.appName
 import matt.file.MFile
