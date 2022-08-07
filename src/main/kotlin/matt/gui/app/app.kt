@@ -10,6 +10,7 @@ import javafx.stage.Window
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import matt.async.thread.daemon
+import matt.auto.activateThisProcess
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.exec.app.App
@@ -30,8 +31,10 @@ import matt.hurricanefx.wrapper.parent.ParentWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.stage.StageWrapper
 import matt.hurricanefx.wrapper.wrapped
-import matt.kjlib.socket.message.ActionResult
-import matt.kjlib.socket.message.InterAppMessage
+import matt.stream.message.ACTIVATE
+import matt.stream.message.ActionResult
+import matt.stream.message.InterAppMessage
+import matt.stream.message.NOTHING_TO_SEND
 import matt.klib.log.warn
 import kotlin.concurrent.thread
 import kotlin.reflect.full.createInstance
@@ -129,7 +132,16 @@ import kotlin.reflect.full.createInstance
 	  }
 	}
 	main(
-	  { x: InterAppMessage -> alt_app_interface?.invoke(this, x) }, shutdown, prefx
+	  { x: InterAppMessage ->
+		when (x) {
+		  is ACTIVATE -> {
+			activateThisProcess()
+			NOTHING_TO_SEND
+		  }
+
+		  else        -> alt_app_interface?.invoke(this, x)
+		}
+	  }, shutdown, prefx
 	)
 
 	Platform.setImplicitExit(implicitExit)
