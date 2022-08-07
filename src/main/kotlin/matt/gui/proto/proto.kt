@@ -3,7 +3,6 @@ package matt.gui.proto
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventTarget
-import javafx.scene.Node
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
 import javafx.scene.layout.Pane
@@ -15,6 +14,7 @@ import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.wrapper.canvas.CanvasWrapper
 import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
+import matt.hurricanefx.wrapper.node.NodeWrapper
 import matt.hurricanefx.wrapper.node.opConnectAndReturn
 import matt.hurricanefx.wrapper.pane.PaneWrapper
 import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
@@ -30,16 +30,16 @@ infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {
 }
 
 
-infix fun RegionWrapper.wrappedIn(sp: ScrollPaneWrapper): ScrollPaneWrapper {
+infix fun <C: RegionWrapper> C.wrappedIn(sp: ScrollPaneWrapper<C>): ScrollPaneWrapper<C> {
   this minBind sp
   sp.backgroundProperty.bindBidirectional(backgroundProperty)
   return sp.apply {
-	content = this@wrappedIn.node
+	content = this@wrappedIn
   }
 }
 
-fun ScrollPaneNoBars(content: Node? = null): ScrollPaneWrapper {
-  return ScrollPaneWrapper(content).apply {
+fun <C: NodeWrapper> ScrollPaneNoBars(content: C? = null): ScrollPaneWrapper<C> {
+  return (content?.let { ScrollPaneWrapper(it) } ?: ScrollPaneWrapper()).apply {
 	vbarPolicy = NEVER
 	hbarPolicy = NEVER
   }
@@ -47,7 +47,7 @@ fun ScrollPaneNoBars(content: Node? = null): ScrollPaneWrapper {
 
 
 abstract class ScrollVBox(
-  scrollpane: ScrollPaneWrapper = ScrollPaneWrapper(),
+  scrollpane: ScrollPaneWrapper<VBoxWrapper> = ScrollPaneWrapper(),
   val vbox: VBoxWrapper = VBoxWrapper()
 ): PaneWrapper<Pane>(Pane()), Scrolls { //Refreshable
   override val scrollPane = scrollpane
@@ -73,7 +73,7 @@ abstract class ScrollVBox(
 
 		/*reason: this causes stupid buggy fx vertical scroll bar to properly hide when not needed*/
 		minHeightProperty.bind(sp.heightProperty.minus(50.0))
-	  }.node
+	  }
 	}.node)
   }
 
@@ -141,8 +141,8 @@ class ScaledCanvas(
 fun indicatorCircle(booleanProperty: BooleanProperty) = CircleWrapper(8.0).apply {
   fillProperty().bind(booleanProperty.objectBinding {
 	val colo = if (it == true) Color.LIGHTGREEN else Color.DARKRED
-//	val colo = if (it == true) null else Color.DARKRED
-//	println("colo=$colo")
+	//	val colo = if (it == true) null else Color.DARKRED
+	//	println("colo=$colo")
 	colo
   })
 }
