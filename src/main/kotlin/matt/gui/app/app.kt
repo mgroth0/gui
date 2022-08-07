@@ -3,7 +3,6 @@ package matt.gui.app
 import com.sun.javafx.util.Logging
 import javafx.application.Application
 import javafx.application.Platform
-import javafx.scene.layout.Region
 import javafx.stage.Screen
 import javafx.stage.Stage
 import javafx.stage.Window
@@ -31,11 +30,11 @@ import matt.hurricanefx.wrapper.parent.ParentWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.stage.StageWrapper
 import matt.hurricanefx.wrapper.wrapped
+import matt.klib.log.warn
 import matt.stream.message.ACTIVATE
 import matt.stream.message.ActionResult
 import matt.stream.message.InterAppMessage
 import matt.stream.message.NOTHING_TO_SEND
-import matt.klib.log.warn
 import kotlin.concurrent.thread
 import kotlin.reflect.full.createInstance
 
@@ -91,7 +90,6 @@ import kotlin.reflect.full.createInstance
 	if (scene != null) {
 	  stage.apply {
 		scene = this@GuiApp.scene!!.node
-		(scene.root as Region).apply { }
 
 		if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
 		  val screen = Screen.getScreens()[this@GuiApp.screenIndex]
