@@ -6,7 +6,6 @@ import javafx.stage.Window
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import matt.async.thread.daemon
-import matt.auto.activateThisProcess
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.exec.app.App
@@ -19,6 +18,7 @@ import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.fx.graphics.win.stage.WMode
 import matt.fx.graphics.win.stage.WMode.NOTHING
+import matt.gui.app.appserver.AppServer
 import matt.gui.app.fxapp.runFXAppBlocking
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.async.runLaterReturn
@@ -29,10 +29,6 @@ import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.stage.StageWrapper
 import matt.hurricanefx.wrapper.wrapped
 import matt.klib.log.warn
-import matt.stream.message.ACTIVATE
-import matt.stream.message.ActionResult
-import matt.stream.message.InterAppMessage
-import matt.stream.message.NOTHING_TO_SEND
 import kotlin.concurrent.thread
 import kotlin.reflect.full.createInstance
 
@@ -111,7 +107,7 @@ import kotlin.reflect.full.createInstance
   fun start(
 	implicitExit: Boolean = true,
 	alt_py_interface: InputHandler? = null,
-	altAppInterface: (App.(InterAppMessage)->ActionResult)? = null,
+	appServer: AppServer? = null,
 	prefx: (App.()->Unit)? = null,
 	shutdown: (App.()->Unit)? = null,
   ) {
@@ -124,20 +120,7 @@ import kotlin.reflect.full.createInstance
 		is InputHandler.Alt      -> it.op
 	  }
 	}
-	main(
-	  altAppInterfaceParam = altAppInterface?.let {
-		{ x: InterAppMessage ->
-		  when (x) {
-			is ACTIVATE -> {
-			  activateThisProcess()
-			  NOTHING_TO_SEND
-			}
-
-			else        -> altAppInterface.invoke(this, x)
-		  }
-		}
-	  }, shutdown, prefx
-	)
+	main(socketServer = appServer, shutdown, prefx)
 
 	Platform.setImplicitExit(implicitExit)
 
