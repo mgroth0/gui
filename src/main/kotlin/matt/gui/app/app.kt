@@ -125,14 +125,16 @@ import kotlin.reflect.full.createInstance
 	  }
 	}
 	main(
-	  { x: InterAppMessage ->
-		when (x) {
-		  is ACTIVATE -> {
-			activateThisProcess()
-			NOTHING_TO_SEND
-		  }
+	  altAppInterfaceParam = altAppInterface?.let {
+		{ x: InterAppMessage ->
+		  when (x) {
+			is ACTIVATE -> {
+			  activateThisProcess()
+			  NOTHING_TO_SEND
+			}
 
-		  else        -> altAppInterface?.invoke(this, x)
+			else        -> altAppInterface.invoke(this, x)
+		  }
 		}
 	  }, shutdown, prefx
 	)
@@ -148,11 +150,7 @@ import kotlin.reflect.full.createInstance
   }
 
   override fun extraShutdownHook(
-	t: Thread,
-	e: Throwable,
-	shutdown: (App.()->Unit)?,
-	st: String,
-	exceptionFile: MFile
+	t: Thread, e: Throwable, shutdown: (App.()->Unit)?, st: String, exceptionFile: MFile
   ): ExceptionResponse {
 
 	/*dont delete until I find source of disappearing exceptions*/
