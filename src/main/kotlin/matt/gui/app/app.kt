@@ -1,10 +1,7 @@
 package matt.gui.app
 
-import com.sun.javafx.util.Logging
-import javafx.application.Application
 import javafx.application.Platform
 import javafx.stage.Screen
-import javafx.stage.Stage
 import javafx.stage.Window
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -22,6 +19,7 @@ import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.fx.graphics.win.stage.WMode
 import matt.fx.graphics.win.stage.WMode.NOTHING
+import matt.gui.app.fxapp.runFXAppBlocking
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.async.runLaterReturn
 import matt.hurricanefx.wrapper.FXNodeWrapperDSL
@@ -143,17 +141,16 @@ import kotlin.reflect.full.createInstance
 	)
 
 	Platform.setImplicitExit(implicitExit)
-	app = this    /* dodge "Unsupported JavaFX configuration..." part 1 */
-	Logging.getJavaFXLogger().disableLogging()
+	app = this
 
 
-	//	SvgImageLoaderFactory.install()
-	println("launching!!!")
-	Application.launch(FlowFXApp::class.java, *args)
-	println("done with launch!!!")
-	javafxRunning = false
 
 
+	runFXAppBlocking {
+	  if (app!!.altPyInterface != null) {
+		app!!.setupPythonInterface((app!!.altPyInterface)!!)
+	  }
+	}
   }
 
   override fun extraShutdownHook(
@@ -196,7 +193,6 @@ import kotlin.reflect.full.createInstance
 	}
   }
 
-
   val stage by lazy {
 	MStage(
 	  decorated = decorated, wMode = wMode, EscClosable = EscClosable, EnterClosable = EnterClosable
@@ -228,16 +224,3 @@ import kotlin.reflect.full.createInstance
 }
 
 private var app: GuiApp? = null
-
-class FlowFXApp: Application() {
-  override fun start(primaryStage: Stage?) {    /* dodge "Unsupported JavaFX configuration..." part 2 */
-	Logging.getJavaFXLogger().enableLogging()
-	app!!.apply { fxThreadW(app!!.args.toList()) }
-	if (app!!.altPyInterface != null) {
-	  app!!.setupPythonInterface((app!!.altPyInterface)!!)
-	}
-  }
-}
-
-
-
