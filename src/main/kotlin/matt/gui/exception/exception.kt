@@ -22,7 +22,6 @@ fun GuiApp.showExceptionPopup(
   t: Thread,
   e: Throwable,
   shutdown: (App.()->Unit)?,
-  consumeShutdown: (App.()->Unit)?,
   st: String,
   exceptionFile: MFile
 ): ExceptionResponse {
@@ -46,7 +45,6 @@ fun GuiApp.showExceptionPopup(
 	  }
 	  actionbutton("Run pre-shutdown operation") {
 		shutdown?.invoke(this@showExceptionPopup)
-		consumeShutdown?.invoke(this@showExceptionPopup)
 	  }
 	  actionbutton("print stack trace") {
 		e.printStackTrace()
