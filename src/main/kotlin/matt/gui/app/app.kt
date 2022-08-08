@@ -114,7 +114,7 @@ import kotlin.reflect.full.createInstance
   fun start(
 	implicitExit: Boolean = true,
 	alt_py_interface: InputHandler? = null,
-	alt_app_interface: (App.(InterAppMessage)->ActionResult)? = null,
+	altAppInterface: (App.(InterAppMessage)->ActionResult)? = null,
 	prefx: (App.()->Unit)? = null,
 	shutdown: (App.()->Unit)? = null,
 	consumeShutdown: (App.()->Unit)? = null,
@@ -137,7 +137,7 @@ import kotlin.reflect.full.createInstance
 			NOTHING_TO_SEND
 		  }
 
-		  else        -> alt_app_interface?.invoke(this, x)
+		  else        -> altAppInterface?.invoke(this, x)
 		}
 	  }, shutdown, prefx
 	)

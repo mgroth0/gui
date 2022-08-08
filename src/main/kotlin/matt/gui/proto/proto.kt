@@ -8,10 +8,10 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import matt.hurricanefx.Scrolls
-import matt.hurricanefx.eye.prop.div
-import matt.hurricanefx.eye.prop.minus
+import matt.hurricanefx.eye.prop.math.div
+import matt.hurricanefx.eye.prop.math.minus
+import matt.hurricanefx.eye.prop.math.times
 import matt.hurricanefx.eye.prop.objectBinding
-import matt.hurricanefx.eye.prop.times
 import matt.hurricanefx.wrapper.canvas.CanvasWrapper
 import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
 import matt.hurricanefx.wrapper.node.NodeWrapper
@@ -66,7 +66,7 @@ abstract class ScrollVBox(
 	  layoutY = 0.0
 
 	  content = this@ScrollVBox.vbox.apply {
-		/*matt.hurricanefx.tornadofx.vector.minus 10 here is so everything looks nicer*/
+		/*matt.hurricanefx.tornadofx.vector.matt.hurricanefx.eye.prop.math.minus 10 here is so everything looks nicer*/
 		/*also neccesary to prevent buggy javafx bug where fitToWidth doesnt work and it trys to hscroll.*/
 		/*needs to be exact or content will flow out of scrollpane (doesnt obey fitToWidth)*/
 		exactWidthProperty().bind(sp.widthProperty.minus(woffset*2))
