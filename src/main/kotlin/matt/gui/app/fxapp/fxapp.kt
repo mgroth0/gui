@@ -15,7 +15,6 @@ fun runFXAppBlocking(fxOp: (List<String>)->Unit) {
   fxBlock = fxOp
   Logging.getJavaFXLogger().disableLogging() /* dodge "Unsupported JavaFX configuration..." part 1 */
   LauncherImpl.launchApplication(MinimalFXApp::class.java, FirstPreloader::class.java, arrayOf())
-  /*Application.launch(MinimalFXApp::class.java)*/
 }
 
 private lateinit var fxBlock: (List<String>)->Unit

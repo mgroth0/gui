@@ -64,7 +64,6 @@ import kotlin.reflect.full.createInstance
   }
 
   var shutdown: (GuiApp.()->Unit)? = null
-  var consumeShudown: (GuiApp.()->Unit)? = null
 
 
   var scene: MScene<ParentWrapper>? = null
@@ -115,12 +114,10 @@ import kotlin.reflect.full.createInstance
 	altAppInterface: (App.(InterAppMessage)->ActionResult)? = null,
 	prefx: (App.()->Unit)? = null,
 	shutdown: (App.()->Unit)? = null,
-	consumeShutdown: (App.()->Unit)? = null,
   ) {
 
 
 	this.shutdown = shutdown
-	this.consumeShudown = consumeShutdown
 	this.altPyInterface = alt_py_interface?.let {
 	  when (it) {
 		is InputHandler.FxThread -> fxThreadW
@@ -146,6 +143,7 @@ import kotlin.reflect.full.createInstance
 	  if (altPyInterface != null) {
 		setupPythonInterface((altPyInterface)!!)
 	  }
+	  this@GuiApp.fxThread(this@GuiApp.args.toList())
 	}
   }
 
@@ -153,7 +151,6 @@ import kotlin.reflect.full.createInstance
 	t: Thread,
 	e: Throwable,
 	shutdown: (App.()->Unit)?,
-	consumeShutdown: (App.()->Unit)?,
 	st: String,
 	exceptionFile: MFile
   ): ExceptionResponse {
@@ -166,7 +163,7 @@ import kotlin.reflect.full.createInstance
 	try {
 	  if (Platform.isFxApplicationThread()) {
 		println("showing exception popup for t=$t, e=$e")
-		r = showExceptionPopup(t, e, shutdown, consumeShutdown, st, exceptionFile)
+		r = showExceptionPopup(t, e, shutdown, st, exceptionFile)
 	  }
 	} catch (e: Exception) {
 	  println("exception in matt.exec.exception.DefaultUncaughtExceptionHandler Exception Dialog:")
@@ -200,20 +197,9 @@ import kotlin.reflect.full.createInstance
   fun registerMainStage(stage: StageWrapper, name: String) {
 	stage.apply {
 	  bindGeometry(name)
-	  if (this@GuiApp.consumeShudown != null) {
-		require(this@GuiApp.shutdown == null)
-		setOnCloseRequest {
-		  this@GuiApp.run {
-			consumeShudown!!()
-		  }
-		  it.consume()
-		}
-	  } else {
-		setOnCloseRequest {
-		  this@GuiApp.shutdown?.let { sd -> this@GuiApp.sd() }
-		}
+	  setOnCloseRequest {
+		this@GuiApp.shutdown?.let { sd -> this@GuiApp.sd() }
 	  }
-
 	}
   }
 
