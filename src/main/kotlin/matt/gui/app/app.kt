@@ -141,14 +141,10 @@ import kotlin.reflect.full.createInstance
 	)
 
 	Platform.setImplicitExit(implicitExit)
-	app = this
-
-
-
 
 	runFXAppBlocking {
-	  if (app!!.altPyInterface != null) {
-		app!!.setupPythonInterface((app!!.altPyInterface)!!)
+	  if (altPyInterface != null) {
+		setupPythonInterface((altPyInterface)!!)
 	  }
 	}
   }
@@ -222,5 +218,3 @@ import kotlin.reflect.full.createInstance
   }
 
 }
-
-private var app: GuiApp? = null
