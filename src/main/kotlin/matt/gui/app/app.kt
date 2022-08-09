@@ -18,7 +18,6 @@ import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.win.stage.MStage
 import matt.fx.graphics.win.stage.WMode
 import matt.fx.graphics.win.stage.WMode.NOTHING
-import matt.gui.app.appserver.AppServer
 import matt.gui.app.fxapp.runFXAppBlocking
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.async.runLaterReturn
@@ -41,7 +40,7 @@ import kotlin.reflect.full.createInstance
   EnterClosable: Boolean = false,
   private val fxThread: GuiApp.(args: List<String>)->Unit,
 
-  ): App(args) {
+  ): App<GuiApp>(args) {
 
   var alwaysOnTop
 	get() = stage.isAlwaysOnTop
@@ -107,9 +106,8 @@ import kotlin.reflect.full.createInstance
   fun start(
 	implicitExit: Boolean = true,
 	alt_py_interface: InputHandler? = null,
-	appServer: AppServer? = null,
-	prefx: (App.()->Unit)? = null,
-	shutdown: (App.()->Unit)? = null,
+	prefx: (App<*>.()->Unit)? = null,
+	shutdown: (App<*>.()->Unit)? = null,
   ) {
 
 
@@ -120,7 +118,7 @@ import kotlin.reflect.full.createInstance
 		is InputHandler.Alt      -> it.op
 	  }
 	}
-	main(socketServer = appServer, shutdown, prefx)
+	main(shutdown, prefx)
 
 	Platform.setImplicitExit(implicitExit)
 
@@ -133,7 +131,7 @@ import kotlin.reflect.full.createInstance
   }
 
   override fun extraShutdownHook(
-	t: Thread, e: Throwable, shutdown: (App.()->Unit)?, st: String, exceptionFile: MFile
+	t: Thread, e: Throwable, shutdown: (App<*>.()->Unit)?, st: String, exceptionFile: MFile
   ): ExceptionResponse {
 
 	/*dont delete until I find source of disappearing exceptions*/
@@ -183,5 +181,4 @@ import kotlin.reflect.full.createInstance
 	  }
 	}
   }
-
 }
