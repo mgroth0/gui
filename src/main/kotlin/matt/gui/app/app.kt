@@ -3,8 +3,6 @@ package matt.gui.app
 import javafx.application.Platform
 import javafx.stage.Screen
 import javafx.stage.Window
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import matt.async.thread.daemon
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
@@ -28,7 +26,6 @@ import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.stage.StageWrapper
 import matt.hurricanefx.wrapper.wrapped
 import matt.klib.log.warn
-import kotlin.concurrent.thread
 import kotlin.reflect.full.createInstance
 
 @FXNodeWrapperDSL open class GuiApp(
@@ -51,12 +48,7 @@ import kotlin.reflect.full.createInstance
   fun requestFocus() = scene!!.root.requestFocus()
 
   private var javafxRunning = true
-  var altPyInterface: (GuiApp.(List<String>)->Unit)? = null
 
-  sealed class InputHandler {
-	object FxThread: InputHandler()
-	class Alt(val op: GuiApp.(List<String>)->Unit): InputHandler()
-  }
 
   var shutdown: (GuiApp.()->Unit)? = null
 
@@ -105,28 +97,18 @@ import kotlin.reflect.full.createInstance
 
   fun start(
 	implicitExit: Boolean = true,
-	alt_py_interface: InputHandler? = null,
-	prefx: (App<*>.()->Unit)? = null,
+	preFX: (App<*>.()->Unit)? = null,
 	shutdown: (App<*>.()->Unit)? = null,
   ) {
 
 
 	this.shutdown = shutdown
-	this.altPyInterface = alt_py_interface?.let {
-	  when (it) {
-		is InputHandler.FxThread -> fxThreadW
-		is InputHandler.Alt      -> it.op
-	  }
-	}
-	main(shutdown, prefx)
+	main(shutdown, preFX)
 
 	Platform.setImplicitExit(implicitExit)
 
 	runFXAppBlocking {
-	  if (altPyInterface != null) {
-		setupPythonInterface((altPyInterface)!!)
-	  }
-	  this@GuiApp.fxThread(this@GuiApp.args.toList())
+	  fxThreadW(this@GuiApp.args.toList())
 	}
   }
 
@@ -150,19 +132,6 @@ import kotlin.reflect.full.createInstance
 	  return EXIT
 	}
 	return r
-  }
-
-  fun setupPythonInterface(handleArgs: GuiApp.(List<String>)->Unit) {
-	thread(isDaemon = true) {
-	  while (javafxRunning) {
-		val stringInput = readLine()
-		if (stringInput == null) {
-		  println("input null. guess this isn't from python. exiting input thread.")
-		  break
-		}
-		handleArgs(Json.decodeFromString<List<String>>(stringInput).toList())
-	  }
-	}
   }
 
   val stage by lazy {

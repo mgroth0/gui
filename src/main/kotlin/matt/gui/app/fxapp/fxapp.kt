@@ -14,7 +14,9 @@ import javafx.stage.Stage
 fun runFXAppBlocking(fxOp: (List<String>)->Unit) {
   fxBlock = fxOp
   Logging.getJavaFXLogger().disableLogging() /* dodge "Unsupported JavaFX configuration..." part 1 */
+  println("launching app")
   LauncherImpl.launchApplication(MinimalFXApp::class.java, FirstPreloader::class.java, arrayOf())
+  println("launched app")
 }
 
 private lateinit var fxBlock: (List<String>)->Unit
@@ -50,8 +52,12 @@ class FirstPreloader: Preloader() {
 class MinimalFXApp: Application() {
   override fun start(primaryStage: Stage?) {
 	/* dodge "Unsupported JavaFX configuration..." part 2 */
+
+
 	Logging.getJavaFXLogger().enableLogging()
+	println("running fxBlock")
 	fxBlock(parameters.raw)
+	println("ran fxBlock")
   }
 }
 
