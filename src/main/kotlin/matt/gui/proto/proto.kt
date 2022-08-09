@@ -2,7 +2,6 @@ package matt.gui.proto
 
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
-import javafx.event.EventTarget
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
 import javafx.scene.layout.Pane
@@ -15,13 +14,13 @@ import matt.hurricanefx.eye.prop.objectBinding
 import matt.hurricanefx.wrapper.canvas.CanvasWrapper
 import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
 import matt.hurricanefx.wrapper.node.NodeWrapper
-import matt.hurricanefx.wrapper.node.opConnectAndReturn
+import matt.hurricanefx.wrapper.node.attach
 import matt.hurricanefx.wrapper.pane.PaneWrapper
 import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.hurricanefx.wrapper.region.RegionWrapper
 import matt.hurricanefx.wrapper.shape.circle.CircleWrapper
-import matt.hurricanefx.wrapper.wrapped
+import matt.hurricanefx.wrapper.target.EventTargetWrapper
 import matt.klib.lang.applyIt
 
 infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {
@@ -85,21 +84,21 @@ abstract class ScrollVBox(
 }
 
 
-fun EventTarget.scaledCanvas(
+fun EventTargetWrapper.scaledCanvas(
   width: Number,
   height: Number,
   scale: Number = 1.0,
   op: ScaledCanvas.()->Unit = {}
 ) =
-  opConnectAndReturn(
-	this.wrapped(), ScaledCanvas(
+  attach(
+	ScaledCanvas(
 	  width = width,
 	  height = height,
 	  initialScale = scale.toDouble()
 	), op
   )
 
-fun EventTarget.scaledCanvas(
+fun EventTargetWrapper.scaledCanvas(
   hw: Number,
   scale: Number = 1.0,
   op: ScaledCanvas.()->Unit = {}
