@@ -15,7 +15,7 @@ import matt.hurricanefx.wrapper.canvas.CanvasWrapper
 import matt.hurricanefx.wrapper.control.text.field.TextFieldWrapper
 import matt.hurricanefx.wrapper.node.NodeWrapper
 import matt.hurricanefx.wrapper.node.attach
-import matt.hurricanefx.wrapper.pane.PaneWrapper
+import matt.hurricanefx.wrapper.pane.PaneWrapperImpl
 import matt.hurricanefx.wrapper.pane.scroll.ScrollPaneWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.hurricanefx.wrapper.region.RegionWrapper
@@ -48,7 +48,7 @@ fun <C: NodeWrapper> ScrollPaneNoBars(content: C? = null): ScrollPaneWrapper<C> 
 abstract class ScrollVBox(
   scrollpane: ScrollPaneWrapper<VBoxWrapper> = ScrollPaneWrapper(),
   val vbox: VBoxWrapper = VBoxWrapper()
-): PaneWrapper<Pane>(Pane()), Scrolls { //Refreshable
+): PaneWrapperImpl<Pane>(Pane()), Scrolls { //Refreshable
   override val scrollPane = scrollpane
 
   init {
@@ -108,7 +108,7 @@ class ScaledCanvas(
   height: Number,
   width: Number,
   val initialScale: Double = 1.0
-): PaneWrapper<Pane>(Pane()) {
+): PaneWrapperImpl<Pane>(Pane()) {
   constructor(hw: Number, scale: Double): this(height = hw.toDouble(), width = hw.toDouble(), initialScale = scale)
 
   val awesomeScaleProperty = SimpleDoubleProperty(initialScale)
