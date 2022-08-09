@@ -21,7 +21,7 @@ import kotlin.system.exitProcess
 fun GuiApp.showExceptionPopup(
   t: Thread,
   e: Throwable,
-  shutdown: (App.()->Unit)?,
+  shutdown: (App<*>.()->Unit)?,
   st: String,
   exceptionFile: MFile
 ): ExceptionResponse {
