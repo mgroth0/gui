@@ -100,7 +100,7 @@ import kotlin.reflect.full.createInstance
 	preFX: (App<*>.()->Unit)? = null,
 	shutdown: (App<*>.()->Unit)? = null,
 	usePreloaderApp: Boolean = false
-  ) {
+  ): Unit {
 
 
 	this.shutdown = shutdown
