@@ -99,6 +99,7 @@ import kotlin.reflect.full.createInstance
 	implicitExit: Boolean = true,
 	preFX: (App<*>.()->Unit)? = null,
 	shutdown: (App<*>.()->Unit)? = null,
+	usePreloaderApp: Boolean = false
   ) {
 
 
@@ -107,7 +108,7 @@ import kotlin.reflect.full.createInstance
 
 	Platform.setImplicitExit(implicitExit)
 
-	runFXAppBlocking {
+	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp) {
 	  fxThreadW(this@GuiApp.args.toList())
 	}
   }

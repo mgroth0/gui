@@ -11,11 +11,12 @@ import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 
 
-fun runFXAppBlocking(fxOp: (List<String>)->Unit) {
+fun runFXAppBlocking(args: Array<String>, usePreloaderApp: Boolean = false, fxOp: (List<String>)->Unit) {
   fxBlock = fxOp
   Logging.getJavaFXLogger().disableLogging() /* dodge "Unsupported JavaFX configuration..." part 1 */
   println("launching app")
-  LauncherImpl.launchApplication(MinimalFXApp::class.java, FirstPreloader::class.java, arrayOf())
+  if (usePreloaderApp) LauncherImpl.launchApplication(MinimalFXApp::class.java, FirstPreloader::class.java, args)
+  else Application.launch(MinimalFXApp::class.java, *args)
   println("launched app")
 }
 
