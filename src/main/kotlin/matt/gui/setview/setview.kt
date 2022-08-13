@@ -3,6 +3,7 @@ package matt.gui.setview
 import javafx.application.Platform.runLater
 import javafx.scene.control.ListView
 import javafx.scene.control.TableView
+import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
 import javafx.scene.text.Text
@@ -97,5 +98,5 @@ fun <T> TreeTableView<T>.select(o: T?) {
   }
 }
 
-fun <T> TreeView<T>.items() = root.recurse { it.children }
-fun <T> TreeTableView<T>.items() = root.recurse { it.children }
+fun <T> TreeView<T>.items(): Sequence<TreeItem<T>> = root.recurse { it.children }
+fun <T> TreeTableView<T>.items(): Sequence<TreeItem<T>> = root.recurse { it.children }

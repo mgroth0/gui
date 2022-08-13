@@ -4,6 +4,7 @@ import javafx.beans.property.BooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED
 import javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER
+import javafx.scene.image.PixelWriter
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import matt.hurricanefx.Scrolls
@@ -133,7 +134,7 @@ class ScaledCanvas(
   }
 
   val gc by lazy { canvas.graphicsContext2D }
-  private val pw by lazy { gc.pixelWriter }
+  private val pw: PixelWriter by lazy { gc.pixelWriter }
   operator fun set(x: Int, y: Int, c: Color) = pw.setColor(x, y, c)
 }
 
