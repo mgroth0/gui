@@ -30,7 +30,7 @@ infix fun TextFieldWrapper.withPrompt(s: String): TextFieldWrapper {
 }
 
 
-infix fun <C: RegionWrapper> C.wrappedIn(sp: ScrollPaneWrapper<C>): ScrollPaneWrapper<C> {
+infix fun <C: RegionWrapper<*>> C.wrappedIn(sp: ScrollPaneWrapper<C>): ScrollPaneWrapper<C> {
   this minBind sp
   sp.backgroundProperty.bindBidirectional(backgroundProperty)
   return sp.apply {
@@ -47,9 +47,9 @@ fun <C: NodeWrapper> ScrollPaneNoBars(content: C? = null): ScrollPaneWrapper<C> 
 
 
 abstract class ScrollVBox(
-  scrollpane: ScrollPaneWrapper<VBoxWrapper> = ScrollPaneWrapper(),
-  val vbox: VBoxWrapper = VBoxWrapper()
-): PaneWrapperImpl<Pane>(Pane()), Scrolls { //Refreshable
+  scrollpane: ScrollPaneWrapper<VBoxWrapper<*>> = ScrollPaneWrapper(),
+  val vbox: VBoxWrapper<NodeWrapper> = VBoxWrapper()
+): PaneWrapperImpl<Pane, NodeWrapper>(Pane()), Scrolls { //Refreshable
   override val scrollPane = scrollpane
 
   init {
@@ -74,7 +74,7 @@ abstract class ScrollVBox(
 		/*reason: this causes stupid buggy fx vertical scroll bar to properly hide when not needed*/
 		minHeightProperty.bind(sp.heightProperty.minus(50.0))
 	  }
-	}.node)
+	})
   }
 
   //  abstract fun VBox.refreshContent()
@@ -109,7 +109,7 @@ class ScaledCanvas(
   height: Number,
   width: Number,
   val initialScale: Double = 1.0
-): PaneWrapperImpl<Pane>(Pane()) {
+): PaneWrapperImpl<Pane, CanvasWrapper>(Pane()) {
   constructor(hw: Number, scale: Double): this(height = hw.toDouble(), width = hw.toDouble(), initialScale = scale)
 
   val awesomeScaleProperty = SimpleDoubleProperty(initialScale)
@@ -124,7 +124,7 @@ class ScaledCanvas(
 	layoutYProperty().bind((heightProperty*this@ScaledCanvas.awesomeScaleProperty - heightProperty)/2)
 	scaleXProperty().bind(this@ScaledCanvas.awesomeScaleProperty)
 	scaleYProperty().bind(this@ScaledCanvas.awesomeScaleProperty)
-	this@ScaledCanvas.children.add(this.node)
+	this@ScaledCanvas.children.add(this)
   }
 
 

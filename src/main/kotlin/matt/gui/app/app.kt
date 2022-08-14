@@ -20,6 +20,7 @@ import matt.gui.app.fxapp.runFXAppBlocking
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.async.runLaterReturn
 import matt.hurricanefx.wrapper.FXNodeWrapperDSL
+import matt.hurricanefx.wrapper.node.NodeWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
@@ -53,7 +54,7 @@ import kotlin.reflect.full.createInstance
   var shutdown: (GuiApp.()->Unit)? = null
 
 
-  var scene: MScene<ParentWrapper>? = null
+  var scene: MScene<ParentWrapper<*>>? = null
 
   val fxThreadW: GuiApp.(List<String>)->Unit = {
 	fxThread(it)
@@ -87,11 +88,11 @@ import kotlin.reflect.full.createInstance
 	}
   }
 
-  fun scene(op: MScene<ParentWrapper>.()->Unit) {
-	scene = MScene<ParentWrapper>(VBoxWrapper()).apply(op) /*vbox is placeholder*/
+  fun scene(op: MScene<ParentWrapper<*>>.()->Unit) {
+	scene = MScene<ParentWrapper<*>>(VBoxWrapper<NodeWrapper>()).apply(op) /*vbox is placeholder*/
   }
 
-  inline fun <reified N: ParentWrapperImpl<*>> root(op: N.()->Unit) {
+  inline fun <reified N: ParentWrapperImpl<*,*>> root(op: N.()->Unit) {
 	scene = MScene(N::class.createInstance().apply(op))
   }
 
