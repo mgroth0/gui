@@ -17,6 +17,10 @@
             "type": "matt.mstruct.BuildJsonProjectDependency",
             "cfg": "api",
             "path": ":k:exec"
+        }, {
+            "type": "matt.mstruct.BuildJsonProjectDependency",
+            "cfg": "api",
+            "path": ":k:fx:node:proto"
         },
         {
             "type": "matt.mstruct.BuildJsonProjectDependency",
