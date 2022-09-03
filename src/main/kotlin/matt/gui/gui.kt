@@ -7,7 +7,7 @@ import javafx.geometry.Pos.TOP_CENTER
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.SKYBLUE
 import javafx.stage.Screen
-import matt.async.date.sec
+import matt.time.dur.sec
 import matt.file.MFile
 import matt.fx.graphics.clip.drags
 import matt.fx.graphics.core.scene.MScene
