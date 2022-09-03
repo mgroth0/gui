@@ -26,7 +26,7 @@ import matt.hurricanefx.wrapper.parent.ParentWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.stage.StageWrapper
 import matt.hurricanefx.wrapper.wrapped
-import matt.klib.log.warn
+import matt.log.warn
 import kotlin.reflect.full.createInstance
 
 @FXNodeWrapperDSL open class GuiApp(
