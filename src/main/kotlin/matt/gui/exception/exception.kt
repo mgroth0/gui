@@ -17,7 +17,7 @@ import matt.gui.app.GuiApp
 import matt.hurricanefx.wrapper.control.button.ButtonWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.hurricanefx.wrapper.region.RegionWrapper
-import matt.klib.str.taball
+import matt.prim.str.taball
 import kotlin.system.exitProcess
 
 fun GuiApp.showExceptionPopup(
