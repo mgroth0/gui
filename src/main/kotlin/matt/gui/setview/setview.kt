@@ -46,7 +46,7 @@ fun <T> TreeTableViewWrapper<T>.autoResizeColumns() {
 		((root.recurseToFlat({ it.children }).map {
 		  column.getCellData(it)
 		}.map {
-		  it.toString().fxWidth
+		  "$it".fxWidth
 		}.toMutableList() + listOf(
 		  column.text.fxWidth
 		)).maxOrNull() ?: 0.0) + 10.0
