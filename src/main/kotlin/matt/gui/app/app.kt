@@ -88,13 +88,18 @@ import kotlin.reflect.full.createInstance
 	}
   }
 
+
   fun scene(op: MScene<ParentWrapper<*>>.()->Unit) {
 	scene = MScene<ParentWrapper<*>>(VBoxWrapper<NodeWrapper>()).apply(op) /*vbox is placeholder*/
   }
 
-  inline fun <reified N: ParentWrapperImpl<*,*>> root(op: N.()->Unit): N {
+  fun initRoot(n: ParentWrapper<*>) {
+	scene = MScene(n)
+  }
+
+  inline fun <reified N: ParentWrapperImpl<*, *>> root(op: N.()->Unit = {}): N {
 	val r = N::class.createInstance()
-	scene = MScene(r.apply(op))
+	initRoot(r.apply(op))
 	return r
   }
 
