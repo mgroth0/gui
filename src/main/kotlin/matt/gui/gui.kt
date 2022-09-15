@@ -7,7 +7,6 @@ import javafx.geometry.Pos.TOP_CENTER
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.SKYBLUE
 import javafx.stage.Screen
-import matt.time.dur.sec
 import matt.file.MFile
 import matt.fx.graphics.clip.drags
 import matt.fx.graphics.core.scene.MScene
@@ -22,6 +21,7 @@ import matt.hurricanefx.tornadofx.animation.keyframe
 import matt.hurricanefx.tornadofx.animation.timeline
 import matt.hurricanefx.wrapper.node.NodeWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
+import matt.time.dur.sec
 import java.awt.image.BufferedImage
 import java.lang.Thread.sleep
 import java.util.WeakHashMap
@@ -44,10 +44,13 @@ fun BufferedImage.toFXCanvas(): ScaledCanvas {
 }
 
 fun MFile.draggableIcon() =
-  if (isDirectory) Icon("folder") else if (extension.isBlank()) Icon("file/bin") else Icon("file/${extension}")
-	/*fileIcons[this].toFXCanvas()*/.apply {
-	  drags(this@draggableIcon)
-	}
+  (when {
+	(isDirectory) -> Icon("folder")
+	(extension.isBlank()) -> Icon("file/bin")
+	else -> Icon("file/${extension}"/*, invert = extension in listOf("md", "txt")*/)
+  }).apply {
+	drags(this@draggableIcon)
+  }
 
 const val NOTIFICATION_WIDTH = 200.0
 const val NOTIFICATION_HEIGHT = 100.0
