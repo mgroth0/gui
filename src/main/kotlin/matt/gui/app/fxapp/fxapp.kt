@@ -22,6 +22,7 @@ fun runFXAppBlocking(args: Array<String>, usePreloaderApp: Boolean = false, fxOp
 
 private lateinit var fxBlock: (List<String>)->Unit
 
+
 class FirstPreloader: Preloader() {
   private var bar: ProgressBar? = null
   var stage: Stage? = null
@@ -51,6 +52,9 @@ class FirstPreloader: Preloader() {
 
 
 class MinimalFXApp: Application() {
+  companion object {
+	var fxStop: (() -> Unit)? = null
+  }
   override fun start(primaryStage: Stage?) {
 	/* dodge "Unsupported JavaFX configuration..." part 2 */
 
@@ -59,6 +63,10 @@ class MinimalFXApp: Application() {
 	println("running fxBlock")
 	fxBlock(parameters.raw)
 	println("ran fxBlock")
+  }
+
+  override fun stop() {
+	fxStop?.invoke()
   }
 }
 

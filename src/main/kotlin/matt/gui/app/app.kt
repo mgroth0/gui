@@ -3,6 +3,7 @@ package matt.gui.app
 import javafx.application.Platform
 import javafx.stage.Screen
 import javafx.stage.Window
+import matt.async.thread.aliveNonDaemonThreads
 import matt.async.thread.daemon
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
@@ -26,9 +27,16 @@ import matt.hurricanefx.wrapper.parent.ParentWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.stage.StageWrapper
 import matt.hurricanefx.wrapper.wrapped
+import matt.log.taball
 import matt.log.warn
+import matt.model.flowlogic.singlerunlambda.SingleRunLambda
+import matt.model.latch.SimpleLatch
+import matt.time.dur.sleep
 import kotlin.reflect.full.createInstance
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @FXNodeWrapperDSL open class GuiApp(
   args: Array<String> = arrayOf(),
   val screenIndex: Int? = null,
@@ -39,6 +47,10 @@ import kotlin.reflect.full.createInstance
   private val fxThread: GuiApp.(args: List<String>)->Unit,
 
   ): App<GuiApp>(args) {
+
+  companion object {
+	val FX_LATCH = SimpleLatch()
+  }
 
   var alwaysOnTop
 	get() = stage.isAlwaysOnTop
@@ -51,7 +63,7 @@ import kotlin.reflect.full.createInstance
   private var javafxRunning = true
 
 
-  var shutdown: (GuiApp.()->Unit)? = null
+  //  var shutdown: (GuiApp.()->Unit)? = null
 
 
   var scene: MScene<ParentWrapper<*>>? = null
@@ -111,13 +123,27 @@ import kotlin.reflect.full.createInstance
   ): Unit {
 
 
-	this.shutdown = shutdown
-	main(shutdown, preFX)
+	val singleRunShutdown = SingleRunLambda {
+	  shutdown?.invoke(this)
+	}
+
+	main({
+	  singleRunShutdown.invoke()
+	}, preFX)
 
 	Platform.setImplicitExit(implicitExit)
 
 	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp) {
 	  fxThreadW(this@GuiApp.args.toList())
+	}
+	FX_LATCH.open()
+	singleRunShutdown()
+	daemon {
+	  sleep(5.seconds)
+	  while (true) {
+		taball("aliveNonDaemonThreads", aliveNonDaemonThreads())
+		sleep(3.seconds)
+	  }
 	}
   }
 
@@ -154,9 +180,21 @@ import kotlin.reflect.full.createInstance
   fun registerMainStage(stage: StageWrapper, name: String) {
 	stage.apply {
 	  bindGeometry(name)
-	  setOnCloseRequest {
-		this@GuiApp.shutdown?.let { sd -> this@GuiApp.sd() }
-	  }
+	  //	  setOnCloseRequest {
+	  //		this@GuiApp.shutdown?.let { sd -> this@GuiApp.sd() }
+	  //	  }
 	}
   }
 }
+
+//class SingleRunShutdownLambda(private val op: ()->Unit) {
+//  private var ran = false
+//
+//  @Synchronized
+//  operator fun invoke() {
+//	if (!ran) {
+//	  ran = true
+//	  op()
+//	}
+//  }
+//}
