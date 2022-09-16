@@ -30,7 +30,6 @@ import matt.hurricanefx.wrapper.wrapped
 import matt.log.taball
 import matt.log.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
-import matt.model.latch.SimpleLatch
 import matt.time.dur.sleep
 import kotlin.reflect.full.createInstance
 import kotlin.time.Duration.Companion.seconds
@@ -48,9 +47,9 @@ import kotlin.time.ExperimentalTime
 
   ): App<GuiApp>(args) {
 
-  companion object {
-	val FX_LATCH = SimpleLatch()
-  }
+  //  companion object {
+  //	val FX_LATCH = SimpleLatch()
+  //  }
 
   var alwaysOnTop
 	get() = stage.isAlwaysOnTop
@@ -60,7 +59,7 @@ import kotlin.time.ExperimentalTime
 
   fun requestFocus() = scene!!.root.requestFocus()
 
-  private var javafxRunning = true
+  //  private var javafxRunning = true
 
 
   //  var shutdown: (GuiApp.()->Unit)? = null
@@ -136,7 +135,7 @@ import kotlin.time.ExperimentalTime
 	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp) {
 	  fxThreadW(this@GuiApp.args.toList())
 	}
-	FX_LATCH.open()
+	//	FX_LATCH.open()
 	singleRunShutdown()
 	daemon {
 	  sleep(5.seconds)

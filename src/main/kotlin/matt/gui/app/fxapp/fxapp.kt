@@ -9,15 +9,18 @@ import javafx.scene.Scene
 import javafx.scene.control.ProgressBar
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
+import matt.auto.myPid
+import matt.lang.DO_NOT_SHUTDOWN_WITH_FX_THREAD
+import matt.log.warn
 
 
 fun runFXAppBlocking(args: Array<String>, usePreloaderApp: Boolean = false, fxOp: (List<String>)->Unit) {
   fxBlock = fxOp
   Logging.getJavaFXLogger().disableLogging() /* dodge "Unsupported JavaFX configuration..." part 1 */
-  println("launching app")
+  println("launching app (mypid = ${myPid})")
   if (usePreloaderApp) LauncherImpl.launchApplication(MinimalFXApp::class.java, FirstPreloader::class.java, args)
   else Application.launch(MinimalFXApp::class.java, *args)
-  println("launched app")
+  println("main thread has exited from Application.launch")
 }
 
 private lateinit var fxBlock: (List<String>)->Unit
@@ -52,9 +55,9 @@ class FirstPreloader: Preloader() {
 
 
 class MinimalFXApp: Application() {
-  companion object {
-	var fxStop: (() -> Unit)? = null
-  }
+  //  companion object {
+  //	var fxStop: (() -> Unit)? = null
+  //  }
   override fun start(primaryStage: Stage?) {
 	/* dodge "Unsupported JavaFX configuration..." part 2 */
 
@@ -66,7 +69,10 @@ class MinimalFXApp: Application() {
   }
 
   override fun stop() {
-	fxStop?.invoke()
+	warn(DO_NOT_SHUTDOWN_WITH_FX_THREAD)
+	//	println("running javafx Application.stop()")
+	//	fxStop?.invoke()
+	//	println("finished javafx Application.stop()")
   }
 }
 
