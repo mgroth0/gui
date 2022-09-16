@@ -10,8 +10,6 @@ import javafx.scene.control.ProgressBar
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import matt.auto.myPid
-import matt.lang.DO_NOT_SHUTDOWN_WITH_FX_THREAD
-import matt.log.warn
 
 
 fun runFXAppBlocking(args: Array<String>, usePreloaderApp: Boolean = false, fxOp: (List<String>)->Unit) {
@@ -68,11 +66,25 @@ class MinimalFXApp: Application() {
 	println("ran fxBlock")
   }
 
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
   override fun stop() {
-	warn(DO_NOT_SHUTDOWN_WITH_FX_THREAD)
-	//	println("running javafx Application.stop()")
-	//	fxStop?.invoke()
-	//	println("finished javafx Application.stop()")
+	/*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+	/*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+	/*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+	/*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+	/*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+	/*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
   }
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
+  /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
 }
 
