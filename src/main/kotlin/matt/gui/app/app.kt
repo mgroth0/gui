@@ -85,7 +85,7 @@ import kotlin.time.ExperimentalTime
 	}
 	if (scene != null) {
 	  stage.apply {
-		scene = this@GuiApp.scene!!.node
+		scene = this@GuiApp.scene!!
 
 		if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
 		  val screen = Screen.getScreens()[this@GuiApp.screenIndex]
