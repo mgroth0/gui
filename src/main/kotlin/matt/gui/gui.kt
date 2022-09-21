@@ -111,7 +111,7 @@ fun notification(
 	}
 	fakeYProps[stage] = fakeYProp
 
-	stage.showingProperty().onChange {
+	stage.showingProperty.onChange {
 	  if (!it) {
 		openNotifications -= stage
 		timeline {
