@@ -3,7 +3,6 @@ package matt.gui.app
 import javafx.application.Platform
 import javafx.stage.Screen
 import javafx.stage.Window
-import matt.async.thread.aliveNonDaemonThreads
 import matt.async.thread.daemon
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
 import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
@@ -18,6 +17,7 @@ import matt.fx.graphics.win.stage.MStage
 import matt.fx.graphics.win.stage.WMode
 import matt.fx.graphics.win.stage.WMode.NOTHING
 import matt.gui.app.fxapp.runFXAppBlocking
+import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.async.runLaterReturn
 import matt.hurricanefx.wrapper.FXNodeWrapperDSL
@@ -25,31 +25,21 @@ import matt.hurricanefx.wrapper.node.NodeWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapper
 import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
-import matt.hurricanefx.wrapper.stage.StageWrapper
 import matt.hurricanefx.wrapper.wrapped
-import matt.log.taball
 import matt.log.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
-import matt.time.dur.sleep
 import kotlin.reflect.full.createInstance
-import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 @FXNodeWrapperDSL open class GuiApp(
   args: Array<String> = arrayOf(),
   val screenIndex: Int? = null,
   decorated: Boolean = false,
   wMode: WMode = NOTHING,
-  EscClosable: Boolean = false,
-  EnterClosable: Boolean = false,
+  escClosable: Boolean = false,
+  enterClosable: Boolean = false,
   private val fxThread: GuiApp.(args: List<String>)->Unit,
 
   ): App<GuiApp>(args) {
-
-  //  companion object {
-  //	val FX_LATCH = SimpleLatch()
-  //  }
 
   var alwaysOnTop
 	get() = stage.isAlwaysOnTop
@@ -58,12 +48,6 @@ import kotlin.time.ExperimentalTime
 	}
 
   fun requestFocus() = scene!!.root.requestFocus()
-
-  //  private var javafxRunning = true
-
-
-  //  var shutdown: (GuiApp.()->Unit)? = null
-
 
   var scene: MScene<ParentWrapper<*>>? = null
 
@@ -119,7 +103,7 @@ import kotlin.time.ExperimentalTime
 	preFX: (App<*>.()->Unit)? = null,
 	shutdown: (App<*>.()->Unit)? = null,
 	usePreloaderApp: Boolean = false
-  ): Unit {
+  ) {
 
 
 	val singleRunShutdown = SingleRunLambda {
@@ -135,15 +119,8 @@ import kotlin.time.ExperimentalTime
 	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp) {
 	  fxThreadW(this@GuiApp.args.toList())
 	}
-	//	FX_LATCH.open()
 	singleRunShutdown()
-	daemon {
-	  sleep(5.seconds)
-	  while (true) {
-		taball("aliveNonDaemonThreads", aliveNonDaemonThreads())
-		sleep(3.seconds)
-	  }
-	}
+	ThreadInspectorDaemon.start()
   }
 
   override fun extraShutdownHook(
@@ -170,30 +147,9 @@ import kotlin.time.ExperimentalTime
 
   val stage by lazy {
 	MStage(
-	  decorated = decorated, wMode = wMode, EscClosable = EscClosable, EnterClosable = EnterClosable
+	  decorated = decorated, wMode = wMode, EscClosable = escClosable, EnterClosable = enterClosable
 	).apply {
-	  this@GuiApp.registerMainStage(this, appName)
-	}
-  }
-
-  fun registerMainStage(stage: StageWrapper, name: String) {
-	stage.apply {
-	  bindGeometry(name)
-	  //	  setOnCloseRequest {
-	  //		this@GuiApp.shutdown?.let { sd -> this@GuiApp.sd() }
-	  //	  }
+	  bindGeometry(appName)
 	}
   }
 }
-
-//class SingleRunShutdownLambda(private val op: ()->Unit) {
-//  private var ran = false
-//
-//  @Synchronized
-//  operator fun invoke() {
-//	if (!ran) {
-//	  ran = true
-//	  op()
-//	}
-//  }
-//}
