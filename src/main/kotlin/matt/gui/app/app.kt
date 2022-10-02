@@ -22,7 +22,7 @@ import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.wrapper.FXNodeWrapperDSL
 import matt.hurricanefx.wrapper.node.NodeWrapper
-import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapper
+import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.fx.graphics.wrapper.node.parent.ParentWrapper
 import matt.fx.graphics.wrapper.node.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.wrapped
@@ -85,7 +85,7 @@ import kotlin.reflect.full.createInstance
 
 
   fun scene(op: MScene<ParentWrapper<*>>.()->Unit) {
-	scene = MScene<ParentWrapper<*>>(VBoxWrapper<NodeWrapper>()).apply(op) /*vbox is placeholder*/
+	scene = MScene<ParentWrapper<*>>(VBoxWrapperImpl<NodeWrapper>()).apply(op) /*vbox is placeholder*/
   }
 
   fun initRoot(n: ParentWrapper<*>) {

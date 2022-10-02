@@ -15,7 +15,7 @@ import matt.fx.control.win.interact.openInNewWindow
 import matt.fx.graphics.win.stage.ShowMode.SHOW_AND_WAIT
 import matt.gui.app.GuiApp
 import matt.hurricanefx.wrapper.control.button.ButtonWrapper
-import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapper
+import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.log.taball
 import kotlin.system.exitProcess
@@ -30,7 +30,7 @@ fun GuiApp.showExceptionPopup(
   var r = EXIT
   taball("stacktrace", e.stackTrace)
   println("setting up matt.fx.graphics.fxthread.runLaterReturn for exception dialog")
-  VBoxWrapper<RegionWrapper<*>>().apply {
+  VBoxWrapperImpl<RegionWrapper<*>>().apply {
 	println("setting up vbox1")
 	text("${e::class.simpleName} in $appName")
 	println("setting up vbox2")

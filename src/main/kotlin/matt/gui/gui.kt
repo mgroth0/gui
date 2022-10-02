@@ -20,7 +20,7 @@ import matt.hurricanefx.toFXDuration
 import matt.fx.graphics.tfx.animation.keyframe
 import matt.fx.graphics.tfx.animation.timeline
 import matt.hurricanefx.wrapper.node.NodeWrapper
-import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapper
+import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.time.dur.sec
 import java.awt.image.BufferedImage
 import java.lang.Thread.sleep
@@ -70,7 +70,7 @@ fun notification(
 	  isAlwaysOnTop = true
 	}
 	stage.scene = MScene(
-	  VBoxWrapper<NodeWrapper>().apply {
+	  VBoxWrapperImpl<NodeWrapper>().apply {
 		this.alignment = TOP_CENTER
 		runLater {
 		  backgroundFill = SKYBLUE
