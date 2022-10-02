@@ -13,19 +13,21 @@ import matt.fx.control.mscene.MScene
 import matt.fx.control.mstage.MStage
 import matt.fx.control.mstage.WMode
 import matt.fx.control.mstage.WMode.NOTHING
+import matt.fx.control.wrapper.wrapped.WrapperServiceImpl
 import matt.fx.control.wrapper.wrapped.wrapped
 import matt.fx.graphics.fxthread.runLaterReturn
 import matt.fx.graphics.mag.NEW_MAC_NOTCH_ESTIMATE
 import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
+import matt.fx.graphics.service.WrapperServiceHub
 import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.wrapper.FXNodeWrapperDSL
 import matt.fx.graphics.wrapper.node.NodeWrapper
+import matt.fx.graphics.wrapper.node.parent.ParentWrapper
+import matt.fx.graphics.wrapper.node.parent.ParentWrapperImpl
+import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.gui.app.fxapp.runFXAppBlocking
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
-import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
-import matt.fx.graphics.wrapper.node.parent.ParentWrapper
-import matt.fx.graphics.wrapper.node.parent.ParentWrapperImpl
 import matt.log.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import kotlin.reflect.full.createInstance
@@ -105,6 +107,7 @@ import kotlin.reflect.full.createInstance
 	usePreloaderApp: Boolean = false
   ) {
 
+	WrapperServiceHub.install(WrapperServiceImpl)
 
 	val singleRunShutdown = SingleRunLambda {
 	  shutdown?.invoke(this)
