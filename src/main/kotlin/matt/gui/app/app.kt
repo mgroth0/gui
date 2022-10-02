@@ -23,8 +23,8 @@ import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.wrapper.FXNodeWrapperDSL
 import matt.hurricanefx.wrapper.node.NodeWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
-import matt.hurricanefx.wrapper.parent.ParentWrapper
-import matt.hurricanefx.wrapper.parent.ParentWrapperImpl
+import matt.fx.graphics.wrapper.node.parent.ParentWrapper
+import matt.fx.graphics.wrapper.node.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.wrapped
 import matt.log.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
