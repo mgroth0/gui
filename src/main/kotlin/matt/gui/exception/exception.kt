@@ -15,7 +15,7 @@ import matt.fx.graphics.win.interact.openInNewWindow
 import matt.fx.graphics.win.stage.ShowMode.SHOW_AND_WAIT
 import matt.gui.app.GuiApp
 import matt.hurricanefx.wrapper.control.button.ButtonWrapper
-import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
+import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapper
 import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.log.taball
 import kotlin.system.exitProcess

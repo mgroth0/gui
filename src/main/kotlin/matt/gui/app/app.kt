@@ -22,7 +22,7 @@ import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
 import matt.hurricanefx.wrapper.FXNodeWrapperDSL
 import matt.hurricanefx.wrapper.node.NodeWrapper
-import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
+import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapper
 import matt.fx.graphics.wrapper.node.parent.ParentWrapper
 import matt.fx.graphics.wrapper.node.parent.ParentWrapperImpl
 import matt.hurricanefx.wrapper.wrapped

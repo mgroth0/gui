@@ -17,10 +17,10 @@ import matt.hurricanefx.eye.lang.DProp
 import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.intColorToFXColor
 import matt.hurricanefx.toFXDuration
-import matt.hurricanefx.tornadofx.animation.keyframe
-import matt.hurricanefx.tornadofx.animation.timeline
+import matt.fx.graphics.tfx.animation.keyframe
+import matt.fx.graphics.tfx.animation.timeline
 import matt.hurricanefx.wrapper.node.NodeWrapper
-import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
+import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapper
 import matt.time.dur.sec
 import java.awt.image.BufferedImage
 import java.lang.Thread.sleep

@@ -4,7 +4,7 @@
 	{
 	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
 	  "cfg" :  "api",
-	  "path" : ":k:hurricanefx"
+	  "path" : ":k:fx:control"
 	},
 	{
 	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
