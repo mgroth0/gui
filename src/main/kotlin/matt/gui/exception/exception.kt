@@ -29,7 +29,7 @@ fun GuiApp.showExceptionPopup(
 ): ExceptionResponse {
   var r = EXIT
   taball("stacktrace", e.stackTrace)
-  println("setting up runLaterReturn for exception dialog")
+  println("setting up matt.fx.graphics.fxthread.runLaterReturn for exception dialog")
   VBoxWrapper<RegionWrapper<*>>().apply {
 	println("setting up vbox1")
 	text("${e::class.simpleName} in $appName")
