@@ -10,6 +10,7 @@ import matt.exec.app.App
 import matt.exec.app.appName
 import matt.file.MFile
 import matt.fx.graphics.core.scene.MScene
+import matt.fx.graphics.fxthread.runLaterReturn
 import matt.fx.graphics.mag.NEW_MAC_NOTCH_ESTIMATE
 import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
 import matt.fx.graphics.win.bindgeom.bindGeometry
@@ -19,7 +20,6 @@ import matt.fx.graphics.win.stage.WMode.NOTHING
 import matt.gui.app.fxapp.runFXAppBlocking
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
-import matt.hurricanefx.async.runLaterReturn
 import matt.hurricanefx.wrapper.FXNodeWrapperDSL
 import matt.hurricanefx.wrapper.node.NodeWrapper
 import matt.hurricanefx.wrapper.pane.vbox.VBoxWrapper
