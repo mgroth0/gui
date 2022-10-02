@@ -10,13 +10,16 @@ import matt.auto.openInIntelliJ
 import matt.exec.app.App
 import matt.exec.app.appName
 import matt.file.MFile
-import matt.fx.graphics.lang.actionbutton
+import matt.fx.control.lang.actionbutton
+import matt.fx.control.mstage.ShowMode.SHOW_AND_WAIT
 import matt.fx.control.win.interact.openInNewWindow
-import matt.fx.graphics.win.stage.ShowMode.SHOW_AND_WAIT
-import matt.gui.app.GuiApp
-import matt.hurricanefx.wrapper.control.button.ButtonWrapper
+import matt.fx.control.wrapper.control.button.ButtonWrapper
+import matt.fx.control.wrapper.control.text.area.textarea
+import matt.fx.graphics.wrapper.pane.flow.flowpane
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.fx.graphics.wrapper.region.RegionWrapper
+import matt.fx.graphics.wrapper.text.text
+import matt.gui.app.GuiApp
 import matt.log.taball
 import kotlin.system.exitProcess
 
