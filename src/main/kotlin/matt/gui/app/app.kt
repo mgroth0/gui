@@ -28,6 +28,8 @@ import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.gui.app.fxapp.runFXAppBlocking
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
+import matt.log.profile.Stopwatch
+import matt.log.profile.tic
 import matt.log.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import kotlin.reflect.full.createInstance
@@ -54,7 +56,10 @@ import kotlin.reflect.full.createInstance
   var scene: MScene<ParentWrapper<*>>? = null
 
   val fxThreadW: GuiApp.(List<String>)->Unit = {
+	val t = tic("fxThreadW", enabled = false)
+	t.toc(0)
 	fxThread(it)
+	t.toc(1)
 	daemon {
 	  Window.getWindows().map { it.wrapped() }.forEach {
 		if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
@@ -69,10 +74,11 @@ import kotlin.reflect.full.createInstance
 	  }
 	  Thread.sleep(5000)
 	}
+	t.toc(2)
 	if (scene != null) {
 	  stage.apply {
 		scene = this@GuiApp.scene!!
-
+		t.toc(2.5)
 		if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
 		  val screen = Screen.getScreens()[this@GuiApp.screenIndex]
 		  val menuY = if (screen == Screen.getPrimary()) NEW_MAC_NOTCH_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
@@ -81,8 +87,11 @@ import kotlin.reflect.full.createInstance
 		  width = screen.bounds.width
 		  height = screen.bounds.height - menuY
 		}
+		t.toc(2.6)
 	  }.show()
+	  t.toc(2.7)
 	}
+	t.toc(3)
   }
 
 
@@ -104,22 +113,37 @@ import kotlin.reflect.full.createInstance
 	implicitExit: Boolean = true,
 	preFX: (App<*>.()->Unit)? = null,
 	shutdown: (App<*>.()->Unit)? = null,
-	usePreloaderApp: Boolean = false
+	usePreloaderApp: Boolean = false,
+	t: Stopwatch? = null
   ) {
 
+	t?.toc("starting GuiApp")
+
 	WrapperServiceHub.install(WrapperServiceImpl)
+
+	t?.toc("installed WrapperService")
 
 	val singleRunShutdown = SingleRunLambda {
 	  shutdown?.invoke(this)
 	}
 
-	main({
-	  singleRunShutdown.invoke()
-	}, preFX)
+
+
+	main(
+	  {
+		singleRunShutdown.invoke()
+	  },
+	  preFX,
+	  t = t
+	)
+
+	t?.toc("ran main")
 
 	Platform.setImplicitExit(implicitExit)
 
-	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp) {
+
+	t?.toc("about to run FX app blocking")
+	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, t = t) {
 	  fxThreadW(this@GuiApp.args.toList())
 	}
 	singleRunShutdown()

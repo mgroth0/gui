@@ -9,18 +9,37 @@ import javafx.scene.Scene
 import javafx.scene.control.ProgressBar
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
+import matt.async.thread.daemon
 import matt.auto.myPid
+import matt.log.profile.Stopwatch
 
 
-fun runFXAppBlocking(args: Array<String>, usePreloaderApp: Boolean = false, fxOp: (List<String>)->Unit) {
+fun runFXAppBlocking(
+  args: Array<String>,
+  usePreloaderApp: Boolean = false,
+  t: Stopwatch? = null,
+  fxOp: (List<String>)->Unit,
+
+  ) {
+  t?.toc("running FX App")
   fxBlock = fxOp
-  Logging.getJavaFXLogger().disableLogging() /* dodge "Unsupported JavaFX configuration..." part 1 */
+  daemon {
+	Logging.getJavaFXLogger().disableLogging() /* dodge "Unsupported JavaFX configuration..." part 1 */
+  }
+  t?.toc("started disabling FX logging")
   println("launching app (mypid = ${myPid})")
-  if (usePreloaderApp) LauncherImpl.launchApplication(MinimalFXApp::class.java, FirstPreloader::class.java, args)
-  else Application.launch(MinimalFXApp::class.java, *args)
+  fxStopwatch = t
+  if (usePreloaderApp) {
+	t?.toc("launching preloader")
+	LauncherImpl.launchApplication(MinimalFXApp::class.java, FirstPreloader::class.java, args)
+  } else {
+	t?.toc("launching app")
+	Application.launch(MinimalFXApp::class.java, *args)
+  }
   println("main thread has exited from Application.launch")
 }
 
+private var fxStopwatch: Stopwatch? = null
 private lateinit var fxBlock: (List<String>)->Unit
 
 
@@ -35,9 +54,11 @@ class FirstPreloader: Preloader() {
   }
 
   override fun start(stage: Stage) {
+	fxStopwatch?.toc("starting preloader app")
 	this.stage = stage
 	stage.scene = createPreloaderScene()
 	stage.show()
+	fxStopwatch?.toc("finished starting preloader app")
   }
 
   override fun handleProgressNotification(pn: ProgressNotification) {
@@ -58,12 +79,13 @@ class MinimalFXApp: Application() {
   //  }
   override fun start(primaryStage: Stage?) {
 	/* dodge "Unsupported JavaFX configuration..." part 2 */
-
+	fxStopwatch?.toc("starting main app")
 
 	Logging.getJavaFXLogger().enableLogging()
 	println("running fxBlock")
 	fxBlock(parameters.raw)
 	println("ran fxBlock")
+	fxStopwatch?.toc("finished starting main app")
   }
 
   /*DO_NOT_SHUTDOWN_WITH_FX_THREAD*/
