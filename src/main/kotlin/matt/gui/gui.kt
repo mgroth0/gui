@@ -3,6 +3,7 @@ package matt.gui
 import javafx.animation.Interpolator
 import javafx.application.Platform.runLater
 import javafx.beans.property.DoubleProperty
+import javafx.beans.property.SimpleDoubleProperty
 import javafx.geometry.Pos.TOP_CENTER
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.SKYBLUE
@@ -14,7 +15,6 @@ import matt.fx.graphics.drag.drags
 import matt.fx.graphics.icon.Icon
 import matt.fx.graphics.style.intColorToFXColor
 import matt.fx.node.proto.scaledcanvas.ScaledCanvas
-import matt.hurricanefx.eye.lang.DProp
 import matt.hurricanefx.eye.lib.onChange
 import matt.fx.graphics.tfx.animation.keyframe
 import matt.fx.graphics.tfx.animation.timeline
@@ -100,12 +100,12 @@ fun notification(
 	stage.y = screen.bounds.minY + 50.0 + Y_MOVE_AMOUNT*openNotifications.size
 	notificationYs[stage] = stage.y
 
-	val fakeXProp = DProp(stage.x).apply {
+	val fakeXProp = SimpleDoubleProperty(stage.x).apply {
 	  onChange {
 		stage.x = it
 	  }
 	}
-	val fakeYProp = DProp(stage.y).apply {
+	val fakeYProp = SimpleDoubleProperty(stage.y).apply {
 	  onChange {
 		stage.y = it
 	  }
