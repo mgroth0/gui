@@ -10,8 +10,8 @@ import javafx.scene.text.Text
 import matt.fx.control.wrapper.control.table.TableViewWrapper
 import matt.fx.control.wrapper.control.treetable.TreeTableViewWrapper
 import matt.stream.recurse.recurse
-import matt.stream.recurse.recurseToFlat
-import matt.stream.recurse.recursionDepth
+import matt.collect.itr.recurse.recurseToFlat
+import matt.collect.itr.recurse.recursionDepth
 
 
 val String.fxWidth: Double
