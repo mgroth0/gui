@@ -14,13 +14,13 @@ import matt.fx.control.mstage.MStage
 import matt.fx.graphics.drag.drags
 import matt.fx.graphics.icon.Icon
 import matt.fx.graphics.style.intColorToFXColor
-import matt.fx.node.proto.scaledcanvas.ScaledCanvas
-import matt.hurricanefx.eye.lib.onChange
 import matt.fx.graphics.tfx.animation.keyframe
 import matt.fx.graphics.tfx.animation.timeline
 import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.fx.graphics.wrapper.text.text
+import matt.fx.node.proto.scaledcanvas.ScaledCanvas
+import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.eye.time.toFXDuration
 import matt.time.dur.sec
 import java.awt.image.BufferedImage
