@@ -7,9 +7,9 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
 import javafx.scene.text.Text
+import matt.collect.itr.recurse.recurse
 import matt.fx.control.wrapper.control.table.TableViewWrapper
 import matt.fx.control.wrapper.control.treetable.TreeTableViewWrapper
-import matt.stream.recurse.recurse
 import matt.collect.itr.recurse.recurseToFlat
 import matt.collect.itr.recurse.recursionDepth
 
