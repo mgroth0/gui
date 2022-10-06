@@ -8,17 +8,17 @@ import javafx.scene.control.TreeTableView
 import javafx.scene.control.TreeView
 import javafx.scene.text.Text
 import matt.collect.itr.recurse.recurse
-import matt.fx.control.wrapper.control.table.TableViewWrapper
-import matt.fx.control.wrapper.control.treetable.TreeTableViewWrapper
 import matt.collect.itr.recurse.recurseToFlat
 import matt.collect.itr.recurse.recursionDepth
+import matt.fx.control.wrapper.control.table.TableViewWrapper
+import matt.fx.control.wrapper.control.treetable.TreeTableViewWrapper
 
 
 val String.fxWidth: Double
   get() = Text(this).layoutBounds.width
 
 //  call the method after inserting the data into table
-fun <T> TableViewWrapper<T>.autoResizeColumns() {
+fun <T: Any> TableViewWrapper<T>.autoResizeColumns() {
   columnResizePolicy = TableView.UNCONSTRAINED_RESIZE_POLICY
   columns.forEach { column ->
 	column.setPrefWidth(
@@ -34,16 +34,17 @@ fun <T> TableViewWrapper<T>.autoResizeColumns() {
 }
 
 // this one is different! it will apply a special width for the first matt.hurricanefx.tableview.coolColumn (which it assumes is for arrows)
-fun <T> TreeTableViewWrapper<T>.autoResizeColumns() {
+fun <T: Any> TreeTableViewWrapper<T>.autoResizeColumns() {
+  val roo = root ?: return
   columnResizePolicy = TreeTableView.UNCONSTRAINED_RESIZE_POLICY
 
   columns.forEachIndexed { index, column ->
 	if (index == 0) {
 	  column.prefWidth =
-		root.recursionDepth { it.children }*15.0 // guess. works with depth=2. maybe can be smaller.
+		roo.recursionDepth { it.children }*15.0 // guess. works with depth=2. maybe can be smaller.
 	} else {
 	  column.setPrefWidth(
-		((root.recurseToFlat({ it.children }).map {
+		((roo.recurseToFlat({ it.children }).map {
 		  column.getCellData(it)
 		}.map {
 		  "$it".fxWidth
