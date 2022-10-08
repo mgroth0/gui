@@ -9,9 +9,9 @@ import matt.exec.app.appName
 import matt.file.MFile
 import matt.fx.control.lang.actionbutton
 import matt.fx.control.mstage.ShowMode.SHOW_AND_WAIT
-import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse
-import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse.EXIT
-import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse.IGNORE
+import matt.log.profile.ExceptionResponse
+import matt.log.profile.ExceptionResponse.EXIT
+import matt.log.profile.ExceptionResponse.IGNORE
 import matt.fx.control.win.interact.openInNewWindow
 import matt.fx.control.wrapper.control.button.ButtonWrapper
 import matt.fx.control.wrapper.control.text.area.textarea
