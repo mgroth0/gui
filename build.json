@@ -19,6 +19,11 @@
 	{
 	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
 	  "cfg" :  "api",
+	  "path" : ":k:model:obsmod"
+	},
+	{
+	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
+	  "cfg" :  "api",
 	  "path" : ":k:fx:node:proto"
 	},
 	{

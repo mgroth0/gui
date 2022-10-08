@@ -4,8 +4,8 @@ import javafx.application.Platform
 import javafx.stage.Screen
 import javafx.stage.Window
 import matt.async.thread.daemon
-import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
-import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
+import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse
+import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse.EXIT
 import matt.exec.app.App
 import matt.exec.app.appName
 import matt.file.MFile
@@ -165,7 +165,7 @@ import kotlin.reflect.full.createInstance
 		r = showExceptionPopup(t, e, shutdown, st, exceptionFile)
 	  }
 	} catch (e: Exception) {
-	  println("exception in matt.exec.exception.DefaultUncaughtExceptionHandler Exception Dialog:")
+	  println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
 	  e.printStackTrace()
 	  return EXIT
 	}

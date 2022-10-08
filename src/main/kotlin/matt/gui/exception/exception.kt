@@ -2,9 +2,9 @@ package matt.gui.exception
 
 import javafx.scene.Node
 import javafx.stage.Stage
-import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse
-import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.EXIT
-import matt.auto.exception.MyDefaultUncaughtExceptionHandler.ExceptionResponse.IGNORE
+import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse
+import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse.EXIT
+import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse.IGNORE
 import matt.auto.macapp.SublimeText
 import matt.auto.openInIntelliJ
 import matt.exec.app.App
@@ -32,15 +32,10 @@ fun GuiApp.showExceptionPopup(
 ): ExceptionResponse {
   var r = EXIT
   taball("stacktrace", e.stackTrace)
-  println("setting up matt.fx.graphics.fxthread.runLaterReturn for exception dialog")
   VBoxWrapperImpl<RegionWrapper<*>>().apply {
-	println("setting up vbox1")
 	text("${e::class.simpleName} in $appName")
-	println("setting up vbox2")
 	text("thread=${t.name}")
-	println("setting up vbox3: $st")
 	textarea(st)
-	println("setting up vbox4")
 	flowpane<ButtonWrapper> {
 	  actionbutton("Open stacktrace in IntelliJ") {
 		exceptionFile.openInIntelliJ()
