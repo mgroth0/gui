@@ -4,8 +4,8 @@ import javafx.application.Platform
 import javafx.stage.Screen
 import javafx.stage.Window
 import matt.async.thread.daemon
-import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse
-import matt.auto.exception.AppUncaughtExceptionHandler.ExceptionResponse.EXIT
+import matt.log.profile.ExceptionResponse
+import matt.log.profile.ExceptionResponse.EXIT
 import matt.exec.app.App
 import matt.exec.app.appName
 import matt.file.MFile
