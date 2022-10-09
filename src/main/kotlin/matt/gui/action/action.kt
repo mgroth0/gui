@@ -1,6 +1,8 @@
 package matt.gui.action
 
 import matt.fx.control.wrapper.control.button.button
+import matt.fx.graphics.fxthread.ts.blockingFXWatcher
+import matt.fx.graphics.fxthread.ts.nonBlockingFXWatcher
 import matt.fx.graphics.wrapper.node.NW
 import matt.model.idea.UIIdea
 import matt.model.idea.UserActionIdea
@@ -16,8 +18,8 @@ import matt.obs.prop.VarProp
 import kotlin.reflect.KProperty
 
 fun NW.actionButton(a: GuiAction) {
-  button(a.label) {
-	enableProperty.bind(a.allowed)
+  button(a.label.nonBlockingFXWatcher()) {
+	enableProperty.bind(a.allowed.blockingFXWatcher())
 	setOnAction {
 	  a()
 	}
