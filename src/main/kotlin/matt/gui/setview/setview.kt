@@ -22,7 +22,7 @@ fun <T: Any> TableViewWrapper<T>.autoResizeColumns() {
   columnResizePolicy = TableView.UNCONSTRAINED_RESIZE_POLICY
   columns.forEach { column ->
 	column.setPrefWidth(
-	  (((0 until items.size).mapNotNull {
+	  (((0 until items!!.size).mapNotNull {
 		column.getCellData(it)
 	  }.map {
 		it.toString().fxWidth
