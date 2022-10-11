@@ -4,6 +4,7 @@ import javafx.application.Platform
 import javafx.stage.Screen
 import javafx.stage.Window
 import matt.async.thread.daemon
+import matt.auto.myPid
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.exec.app.App
@@ -25,7 +26,7 @@ import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.parent.ParentWrapper
 import matt.fx.graphics.wrapper.node.parent.ParentWrapperImpl
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
-import matt.gui.app.fxapp.runFXAppBlocking
+import matt.fx.control.fxapp.runFXAppBlocking
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
 import matt.log.profile.Stopwatch
@@ -143,6 +144,7 @@ import kotlin.reflect.full.createInstance
 
 
 	t?.toc("about to run FX app blocking")
+	println("launching app (mypid = $myPid)")
 	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, t = t) {
 	  fxThreadW(this@GuiApp.args.toList())
 	}
