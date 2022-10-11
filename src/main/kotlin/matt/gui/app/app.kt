@@ -145,7 +145,7 @@ import kotlin.reflect.full.createInstance
 
 	t?.toc("about to run FX app blocking")
 	println("launching app (mypid = $myPid)")
-	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, t = t) {
+	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, reporter = t) {
 	  fxThreadW(this@GuiApp.args.toList())
 	}
 	singleRunShutdown()
