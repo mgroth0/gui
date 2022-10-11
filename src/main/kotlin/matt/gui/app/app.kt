@@ -29,7 +29,7 @@ import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.fx.control.fxapp.runFXAppBlocking
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
-import matt.log.profile.Stopwatch
+import matt.log.profile.stopwatch.Stopwatch
 import matt.log.profile.tic
 import matt.log.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
