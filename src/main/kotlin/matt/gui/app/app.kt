@@ -5,30 +5,28 @@ import javafx.stage.Screen
 import javafx.stage.Window
 import matt.async.thread.daemon
 import matt.auto.myPid
-import matt.log.profile.err.ExceptionResponse
-import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.exec.app.App
 import matt.exec.app.appName
 import matt.file.MFile
+import matt.fx.control.fxapp.runFXAppBlocking
 import matt.fx.control.mscene.MScene
 import matt.fx.control.mstage.MStage
 import matt.fx.control.mstage.WMode
 import matt.fx.control.mstage.WMode.NOTHING
-import matt.fx.control.wrapper.wrapped.WrapperServiceImpl
 import matt.fx.control.wrapper.wrapped.wrapped
 import matt.fx.graphics.fxthread.runLaterReturn
 import matt.fx.graphics.mag.NEW_MAC_NOTCH_ESTIMATE
 import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
-import matt.fx.graphics.service.WrapperServiceHub
 import matt.fx.graphics.win.bindgeom.bindGeometry
 import matt.fx.graphics.wrapper.FXNodeWrapperDSL
 import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.parent.ParentWrapper
 import matt.fx.graphics.wrapper.node.parent.ParentWrapperImpl
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
-import matt.fx.control.fxapp.runFXAppBlocking
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
+import matt.log.profile.err.ExceptionResponse
+import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.profile.stopwatch.Stopwatch
 import matt.log.profile.stopwatch.tic
 import matt.log.warn.warn
@@ -120,7 +118,7 @@ import kotlin.reflect.full.createInstance
 
 	t?.toc("starting GuiApp")
 
-	WrapperServiceHub.install(WrapperServiceImpl)
+
 
 	t?.toc("installed WrapperService")
 
