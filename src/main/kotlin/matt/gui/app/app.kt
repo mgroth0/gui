@@ -30,8 +30,8 @@ import matt.fx.control.fxapp.runFXAppBlocking
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
 import matt.log.profile.stopwatch.Stopwatch
-import matt.log.profile.tic
-import matt.log.warn
+import matt.log.profile.stopwatch.tic
+import matt.log.warn.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import kotlin.reflect.full.createInstance
 
