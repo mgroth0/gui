@@ -25,10 +25,12 @@ import matt.fx.graphics.wrapper.node.parent.ParentWrapperImpl
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
+import matt.log.logger.Logger
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
-import matt.log.profile.stopwatch.Stopwatch
 import matt.log.profile.stopwatch.tic
+import matt.log.reporter.Reporter
+import matt.log.reporter.TracksTime
 import matt.log.warn.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import kotlin.reflect.full.createInstance
@@ -113,14 +115,15 @@ import kotlin.reflect.full.createInstance
 	preFX: (App<*>.()->Unit)? = null,
 	shutdown: (App<*>.()->Unit)? = null,
 	usePreloaderApp: Boolean = false,
-	t: Stopwatch? = null
+	t: Reporter? = null
   ) {
 
-	t?.toc("starting GuiApp")
+
+	(t as? TracksTime)?.toc("starting GuiApp")
 
 
 
-	t?.toc("installed WrapperService")
+	(t as? TracksTime)?.toc("installed WrapperService")
 
 	val singleRunShutdown = SingleRunLambda {
 	  shutdown?.invoke(this)
@@ -136,13 +139,13 @@ import kotlin.reflect.full.createInstance
 	  t = t
 	)
 
-	t?.toc("ran main")
+	(t as? TracksTime)?.toc("ran main")
 
 	Platform.setImplicitExit(implicitExit)
 
 
-	t?.toc("about to run FX app blocking")
-	println("launching app (mypid = $myPid)")
+	(t as? TracksTime)?.toc("about to run FX app blocking")
+	(t as? Logger)?.info("launching app (mypid = $myPid)")
 	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, reporter = t) {
 	  fxThreadW(this@GuiApp.args.toList())
 	}
