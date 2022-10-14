@@ -20,6 +20,7 @@ import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.fx.graphics.wrapper.text.text
 import matt.fx.node.proto.scaledcanvas.ScaledCanvas
+import matt.hurricanefx.eye.mtofx.createWritableFXPropWrapper
 import matt.hurricanefx.eye.time.toFXDuration
 import matt.obs.prop.VarProp
 import matt.time.dur.sec
@@ -59,7 +60,7 @@ const val INTER_NOTIFICATION_SPACE = 20.0
 const val Y_MOVE_AMOUNT = NOTIFICATION_HEIGHT + INTER_NOTIFICATION_SPACE
 val openNotifications = mutableListOf<MStage>()
 val notificationYs = WeakHashMap<MStage, Double>()
-val fakeYProps = WeakHashMap<MStage, DoubleProperty>()
+val fakeYProps = WeakHashMap<MStage, VarProp<Double>>()
 
 fun notification(
   text: String
@@ -118,7 +119,7 @@ fun notification(
 		timeline {
 		  openNotifications.forEach {
 			keyframe(0.2.sec.toFXDuration()) {
-			  keyvalue(fakeYProps[it]!!, notificationYs[it]!! - Y_MOVE_AMOUNT, Interpolator.EASE_BOTH)
+			  keyvalue(fakeYProps[it]!!.createWritableFXPropWrapper(), notificationYs[it]!! - Y_MOVE_AMOUNT, Interpolator.EASE_BOTH)
 			}
 			notificationYs[it] = notificationYs[it]!! - Y_MOVE_AMOUNT
 		  }
@@ -135,7 +136,7 @@ fun notification(
 	  runLater {
 		timeline {
 		  keyframe(0.75.sec.toFXDuration()) {
-			keyvalue(fakeXProp, screen.bounds.minX + 30.0, Interpolator.EASE_BOTH)
+			keyvalue(fakeXProp.createWritableFXPropWrapper(), screen.bounds.minX + 30.0, Interpolator.EASE_BOTH)
 		  }
 		}
 	  }

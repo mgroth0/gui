@@ -45,7 +45,7 @@ fun <T: Any> TreeTableViewWrapper<T>.autoResizeColumns() {
 	} else {
 	  column.setPrefWidth(
 		((roo.recurseToFlat({ it.children }).map {
-		  column.getCellData(it)
+		  column.getCellData(it.node)
 		}.map {
 		  "$it".fxWidth
 		}.toMutableList() + listOf(
