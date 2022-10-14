@@ -20,8 +20,8 @@ import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.fx.graphics.wrapper.text.text
 import matt.fx.node.proto.scaledcanvas.ScaledCanvas
-import matt.hurricanefx.eye.lib.onChange
 import matt.hurricanefx.eye.time.toFXDuration
+import matt.obs.prop.VarProp
 import matt.time.dur.sec
 import java.awt.image.BufferedImage
 import java.lang.Thread.sleep
@@ -100,12 +100,12 @@ fun notification(
 	stage.y = screen.bounds.minY + 50.0 + Y_MOVE_AMOUNT*openNotifications.size
 	notificationYs[stage] = stage.y
 
-	val fakeXProp = SimpleDoubleProperty(stage.x).apply {
+	val fakeXProp = VarProp(stage.x).apply {
 	  onChange {
 		stage.x = it
 	  }
 	}
-	val fakeYProp = SimpleDoubleProperty(stage.y).apply {
+	val fakeYProp = VarProp(stage.y).apply {
 	  onChange {
 		stage.y = it
 	  }
