@@ -42,9 +42,10 @@ import kotlin.reflect.full.createInstance
   wMode: WMode = NOTHING,
   escClosable: Boolean = false,
   enterClosable: Boolean = false,
+  requiresBluetooth: Boolean = false,
   private val fxThread: GuiApp.(args: List<String>)->Unit,
 
-  ): App<GuiApp>(args) {
+  ): App<GuiApp>(args, requiresBluetooth = requiresBluetooth) {
 
   var alwaysOnTop
 	get() = stage.isAlwaysOnTop
