@@ -1,5 +1,7 @@
 package matt.gui.action
 
+import matt.fx.control.menu.context.mcontextmenu
+import matt.fx.graphics.wrapper.EventTargetWrapper
 import matt.fx.graphics.wrapper.pane.grid.GridPaneWrapper
 import matt.fx.graphics.wrapper.text.text
 import matt.gui.action.button.actionButton
@@ -10,6 +12,18 @@ import matt.obs.bind.binding
 import matt.obs.bindings.bool.ObsB
 import matt.obs.bindings.str.ObsS
 import matt.obs.prop.VarProp
+
+fun EventTargetWrapper.contextMenuAction(action: GuiAction) {
+  mcontextmenu {
+	item(action.buttonLabel.value) {
+	  textProperty.bind(action.buttonLabel)
+	  enableWhen { action.allowed }
+	  setOnAction {
+		action.invoke()
+	  }
+	}
+  }
+}
 
 class ActionOnProceeding(
   val action: GuiAction,
