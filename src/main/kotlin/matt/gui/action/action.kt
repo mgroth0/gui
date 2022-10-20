@@ -29,7 +29,11 @@ fun EventTargetWrapper.contextMenuAction(action: GuiAction) {
 
 class ActionOnProceeding(
   val action: GuiAction, val proceeding: Proceeding?
-)
+) {
+  override fun toString(): String {
+	return action.buttonLabel.value + " [${proceeding?.name}]"
+  }
+}
 
 interface GuiAction: UserActionIdea {
   val buttonLabel: ObsS
