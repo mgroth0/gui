@@ -7,6 +7,7 @@ import matt.model.obsmod.run.Proceeding
 import matt.model.obsmod.run.Proceeding.Status.OFF
 import matt.model.obsmod.run.Proceeding.Status.RUNNING
 import matt.model.obsmod.run.StoppableProceeding
+import matt.model.obsmod.run.ThreadProceeding
 import matt.obs.bindings.bool.and
 import matt.obs.bindings.comp.eq
 
@@ -30,7 +31,22 @@ fun StoppableProceeding.stopProceedingAction(): GuiAction {
   )
 }
 
+fun ThreadProceeding.forceStopProceedingAction(): GuiAction {
+  return GuiActionImpl(
+	buttonLabel = "force stop ${this.name}",
+	op = {
+	  forceStop()
+	},
+	allowed = status.eq(RUNNING)
+  )
+}
+
 fun StoppableProceeding.startOrStopAction() = OrAction(
   startProceedingAction(),
   stopProceedingAction()
+)
+
+fun ThreadProceeding.startOrForceStopAction() = OrAction(
+  startProceedingAction(),
+  forceStopProceedingAction()
 )
