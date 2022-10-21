@@ -3,6 +3,7 @@ package matt.gui.action.gen.procaction
 import matt.gui.action.GuiAction
 import matt.gui.action.GuiActionImpl
 import matt.gui.action.or.OrAction
+import matt.model.debug.DebugLogger
 import matt.model.obsmod.run.Proceeding
 import matt.model.obsmod.run.Proceeding.Status.OFF
 import matt.model.obsmod.run.Proceeding.Status.RUNNING
@@ -17,7 +18,9 @@ fun Proceeding.startProceedingAction(): GuiAction {
 	op = {
 	  sendStartSignal()
 	},
-	allowed = status.eq(OFF) and canStart
+	allowed = (status.eq(OFF) and canStart).apply {
+		debugger = DebugLogger("startProceedingAction.allowed")
+	}
   )
 }
 
