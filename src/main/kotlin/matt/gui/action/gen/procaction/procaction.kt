@@ -18,9 +18,7 @@ fun Proceeding.startProceedingAction(): GuiAction {
 	op = {
 	  sendStartSignal()
 	},
-	allowed = (status.eq(OFF) and canStart).apply {
-		debugger = DebugLogger("startProceedingAction.allowed")
-	}
+	allowed = (status.eq(OFF) and canStart)
   )
 }
 
