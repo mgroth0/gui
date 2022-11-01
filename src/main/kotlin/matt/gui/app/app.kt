@@ -63,18 +63,20 @@ import kotlin.reflect.full.createInstance
 	fxThread(it)
 	t.toc(1)
 	daemon {
-	  Window.getWindows().map { it.wrapped() }.forEach {
-		if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
-		  warn("resetting offscreen window")
-		  runLaterReturn {
-			it.x = 0.0
-			it.y = 0.0
-			it.width = 500.0
-			it.height = 500.0
+	  while(true) {
+		Window.getWindows().map { it.wrapped() }.forEach {
+		  if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
+			warn("resetting offscreen window")
+			runLaterReturn {
+			  it.x = 0.0
+			  it.y = 0.0
+			  it.width = 500.0
+			  it.height = 500.0
+			}
 		  }
 		}
+		Thread.sleep(5000)
 	  }
-	  Thread.sleep(5000)
 	}
 	t.toc(2)
 	if (scene != null) {
