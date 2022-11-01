@@ -29,10 +29,10 @@ import matt.log.logger.Logger
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.profile.stopwatch.tic
-import matt.log.reporter.Reporter
 import matt.log.reporter.TracksTime
 import matt.log.warn.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
+import matt.model.report.Reporter
 import kotlin.reflect.full.createInstance
 
 @FXNodeWrapperDSL open class GuiApp(
