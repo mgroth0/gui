@@ -9,9 +9,6 @@ import matt.exec.app.appName
 import matt.file.MFile
 import matt.fx.control.lang.actionbutton
 import matt.fx.control.mstage.ShowMode.SHOW_AND_WAIT
-import matt.log.profile.err.ExceptionResponse
-import matt.log.profile.err.ExceptionResponse.EXIT
-import matt.log.profile.err.ExceptionResponse.IGNORE
 import matt.fx.control.win.interact.openInNewWindow
 import matt.fx.control.wrapper.control.button.ButtonWrapper
 import matt.fx.control.wrapper.control.text.area.textarea
@@ -20,8 +17,14 @@ import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.fx.graphics.wrapper.text.text
 import matt.gui.app.GuiApp
+import matt.log.profile.err.ExceptionResponse
+import matt.log.profile.err.ExceptionResponse.EXIT
+import matt.log.profile.err.ExceptionResponse.IGNORE
 import matt.log.taball
 import kotlin.system.exitProcess
+
+/*100 wasn't enough*/
+private const val STACK_TRACE_SURFACE_COUNT = 200
 
 fun GuiApp.showExceptionPopup(
   t: Thread,
@@ -31,7 +34,20 @@ fun GuiApp.showExceptionPopup(
   exceptionFile: MFile
 ): ExceptionResponse {
   var r = EXIT
-  taball("stacktrace", e.stackTrace)
+  val stackTraceDepth = e.stackTrace.size
+  val stackTraceToShow = e.stackTrace.take(100)
+  val stackTraceLeft = stackTraceDepth - stackTraceToShow.size
+  val stackTraceSurface = if (stackTraceLeft > 0) {
+	e.stackTrace.takeLast(kotlin.math.min(STACK_TRACE_SURFACE_COUNT, stackTraceLeft))
+  } else listOf()
+  val stackTraceInBetween = stackTraceLeft - stackTraceSurface.size
+  taball("stacktrace", stackTraceToShow)
+  if (stackTraceInBetween > 0) {
+	println("\t... and $stackTraceInBetween in between")
+  }
+  if (stackTraceSurface.isNotEmpty()) {
+	taball("stacktrace SURFACE", stackTraceSurface)
+  }
   VBoxWrapperImpl<RegionWrapper<*>>().apply {
 	text("${e::class.simpleName} in $appName")
 	text("thread=${t.name}")
