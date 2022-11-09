@@ -5,7 +5,6 @@ import javafx.stage.Stage
 import matt.auto.macapp.SublimeText
 import matt.auto.openInIntelliJ
 import matt.exec.app.App
-import matt.exec.app.appName
 import matt.file.MFile
 import matt.fx.control.lang.actionbutton
 import matt.fx.control.mstage.ShowMode.SHOW_AND_WAIT
@@ -21,6 +20,7 @@ import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.profile.err.ExceptionResponse.IGNORE
 import matt.log.taball
+import matt.mstruct.rstruct.appName
 import kotlin.system.exitProcess
 
 /*100 wasn't enough*/
@@ -49,7 +49,7 @@ fun GuiApp.showExceptionPopup(
 	taball("stacktrace SURFACE", stackTraceSurface)
   }
   VBoxWrapperImpl<RegionWrapper<*>>().apply {
-	text("${e::class.simpleName} in $appName")
+	text("${e::class.simpleName} in ${appName}")
 	text("thread=${t.name}")
 	textarea(st)
 	flowpane<ButtonWrapper> {

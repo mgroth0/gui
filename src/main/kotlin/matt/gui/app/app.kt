@@ -4,9 +4,7 @@ import javafx.application.Platform
 import javafx.stage.Screen
 import javafx.stage.Window
 import matt.async.thread.daemon
-import matt.auto.myPid
 import matt.exec.app.App
-import matt.exec.app.appName
 import matt.file.MFile
 import matt.fx.control.fxapp.runFXAppBlocking
 import matt.fx.control.mscene.MScene
@@ -33,6 +31,7 @@ import matt.log.reporter.TracksTime
 import matt.log.warn.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import matt.model.report.Reporter
+import matt.mstruct.rstruct.appName
 import kotlin.reflect.full.createInstance
 
 @FXNodeWrapperDSL open class GuiApp(
@@ -148,7 +147,7 @@ import kotlin.reflect.full.createInstance
 
 
 	(t as? TracksTime)?.toc("about to run FX app blocking")
-	(t as? Logger)?.info("launching app (mypid = $myPid)")
+	(t as? Logger)?.info("launching app (mypid = ${matt.lang.myPid})")
 	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, reporter = t) {
 	  fxThreadW(this@GuiApp.args.toList())
 	}
