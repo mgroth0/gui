@@ -20,6 +20,7 @@ import matt.fx.graphics.wrapper.FXNodeWrapperDSL
 import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.parent.ParentWrapper
 import matt.fx.graphics.wrapper.node.parent.ParentWrapperImpl
+import matt.fx.graphics.wrapper.pane.vbox.VBoxW
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.exception.showExceptionPopup
@@ -33,6 +34,26 @@ import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import matt.model.report.Reporter
 import matt.mstruct.rstruct.appName
 import kotlin.reflect.full.createInstance
+
+fun startFXWidget(rootOp: VBoxW.()->Unit) {
+  runFXAppBlocking {
+	root<VBoxW> {
+	  rootOp()
+	}
+  }
+}
+
+fun runFXWidgetBlocking(rootOp: VBoxW.()->Unit) {
+  runFXAppBlocking {
+	root<VBoxW> {
+	  rootOp()
+	}
+  }
+}
+
+fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
+  GuiApp(fxThread = fxThread).runBlocking()
+}
 
 @FXNodeWrapperDSL open class GuiApp(
   args: Array<String> = arrayOf(),
@@ -62,7 +83,7 @@ import kotlin.reflect.full.createInstance
 	fxThread(it)
 	t.toc(1)
 	daemon {
-	  while(true) {
+	  while (true) {
 		Window.getWindows().map { it.wrapped() }.forEach {
 		  if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
 			warn("resetting offscreen window")
@@ -112,7 +133,7 @@ import kotlin.reflect.full.createInstance
 	return r
   }
 
-  fun start(
+  fun runBlocking(
 	implicitExit: Boolean = true,
 	preFX: (App<*>.()->Unit)? = null,
 	shutdown: (App<*>.()->Unit)? = null,
@@ -149,7 +170,7 @@ import kotlin.reflect.full.createInstance
 	(t as? TracksTime)?.toc("about to run FX app blocking")
 	(t as? Logger)?.info("launching app (mypid = ${matt.lang.myPid})")
 	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, reporter = t) {
-	  fxThreadW(this@GuiApp.args.toList())
+	  fxThreadW(args.toList())
 	}
 	singleRunShutdown()
 	ThreadInspectorDaemon.start()
