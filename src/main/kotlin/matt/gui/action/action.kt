@@ -6,7 +6,7 @@ import matt.fx.graphics.wrapper.pane.grid.GridPaneWrapper
 import matt.fx.graphics.wrapper.text.text
 import matt.gui.action.button.actionButton
 import matt.model.idea.UserActionIdea
-import matt.model.obsmod.run.Proceeding
+import matt.model.obsmod.proceeding.Proceeding
 import matt.obs.bind.binding
 import matt.obs.bind.deepBinding
 import matt.obs.bindings.bool.ObsB
