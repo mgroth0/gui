@@ -31,7 +31,7 @@ import matt.log.profile.stopwatch.tic
 import matt.log.reporter.TracksTime
 import matt.log.warn.warn
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
-import matt.model.report.Reporter
+import matt.model.code.report.Reporter
 import matt.mstruct.rstruct.appName
 import kotlin.reflect.full.createInstance
 

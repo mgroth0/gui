@@ -3,7 +3,7 @@ package matt.gui.action.dsl
 import matt.gui.action.GuiActionImpl
 import matt.lang.delegation.provider
 import matt.lang.delegation.valProp
-import matt.model.idea.UIIdea
+import matt.model.code.idea.UIIdea
 import matt.obs.prop.ValProp
 
 abstract class UI: UIIdea {

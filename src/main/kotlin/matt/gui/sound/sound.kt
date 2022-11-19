@@ -29,7 +29,7 @@ return MediaPlayer(media).apply {
   thread {
 	while (this.status !in listOf(Status.READY, Status.PLAYING, Status.DISPOSED)) {
 	  println("status: ${this.status}")
-	  sleep(1000)
+	  matt.time.dur.sleep(1000)
 	}
   }
 

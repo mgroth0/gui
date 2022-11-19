@@ -5,7 +5,7 @@ import matt.fx.graphics.wrapper.EventTargetWrapper
 import matt.fx.graphics.wrapper.pane.grid.GridPaneWrapper
 import matt.fx.graphics.wrapper.text.text
 import matt.gui.action.button.actionButton
-import matt.model.idea.UserActionIdea
+import matt.model.code.idea.UserActionIdea
 import matt.model.obsmod.proceeding.Proceeding
 import matt.obs.bind.binding
 import matt.obs.bind.deepBinding
