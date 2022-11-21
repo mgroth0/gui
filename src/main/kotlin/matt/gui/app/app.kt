@@ -30,8 +30,8 @@ import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.profile.stopwatch.tic
 import matt.log.reporter.TracksTime
 import matt.log.warn.warn
-import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import matt.model.code.report.Reporter
+import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import matt.mstruct.rstruct.appName
 import kotlin.reflect.full.createInstance
 
@@ -82,7 +82,7 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 	t.toc(0)
 	fxThread(it)
 	t.toc(1)
-	daemon {
+	daemon(name="Window Fixer Daemon") {
 	  while (true) {
 		Window.getWindows().map { it.wrapped() }.forEach {
 		  if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {

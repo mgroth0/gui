@@ -1,6 +1,8 @@
 package matt.gui.action
 
 import matt.fx.control.menu.context.mcontextmenu
+import matt.fx.graphics.hotkey.FXHotkeyDSL
+import matt.fx.graphics.hotkey.HotKey
 import matt.fx.graphics.wrapper.EventTargetWrapper
 import matt.fx.graphics.wrapper.pane.grid.GridPaneWrapper
 import matt.fx.graphics.wrapper.text.text
@@ -27,7 +29,13 @@ fun EventTargetWrapper.contextMenuAction(action: GuiAction) {
   }
 }
 
-class ActionOnProceeding(
+fun FXHotkeyDSL.action(hotkey: HotKey, action: GuiAction) {
+
+  hotkeys.add(hotkey op { if (action.allowed.value) action.invoke() })
+
+}
+
+open class ActionOnProceeding(
   val action: GuiAction, val proceeding: Proceeding?
 ) {
   override fun toString(): String {
@@ -52,7 +60,7 @@ class GuiActionImpl(
 
 
 fun GridPaneWrapper<*>.actionOnProceedingRow(ap: ActionOnProceeding) = actionOnProceedingRow(ap.toVarProp())
-fun GridPaneWrapper<*>.actionOnProceedingRow(ap: ObsVal<ActionOnProceeding>) {
+fun GridPaneWrapper<*>.actionOnProceedingRow(ap: ObsVal<out ActionOnProceeding>) {
   row {
 	actionButton(ap.binding { it.action })
 

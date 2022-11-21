@@ -7,6 +7,7 @@ import kotlin.time.Duration.Companion.seconds
 internal object ThreadInspectorDaemon: Thread() {
   init {
 	isDaemon = true
+	name = "Thread Inspector Daemon"
   }
 
   override fun run() {
