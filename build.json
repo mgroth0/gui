@@ -9,22 +9,7 @@
 	{
 	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
 	  "cfg" :  "api",
-	  "path" : ":k:mstruct:rstruct"
-	},
-	{
-	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
-	  "cfg" :  "api",
-	  "path" : ":k:fx:graphics"
-	},
-	{
-	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
-	  "cfg" :  "api",
 	  "path" : ":k:exec"
-	},
-	{
-	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
-	  "cfg" :  "api",
-	  "path" : ":k:log:profile"
 	},
 	{
 	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
@@ -32,19 +17,9 @@
 	  "path" : ":k:model:obsmod"
 	},
 	{
-	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
-	  "cfg" :  "api",
-	  "path" : ":k:auto"
-	},
-	{
 	  "type" : "matt.mstruct.bj.BuildJsonLibDependency",
 	  "cfg" :  "api",
 	  "key" :  "kotlinx-serialization-json"
-	},
-	{
-	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
-	  "cfg" :  "implementation",
-	  "path" : ":k:caching"
 	}
   ]
 }
