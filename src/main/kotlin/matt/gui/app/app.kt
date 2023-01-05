@@ -180,7 +180,7 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 	t: Thread, e: Throwable, shutdown: (App<*>.()->Unit)?, st: String, exceptionFile: MFile
   ): ExceptionResponse {
 
-	/*dont delete until I find source of disappearing exceptions*/
+	/*dont delete ..< I find source of disappearing exceptions*/
 	println("in extraShutdownHook")
 
 
