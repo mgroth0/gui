@@ -1,28 +1,56 @@
 package matt.gui.option
 
+import matt.fx.control.toggle.mech.ToggleMechanism
+import matt.fx.graphics.wrapper.node.NodeWrapper
+import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.lang.delegation.fullProvider
+import matt.model.flowlogic.recursionblocker.RecursionBlocker
 import matt.obs.hold.ObservableHolderImpl
 import matt.obs.prop.Var
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
 
-sealed class Setting<T>(val prop: Var<T>, val label: String, val tooltip: String) {
+sealed class Setting<T>(val prop: Var<T>, val label: String, val tooltip: String, val default: T) {
   init {
 	prop.observe {
 	  println("Setting.prop changed...")
 	}
   }
+
+  fun resetToDefault() {
+	prop.value = default
+  }
 }
 
-class EnumSetting<E: Enum<E>>(val cls: KClass<E>, prop: Var<E>, label: String, tooltip: String):
-  Setting<E>(prop, label = label, tooltip = tooltip)
+class EnumSetting<E: Enum<E>>(val cls: KClass<E>, prop: Var<E>, label: String, tooltip: String, default: E):
+	Setting<E>(prop, label = label, tooltip = tooltip, default = default) {
+  fun createBoundToggleMechanism() = ToggleMechanism<E>().apply {
+	val rBlocker = RecursionBlocker()
+	selectValue(prop.value)
+	selectedValue.onChange {
+	  if (it != null) {
+		rBlocker.with {
+		  prop.value = it
+		}
+	  }
+	}
+	prop.onChange {
+	  rBlocker.with {
+		selectValue(it)
+	  }
+	}
+  }
 
-class IntSetting(prop: Var<Int>, label: String, tooltip: String, val min: Int, val max: Int):
-  Setting<Int>(prop, label = label, tooltip = tooltip)
 
-class BoolSetting(prop: Var<Boolean>, label: String, tooltip: String):
-  Setting<Boolean>(prop, label = label, tooltip = tooltip)
+
+}
+
+class IntSetting(prop: Var<Int>, label: String, tooltip: String, val min: Int, val max: Int, default: Int):
+	Setting<Int>(prop, label = label, tooltip = tooltip, default = default)
+
+class BoolSetting(prop: Var<Boolean>, label: String, tooltip: String, default: Boolean):
+	Setting<Boolean>(prop, label = label, tooltip = tooltip, default = default)
 
 
 abstract class SettingsData: ObservableHolderImpl() {
@@ -36,7 +64,7 @@ abstract class SettingsData: ObservableHolderImpl() {
 	tooltip: String
   ) = fullProvider { tr, p ->
 	registeredProp(defaultValue).provideDelegate(this, p).also {
-	  mSettings += EnumSetting(E::class, it.getValue(tr, p), label = label, tooltip = tooltip)
+	  mSettings += EnumSetting(E::class, it.getValue(tr, p), label = label, tooltip = tooltip, default = defaultValue)
 	}
   }
 
@@ -50,7 +78,7 @@ abstract class SettingsData: ObservableHolderImpl() {
 	  thisRef: ObservableHolderImpl,
 	  prop: KProperty<*>,
 	) = registeredProp(defaultValue).provideDelegate(thisRef, prop).also {
-	  mSettings += BoolSetting(it.getValue(thisRef, prop), label = label, tooltip = tooltip)
+	  mSettings += BoolSetting(it.getValue(thisRef, prop), label = label, tooltip = tooltip, defaultValue)
 	}
   }
 
@@ -65,7 +93,14 @@ abstract class SettingsData: ObservableHolderImpl() {
 	  thisRef: ObservableHolderImpl,
 	  prop: KProperty<*>,
 	) = registeredProp(defaultValue).provideDelegate(thisRef, prop).also {
-	  mSettings += IntSetting(it.getValue(thisRef, prop), label = label, tooltip = tooltip, min = min, max = max)
+	  mSettings += IntSetting(
+		it.getValue(thisRef, prop),
+		label = label,
+		tooltip = tooltip,
+		min = min,
+		max = max,
+		default = defaultValue
+	  )
 	}
   }
 }
