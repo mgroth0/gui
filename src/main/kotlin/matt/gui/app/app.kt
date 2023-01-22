@@ -12,6 +12,7 @@ import matt.fx.control.mstage.MStage
 import matt.fx.control.mstage.WMode
 import matt.fx.control.mstage.WMode.NOTHING
 import matt.fx.control.wrapper.wrapped.wrapped
+import matt.fx.graphics.fxthread.ensureInFXThreadInPlace
 import matt.fx.graphics.fxthread.runLaterReturn
 import matt.fx.graphics.mag.NEW_MAC_NOTCH_ESTIMATE
 import matt.fx.graphics.mag.NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
@@ -82,7 +83,7 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 	t.toc(0)
 	fxThread(it)
 	t.toc(1)
-	daemon(name="Window Fixer Daemon") {
+	daemon(name = "Window Fixer Daemon") {
 	  while (true) {
 		Window.getWindows().map { it.wrapped() }.forEach {
 		  if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
@@ -186,10 +187,21 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 
 	var r = EXIT
 	try {
-	  if (Platform.isFxApplicationThread()) {
+	  ensureInFXThreadInPlace {
 		println("showing exception popup for t=$t, e=$e")
-		r = showExceptionPopup(t, e, shutdown, st, exceptionFile)
+		r = showExceptionPopup(e, shutdown, st, exceptionFile)
 	  }
+//	  if (Platform.isFxApplicationThread()) {
+//
+//	  } else {
+//		/*thread(name = "error pop up thread", isDaemon = false) {*/
+//		println("openning error pop up")
+//		runLaterReturn {
+//		  r = showExceptionPopup(t, e, shutdown, st, exceptionFile)
+//		}
+//		println("finished invoking runLater in error pop up thread")
+//		//		}
+//	  }
 	} catch (e: Exception) {
 	  println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
 	  e.printStackTrace()
