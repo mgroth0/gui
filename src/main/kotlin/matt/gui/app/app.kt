@@ -6,6 +6,8 @@ import javafx.stage.Window
 import matt.async.thread.daemon
 import matt.exec.app.App
 import matt.file.MFile
+import matt.file.commons.LogContext
+import matt.file.commons.mattLogContext
 import matt.fx.control.fxapp.runFXAppBlocking
 import matt.fx.control.mscene.MScene
 import matt.fx.control.mstage.MStage
@@ -139,6 +141,7 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 	preFX: (App<*>.()->Unit)? = null,
 	shutdown: (App<*>.()->Unit)? = null,
 	usePreloaderApp: Boolean = false,
+	logContext: LogContext = mattLogContext,
 	t: Reporter? = null
   ) {
 
@@ -160,6 +163,7 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 		singleRunShutdown.invoke()
 	  },
 	  preFX,
+	  logContext=logContext,
 	  t = t
 	)
 
