@@ -1,8 +1,6 @@
 package matt.gui.option
 
 import matt.fx.control.toggle.mech.ToggleMechanism
-import matt.fx.graphics.wrapper.node.NodeWrapper
-import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.lang.delegation.fullProvider
 import matt.model.flowlogic.recursionblocker.RecursionBlocker
 import matt.obs.hold.ObservableHolderImpl
@@ -48,7 +46,8 @@ class EnumSetting<E: Enum<E>>(val cls: KClass<E>, prop: Var<E>, label: String, t
 
 class IntSetting(prop: Var<Int>, label: String, tooltip: String, val min: Int, val max: Int, default: Int):
 	Setting<Int>(prop, label = label, tooltip = tooltip, default = default)
-
+class DoubleSetting(prop: Var<Double>, label: String, tooltip: String, val min: Double, val max: Double, default: Double):
+	Setting<Double>(prop, label = label, tooltip = tooltip, default = default)
 class BoolSetting(prop: Var<Boolean>, label: String, tooltip: String, default: Boolean):
 	Setting<Boolean>(prop, label = label, tooltip = tooltip, default = default)
 
@@ -103,4 +102,27 @@ abstract class SettingsData: ObservableHolderImpl() {
 	  )
 	}
   }
+
+  protected inner class DoubleSettingProv(
+	private val defaultValue: Double,
+	private val label: String,
+	private val tooltip: String,
+	private val min: Double,
+	private val max: Double
+  ) {
+	operator fun provideDelegate(
+	  thisRef: ObservableHolderImpl,
+	  prop: KProperty<*>,
+	) = registeredProp(defaultValue).provideDelegate(thisRef, prop).also {
+	  mSettings += DoubleSetting(
+		it.getValue(thisRef, prop),
+		label = label,
+		tooltip = tooltip,
+		min = min,
+		max = max,
+		default = defaultValue
+	  )
+	}
+  }
+
 }
