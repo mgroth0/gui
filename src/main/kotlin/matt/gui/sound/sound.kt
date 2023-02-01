@@ -2,7 +2,7 @@ package matt.gui.sound
 
 import matt.caching.cache.LRUCache
 import matt.file.commons.SOUND_FOLDER
-import matt.collect.dmap.withStoringDefault
+import matt.collect.map.dmap.withStoringDefault
 import java.util.concurrent.Semaphore
 import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.AudioSystem
