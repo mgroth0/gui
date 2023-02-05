@@ -22,6 +22,9 @@ import matt.fx.graphics.wrapper.style.StyleableWrapper
 import matt.fx.graphics.wrapper.style.findName
 import matt.log.profile.stopwatch.tic
 import kotlin.reflect.KClass
+import matt.fx.control.iconify.iconify
+import matt.gui.hotkeys.addDefaultHotkeys
+import matt.gui.settings.MattGeneralSettingsNode
 
 open class MScene<R: ParentWrapper<*>>(
   root: R, val icon: MFile, userWidth: Double = -1.0, userHeight: Double = -1.0
@@ -132,7 +135,7 @@ open class MScene<R: ParentWrapper<*>>(
 
 
 	  if (NEED_REVERSED_DISPLAYS_FEATURE) actionitem("reverse displays") {
-		VarJson.reversed_displays = !VarJson.reversed_displays
+		MattGeneralSettingsNode.reversedDisplays.value = !MattGeneralSettingsNode.reversedDisplays.value!!
 	  }
 
 	}
@@ -146,3 +149,6 @@ open class MScene<R: ParentWrapper<*>>(
 
 }
 
+
+
+fun MScene<*>.iconify() = iconify(icon)

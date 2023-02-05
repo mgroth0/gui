@@ -3,7 +3,6 @@ package matt.gui.hotkeys
 import javafx.application.Platform.runLater
 import javafx.scene.paint.Color
 import matt.fx.control.iconify.iconify
-import matt.fx.control.mscene.MScene
 import matt.fx.graphics.hotkey.HotKey
 import matt.fx.graphics.hotkey.hotkeys
 import matt.fx.graphics.mag.bottom
@@ -30,6 +29,7 @@ import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.fx.graphics.wrapper.region.RegionWrapperImpl
 import matt.fx.graphics.style.border.FXBorder
 import matt.fx.graphics.wrapper.stage.StageWrapper
+import matt.gui.mscene.MScene
 import matt.gui.settings.MattGeneralSettingsNode
 import matt.lang.go
 import java.lang.Thread.sleep
