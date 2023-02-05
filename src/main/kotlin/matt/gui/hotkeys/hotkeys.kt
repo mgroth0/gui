@@ -2,7 +2,7 @@ package matt.gui.hotkeys
 
 import javafx.application.Platform.runLater
 import javafx.scene.paint.Color
-import matt.fx.control.iconify.iconify
+import matt.gui.iconify.iconify
 import matt.fx.graphics.hotkey.HotKey
 import matt.fx.graphics.hotkey.hotkeys
 import matt.fx.graphics.mag.bottom

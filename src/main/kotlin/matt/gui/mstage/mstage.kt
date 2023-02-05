@@ -2,7 +2,7 @@ package matt.gui.mstage
 
 import javafx.stage.StageStyle
 import matt.file.thismachine.thisMachine
-import matt.fx.control.iconify.iconify
+import matt.gui.iconify.iconify
 import matt.gui.mstage.WMode.CLOSE
 import matt.gui.mstage.WMode.HIDE
 import matt.gui.mstage.WMode.ICONIFY

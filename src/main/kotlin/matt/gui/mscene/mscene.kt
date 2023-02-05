@@ -9,7 +9,7 @@ import matt.collect.itr.recurse.recurse
 import matt.file.MFile
 import matt.file.commons.ICON_FOLDER
 import matt.fx.control.menu.context.mcontextmenu
-import matt.fx.control.menu.context.showMContextMenu
+import matt.gui.menu.context.showMContextMenu
 import matt.fx.control.wrapper.wrapped.wrapped
 import matt.fx.graphics.core.scene.NEED_REVERSED_DISPLAYS_FEATURE
 import matt.fx.graphics.core.scene.reloadStyle
@@ -22,7 +22,7 @@ import matt.fx.graphics.wrapper.style.StyleableWrapper
 import matt.fx.graphics.wrapper.style.findName
 import matt.log.profile.stopwatch.tic
 import kotlin.reflect.KClass
-import matt.fx.control.iconify.iconify
+import matt.gui.iconify.iconify
 import matt.gui.hotkeys.addDefaultHotkeys
 import matt.gui.settings.MattGeneralSettingsNode
 
