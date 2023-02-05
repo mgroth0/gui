@@ -1,48 +1,48 @@
 package matt.gui.bindgeom
 
-import matt.file.MFile
-import matt.file.commons.WINDOW_GEOMETRY_FOLDER
 import matt.fx.graphics.wrapper.stage.StageWrapper
-import matt.json.prim.readJson
-import matt.json.prim.writeJson
+import matt.gui.settings.MattGeneralStateWindowsNode
+import matt.lang.go
 import matt.math.geom.Geometry
 
 
-fun StageWrapper.bindGeometry(key: String) = bindGeometry(WINDOW_GEOMETRY_FOLDER["$key.json"])
-fun StageWrapper.bindGeometry(file: MFile, defaultWidth: Double = 400.0, defaultHeight: Double = 600.0) {
-  if (file.exists()) {
-	loadGeometry(file)
-  } else {
-	file.parentFile!!.mkdirs()
+fun StageWrapper.bindGeometry(key: String, defaultWidth: Double = 400.0, defaultHeight: Double = 600.0) {
+
+  MattGeneralStateWindowsNode.nodeByWindowKey[key].geometry.value?.go {
+	loadGeometry(it)
+  } ?: run {
 	width = defaultWidth
 	height = defaultHeight
   }
   listOf(
 	xProperty, yProperty, widthProperty, heightProperty
-  ).forEach { it.onChange { saveGeometryIfValid(file) } }
+  ).forEach { it.onChange { saveGeometryIfValid(key) } }
 }
 
-private fun StageWrapper.saveGeometryIfValid(file: MFile) {
+private fun StageWrapper.saveGeometryIfValid(key: String) {
   if (!isShowing || isIconified || isFullScreen || x.isNaN() || y.isNaN() || width.isNaN() || height.isNaN()) {
 	return
   }
-  file.writeJson(
-	Geometry(
-	  x,
-	  y,
-	  width,
-	  height
-	)
+  MattGeneralStateWindowsNode.nodeByWindowKey[key].geometry.value = Geometry(
+	x,
+	y,
+	width,
+	height
   )
 }
 
-private fun StageWrapper.loadGeometry(file: MFile) {
-  this.apply {
-	val stageGeometry = file.readJson<Geometry>()
-	x = stageGeometry.x
-	y = stageGeometry.y
-	width = stageGeometry.width
-	height = stageGeometry.height
+private fun StageWrapper.loadGeometry(key: String) = apply {
+  val stageGeometry = MattGeneralStateWindowsNode.nodeByWindowKey[key].geometry.value
+  stageGeometry?.let {
+	loadGeometry(it)
   }
 }
+
+private fun StageWrapper.loadGeometry(geom: Geometry) = apply {
+  x = geom.x
+  y = geom.y
+  width = geom.width
+  height = geom.height
+}
+
 
