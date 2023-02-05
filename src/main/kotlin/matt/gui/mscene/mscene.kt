@@ -23,6 +23,7 @@ import matt.log.profile.stopwatch.tic
 import kotlin.reflect.KClass
 import matt.gui.iconify.iconify
 import matt.gui.hotkeys.addDefaultHotkeys
+import matt.gui.menu.context.mcontextmenu
 import matt.gui.settings.MattGeneralSettingsNode
 import java.awt.SystemColor.menu
 

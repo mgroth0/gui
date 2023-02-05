@@ -8,6 +8,7 @@ import matt.fx.graphics.wrapper.pane.grid.GridPaneWrapper
 import matt.fx.graphics.wrapper.pane.hbox.h
 import matt.fx.graphics.wrapper.text.text
 import matt.gui.action.button.actionButton
+import matt.gui.menu.context.mcontextmenu
 import matt.model.code.idea.UserActionIdea
 import matt.model.obsmod.proceeding.Proceeding
 import matt.obs.bind.binding
