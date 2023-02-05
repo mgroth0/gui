@@ -30,6 +30,7 @@ import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.impl.NodeWrapperImpl
 import matt.fx.graphics.wrapper.node.parent.parent
 import matt.fx.graphics.wrapper.scene.SceneWrapper
+import matt.gui.interact.openInNewWindow
 import matt.log.tab
 import matt.log.warn.warn
 import matt.obs.prop.BindableProperty

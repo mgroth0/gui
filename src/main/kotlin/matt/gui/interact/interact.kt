@@ -40,6 +40,7 @@ import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.fx.graphics.wrapper.stage.StageWrapper
 import matt.fx.graphics.wrapper.text.text
 import matt.fx.graphics.wrapper.window.WindowWrapper
+import matt.gui.bindgeom.bindGeometry
 import matt.gui.mscene.MScene
 import matt.gui.mstage.MStage
 import matt.gui.mstage.ShowMode

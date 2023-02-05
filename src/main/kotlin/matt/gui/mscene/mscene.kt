@@ -8,7 +8,6 @@ import javafx.scene.paint.Color
 import matt.collect.itr.recurse.recurse
 import matt.file.MFile
 import matt.file.commons.ICON_FOLDER
-import matt.fx.control.menu.context.mcontextmenu
 import matt.gui.menu.context.showMContextMenu
 import matt.fx.control.wrapper.wrapped.wrapped
 import matt.fx.graphics.core.scene.NEED_REVERSED_DISPLAYS_FEATURE
@@ -25,6 +24,7 @@ import kotlin.reflect.KClass
 import matt.gui.iconify.iconify
 import matt.gui.hotkeys.addDefaultHotkeys
 import matt.gui.settings.MattGeneralSettingsNode
+import java.awt.SystemColor.menu
 
 open class MScene<R: ParentWrapper<*>>(
   root: R, val icon: MFile, userWidth: Double = -1.0, userHeight: Double = -1.0

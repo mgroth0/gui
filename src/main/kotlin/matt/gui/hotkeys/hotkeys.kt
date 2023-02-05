@@ -2,7 +2,6 @@ package matt.gui.hotkeys
 
 import javafx.application.Platform.runLater
 import javafx.scene.paint.Color
-import matt.gui.iconify.iconify
 import matt.fx.graphics.hotkey.HotKey
 import matt.fx.graphics.hotkey.hotkeys
 import matt.fx.graphics.mag.bottom
@@ -25,10 +24,11 @@ import matt.fx.graphics.mag.right
 import matt.fx.graphics.mag.top
 import matt.fx.graphics.mag.topleft
 import matt.fx.graphics.mag.topright
+import matt.fx.graphics.style.border.FXBorder
 import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.fx.graphics.wrapper.region.RegionWrapperImpl
-import matt.fx.graphics.style.border.FXBorder
 import matt.fx.graphics.wrapper.stage.StageWrapper
+import matt.gui.iconify.iconify
 import matt.gui.mscene.MScene
 import matt.gui.settings.MattGeneralSettingsNode
 import matt.lang.go
@@ -129,13 +129,13 @@ fun MScene<*>.addDefaultHotkeys() {
 
 	LEFT_BRACKET.ctrl.opt {
 	  window?.apply {
-		if (!MattGeneralSettingsNode.reversedDisplays) lastdisplay()
+		if (!MattGeneralSettingsNode.reversedDisplays.value!!) lastdisplay()
 		else nextdisplay()
 	  }
 	}
 	RIGHT_BRACKET.ctrl.opt {
 	  window?.apply {
-		if (!MattGeneralSettingsNode.reversedDisplays) nextdisplay()
+		if (!MattGeneralSettingsNode.reversedDisplays.value!!) nextdisplay()
 		else lastdisplay()
 	  }
 	}

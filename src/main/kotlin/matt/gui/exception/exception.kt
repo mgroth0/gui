@@ -9,8 +9,6 @@ import matt.file.MFile
 import matt.file.thismachine.ifMatt
 import matt.fx.control.fxapp.ERROR_POP_UP_TEXT
 import matt.fx.control.lang.actionbutton
-import matt.fx.control.mstage.ShowMode.SHOW_AND_WAIT
-import matt.fx.control.win.interact.openInNewWindow
 import matt.fx.control.wrapper.control.button.ButtonWrapper
 import matt.fx.control.wrapper.control.text.area.textarea
 import matt.fx.control.wrapper.label.label
@@ -18,6 +16,8 @@ import matt.fx.graphics.wrapper.pane.flow.flowpane
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.gui.app.GuiApp
+import matt.gui.interact.openInNewWindow
+import matt.gui.mstage.ShowMode.SHOW_AND_WAIT
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.profile.err.ExceptionResponse.IGNORE
