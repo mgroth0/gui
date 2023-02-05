@@ -14,8 +14,14 @@
 	{
 	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
 	  "cfg" :  "api",
+	  "path" : ":k:pref"
+	},
+	{
+	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
+	  "cfg" :  "api",
 	  "path" : ":k:model:obsmod"
-	},	{
+	},
+	{
 	  "type" : "matt.mstruct.bj.BuildJsonLibDependency",
 	  "cfg" :  "implementation",
 	  "key" :  "slf4j-nop"
