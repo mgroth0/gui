@@ -1,7 +1,6 @@
 package matt.gui.menu.context.debug
 
 import javafx.scene.layout.GridPane
-import matt.fx.control.proto.actiontext.actionText
 import matt.fx.control.wrapper.checkbox.checkbox
 import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.parent.parent
@@ -9,10 +8,11 @@ import matt.fx.graphics.wrapper.pane.grid.GridPaneWrapper
 import matt.fx.graphics.wrapper.pane.vbox.VBoxW
 import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.fx.graphics.wrapper.text.text
+import matt.gui.actiontext.actionText
 import matt.lang.go
 
 
-class SceneDebugger(): VBoxW() {
+class SceneDebugger: VBoxW() {
 
   var lastNav: NodeDebugger? = null
 
@@ -34,7 +34,6 @@ class SceneDebugger(): VBoxW() {
 	}
 	+nd
   }
-
 }
 
 class NodeDebugger(

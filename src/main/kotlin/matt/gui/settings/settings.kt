@@ -23,5 +23,5 @@ object MattGeneralStateWindowsNode: ObsPrefNode(
 }
 
 class GeometryNode(key: String): ObsPrefNode(key = "matt.general.state.window.$key") {
-  val geometry by obj<Geometry>()
+  val geometry by obj<Geometry>(silent=true)
 }

@@ -9,6 +9,7 @@ import javafx.scene.Scene
 import javafx.scene.canvas.Canvas
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.MenuItem
+import javafx.scene.control.TextArea
 import javafx.scene.shape.Shape
 import matt.collect.itr.recurse.chain
 import matt.collect.map.dmap.withStoringDefault
@@ -16,7 +17,6 @@ import matt.collect.map.lazyMap
 import matt.collect.map.sync.synchronized
 import matt.gui.menu.context.EventHandlerType.Filter
 import matt.gui.menu.context.EventHandlerType.Handler
-import matt.gui.menu.context.debug.SceneDebugger
 import matt.fx.control.wrapper.contextmenu.ContextMenuWrapper
 import matt.fx.control.wrapper.menu.MenuWrapper
 import matt.fx.control.wrapper.menu.checkitem.CheckMenuItemWrapper
@@ -30,7 +30,9 @@ import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.impl.NodeWrapperImpl
 import matt.fx.graphics.wrapper.node.parent.parent
 import matt.fx.graphics.wrapper.scene.SceneWrapper
+import matt.gui.interact.dialog
 import matt.gui.interact.openInNewWindow
+import matt.gui.menu.context.debug.SceneDebugger
 import matt.log.tab
 import matt.log.warn.warn
 import matt.obs.prop.BindableProperty

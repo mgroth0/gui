@@ -35,7 +35,7 @@ import matt.log.reporter.TracksTime
 import matt.log.warn.warn
 import matt.model.code.report.Reporter
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
-import matt.mstruct.rstruct.appName
+import matt.mstruct.rstruct.modID
 import kotlin.reflect.full.createInstance
 
 fun startFXWidget(rootOp: VBoxW.()->Unit) {
@@ -163,7 +163,7 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 		singleRunShutdown.invoke()
 	  },
 	  preFX,
-	  logContext=logContext,
+	  logContext = logContext,
 	  t = t
 	)
 
@@ -195,17 +195,17 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 		println("showing exception popup for t=$t, e=$e")
 		r = showExceptionPopup(e, shutdown, st, exceptionFile)
 	  }
-//	  if (Platform.isFxApplicationThread()) {
-//
-//	  } else {
-//		/*thread(name = "error pop up thread", isDaemon = false) {*/
-//		println("openning error pop up")
-//		runLaterReturn {
-//		  r = showExceptionPopup(t, e, shutdown, st, exceptionFile)
-//		}
-//		println("finished invoking runLater in error pop up thread")
-//		//		}
-//	  }
+	  //	  if (Platform.isFxApplicationThread()) {
+	  //
+	  //	  } else {
+	  //		/*thread(name = "error pop up thread", isDaemon = false) {*/
+	  //		println("openning error pop up")
+	  //		runLaterReturn {
+	  //		  r = showExceptionPopup(t, e, shutdown, st, exceptionFile)
+	  //		}
+	  //		println("finished invoking runLater in error pop up thread")
+	  //		//		}
+	  //	  }
 	} catch (e: Exception) {
 	  println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
 	  e.printStackTrace()
@@ -218,7 +218,7 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 	MStage(
 	  decorated = decorated, wMode = wMode, EscClosable = escClosable, EnterClosable = enterClosable
 	).apply {
-	  bindGeometry(appName)
+	  bindGeometry(modID.appName)
 	}
   }
 }
