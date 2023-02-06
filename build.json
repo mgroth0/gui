@@ -24,6 +24,11 @@
 	{
 	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
 	  "cfg" :  "api",
+	  "path" : ":k:caching"
+	},
+	{
+	  "type" : "matt.mstruct.bj.BuildJsonProjectDependency",
+	  "cfg" :  "api",
 	  "path" : ":k:model:obsmod"
 	},
 	{
