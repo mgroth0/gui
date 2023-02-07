@@ -362,11 +362,11 @@ fun ParentWrapper<*>.openInNewWindow(
   own: WinOwn = Auto,
   geom: WinGeom = Centered(),
   mScene: Boolean = true,
-  beforeShowing: StageWrapper.()->Unit = {},
   border: Boolean = true,
   decorated: Boolean = false,
   alwaysOnTop: Boolean = false,
-  title: String? = null
+  title: String? = null,
+  beforeShowing: StageWrapper.()->Unit = {},
 ): MStage {
   return MStage(
 	wMode = wMode,
