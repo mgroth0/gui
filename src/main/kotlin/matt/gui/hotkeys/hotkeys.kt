@@ -5,8 +5,8 @@ import javafx.scene.paint.Color
 import matt.fx.graphics.hotkey.HotKey
 import matt.fx.graphics.hotkey.hotkeys
 import matt.fx.graphics.mag.bottom
-import matt.fx.graphics.mag.bottomleft
-import matt.fx.graphics.mag.bottomright
+import matt.fx.graphics.mag.bottomLeft
+import matt.fx.graphics.mag.bottomRight
 import matt.fx.graphics.mag.eighth1
 import matt.fx.graphics.mag.eighth2
 import matt.fx.graphics.mag.eighth3
@@ -15,15 +15,15 @@ import matt.fx.graphics.mag.eighth5
 import matt.fx.graphics.mag.eighth6
 import matt.fx.graphics.mag.eighth7
 import matt.fx.graphics.mag.eighth8
-import matt.fx.graphics.mag.lastdisplay
+import matt.fx.graphics.mag.lastDisplay
 import matt.fx.graphics.mag.left
 import matt.fx.graphics.mag.max
-import matt.fx.graphics.mag.nextdisplay
+import matt.fx.graphics.mag.nextDisplay
 import matt.fx.graphics.mag.resetPosition
 import matt.fx.graphics.mag.right
 import matt.fx.graphics.mag.top
-import matt.fx.graphics.mag.topleft
-import matt.fx.graphics.mag.topright
+import matt.fx.graphics.mag.topLeft
+import matt.fx.graphics.mag.topRight
 import matt.fx.graphics.style.border.FXBorder
 import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.fx.graphics.wrapper.region.RegionWrapperImpl
@@ -122,21 +122,21 @@ fun MScene<*>.addDefaultHotkeys() {
 	W.ctrl.opt { window?.top() }
 	S.ctrl.opt { window?.bottom() }
 
-	Z.ctrl.opt { window?.bottomleft() }
-	E.ctrl.opt { window?.topright() }
-	Q.ctrl.opt { window?.topleft() }
-	C.ctrl.opt { window?.bottomright() }
+	Z.ctrl.opt { window?.bottomLeft() }
+	E.ctrl.opt { window?.topRight() }
+	Q.ctrl.opt { window?.topLeft() }
+	C.ctrl.opt { window?.bottomRight() }
 
 	LEFT_BRACKET.ctrl.opt {
 	  window?.apply {
-		if (!MattGeneralSettingsNode.reversedDisplays.value!!) lastdisplay()
-		else nextdisplay()
+		if (!MattGeneralSettingsNode.reversedDisplays.value!!) lastDisplay()
+		else nextDisplay()
 	  }
 	}
 	RIGHT_BRACKET.ctrl.opt {
 	  window?.apply {
-		if (!MattGeneralSettingsNode.reversedDisplays.value!!) nextdisplay()
-		else lastdisplay()
+		if (!MattGeneralSettingsNode.reversedDisplays.value!!) nextDisplay()
+		else lastDisplay()
 	  }
 	}
 
