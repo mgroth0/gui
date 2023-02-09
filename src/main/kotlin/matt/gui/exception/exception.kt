@@ -2,10 +2,7 @@ package matt.gui.exception
 
 import javafx.scene.Node
 import javafx.stage.Stage
-import matt.auto.macapp.SublimeText
-import matt.auto.openInIntelliJ
 import matt.exec.app.App
-import matt.file.MFile
 import matt.file.thismachine.ifMatt
 import matt.fx.control.fxapp.ERROR_POP_UP_TEXT
 import matt.fx.control.lang.actionbutton
@@ -30,8 +27,7 @@ private const val STACK_TRACE_SURFACE_COUNT = 200
 fun GuiApp.showExceptionPopup(
   e: Throwable,
   shutdown: (App<*>.()->Unit)?,
-  st: String,
-  exceptionFile: MFile
+  st: String
 ): ExceptionResponse {
   var r = EXIT
   val stackTraceDepth = e.stackTrace.size
@@ -61,12 +57,6 @@ fun GuiApp.showExceptionPopup(
 	textarea(st)
 	flowpane<ButtonWrapper> {
 	  ifMatt {
-		actionbutton("Open stacktrace in IntelliJ") {
-		  exceptionFile.openInIntelliJ()
-		}
-		actionbutton("Open stacktrace in Sublime Text") {
-		  SublimeText.open(exceptionFile)
-		}
 		actionbutton("Run pre-shutdown operation") {
 		  shutdown?.invoke(this@showExceptionPopup)
 		}
