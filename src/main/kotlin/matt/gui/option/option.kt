@@ -2,8 +2,11 @@ package matt.gui.option
 
 import matt.fx.control.toggle.mech.ToggleMechanism
 import matt.lang.delegation.fullProvider
+import matt.lang.delegation.valProp
+import matt.lang.function.Op
 import matt.model.flowlogic.recursionblocker.RecursionBlocker
-import matt.obs.hold.ObservableHolderImpl
+import matt.obs.hold.TypedObservableHolder
+import matt.obs.prop.BindableProperty
 import matt.obs.prop.Var
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
@@ -41,21 +44,75 @@ class EnumSetting<E: Enum<E>>(val cls: KClass<E>, prop: Var<E>, label: String, t
   }
 
 
-
 }
 
 class IntSetting(prop: Var<Int>, label: String, tooltip: String, val min: Int, val max: Int, default: Int):
 	Setting<Int>(prop, label = label, tooltip = tooltip, default = default)
-class DoubleSetting(prop: Var<Double>, label: String, tooltip: String, val min: Double, val max: Double, default: Double):
+
+class DoubleSetting(
+  prop: Var<Double>,
+  label: String,
+  tooltip: String,
+  val min: Double,
+  val max: Double,
+  default: Double,
+  val showControl: Boolean
+):
 	Setting<Double>(prop, label = label, tooltip = tooltip, default = default)
+
 class BoolSetting(prop: Var<Boolean>, label: String, tooltip: String, default: Boolean):
 	Setting<Boolean>(prop, label = label, tooltip = tooltip, default = default)
 
+class ActionNotASetting(label: String, tooltip: String, val op: Op): Setting<Unit>(
+  BindableProperty(Unit),
+  label = label,
+  tooltip = tooltip,
+  default = Unit
+)
 
-abstract class SettingsData: ObservableHolderImpl() {
+abstract class SettingsData(val sectionName: String): TypedObservableHolder() {
+
+  override fun toString(): String {
+	return sectionName
+  }
+
   @PublishedApi
   internal val mSettings = mutableListOf<Setting<*>>()
   val settings: List<Setting<*>> = mSettings
+
+  /*  protected fun <T: SettingsData> settingsSection(
+	  section: T,
+	) = fullProvider { tr, p ->
+	  registeredSection(section).provideDelegate(tr, p).also {
+		it.getValue(tr, p).settings.forEach {
+		  mSettings += it
+		}
+	  }
+	}*/
+
+  protected fun actionNotASetting(
+	label: String,
+	tooltip: String,
+	action: Op
+  ) = run {
+	val notASetting = ActionNotASetting(label = label, tooltip = tooltip, op = action)
+	mSettings += notASetting
+	notASetting
+  }
+//
+//  protected inner class ActionNotASettingProv(
+//	private val label: String,
+//	private val tooltip: String,
+//	private val action: Op
+//  ) {
+//	operator fun provideDelegate(
+//	  thisRef: TypedObservableHolder,
+//	  prop: KProperty<*>,
+//	) = valProp {
+//
+//	}
+//  }
+
 
   protected inline fun <reified E: Enum<E>> enumSettingProv(
 	defaultValue: E,
@@ -74,7 +131,7 @@ abstract class SettingsData: ObservableHolderImpl() {
 	private val tooltip: String
   ) {
 	operator fun provideDelegate(
-	  thisRef: ObservableHolderImpl,
+	  thisRef: TypedObservableHolder,
 	  prop: KProperty<*>,
 	) = registeredProp(defaultValue).provideDelegate(thisRef, prop).also {
 	  mSettings += BoolSetting(it.getValue(thisRef, prop), label = label, tooltip = tooltip, defaultValue)
@@ -89,7 +146,7 @@ abstract class SettingsData: ObservableHolderImpl() {
 	private val max: Int
   ) {
 	operator fun provideDelegate(
-	  thisRef: ObservableHolderImpl,
+	  thisRef: TypedObservableHolder,
 	  prop: KProperty<*>,
 	) = registeredProp(defaultValue).provideDelegate(thisRef, prop).also {
 	  mSettings += IntSetting(
@@ -108,10 +165,11 @@ abstract class SettingsData: ObservableHolderImpl() {
 	private val label: String,
 	private val tooltip: String,
 	private val min: Double,
-	private val max: Double
+	private val max: Double,
+	private val showControl: Boolean = true
   ) {
 	operator fun provideDelegate(
-	  thisRef: ObservableHolderImpl,
+	  thisRef: TypedObservableHolder,
 	  prop: KProperty<*>,
 	) = registeredProp(defaultValue).provideDelegate(thisRef, prop).also {
 	  mSettings += DoubleSetting(
@@ -120,9 +178,11 @@ abstract class SettingsData: ObservableHolderImpl() {
 		tooltip = tooltip,
 		min = min,
 		max = max,
-		default = defaultValue
+		default = defaultValue,
+		showControl = showControl
 	  )
 	}
   }
+
 
 }
