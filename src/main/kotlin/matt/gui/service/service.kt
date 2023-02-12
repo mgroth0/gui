@@ -48,6 +48,14 @@ object FXActionAbilitiesService: ActionAbilitiesService {
   }
 
   override fun input(prompt: String) = popupTextInput(prompt) ?: NEVER
+
+  override fun openFile(prompt: String): String? {
+	return ensureInFXThreadInPlace {
+	  matt.fx.graphics.dialog.openFile {
+		title = prompt
+	  }?.abspath
+	}
+  }
 }
 
 
@@ -75,6 +83,13 @@ class AsyncFXActionAbilitiesService(
 	  it == ButtonType.OK
 	}
 
+  }
+
+  override fun openFile(prompt: String): String? {
+	require(!Platform.isFxApplicationThread())
+	return ensureInFXThreadInPlace {
+	  FXActionAbilitiesService.openFile(prompt)
+	}
   }
 
   override fun yesOrNo(s: String): YesOrNo {

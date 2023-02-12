@@ -1,6 +1,8 @@
 package matt.gui.menu.context.debug
 
 import javafx.scene.layout.GridPane
+import javafx.scene.paint.Color
+import matt.fx.control.lang.actionbutton
 import matt.fx.control.wrapper.checkbox.checkbox
 import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.parent.parent
@@ -89,6 +91,9 @@ class NodeDebugger(
 			n.border = null
 		  }
 		}
+	  }
+	  actionbutton("green background") {
+		n.backgroundFill = Color.GREEN
 	  }
 	  if (debugNode is GridPaneWrapper<*>) {
 		checkbox("gridLines", debugNode.gridLinesVisibleProp)
