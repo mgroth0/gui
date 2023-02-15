@@ -19,7 +19,12 @@ import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.profile.err.ExceptionResponse.IGNORE
 import matt.log.taball
+import matt.model.code.errreport.ThrowReport
+import matt.prim.str.urlEncodePlusNotPecentForSpaces
+import java.awt.Desktop
+import java.net.URI
 import kotlin.system.exitProcess
+
 
 /*100 wasn't enough*/
 private const val STACK_TRACE_SURFACE_COUNT = 200
@@ -60,6 +65,12 @@ fun GuiApp.showExceptionPopup(
 		actionbutton("Run pre-shutdown operation") {
 		  shutdown?.invoke(this@showExceptionPopup)
 		}
+	  }
+	  actionbutton("Submit Bug Report") {
+		val desktop = Desktop.getDesktop()
+		val message = "mailto:deephys@mit.edu?subject=Bug%20Report&body=${ThrowReport(e).text.urlEncodePlusNotPecentForSpaces()}"
+		val uri: URI = URI.create(message)
+		desktop.mail(uri)
 	  }
 	  actionbutton("print stack trace") {
 		e.printStackTrace()
