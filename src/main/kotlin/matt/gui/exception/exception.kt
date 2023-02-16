@@ -20,7 +20,7 @@ import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.profile.err.ExceptionResponse.IGNORE
 import matt.log.taball
 import matt.model.code.errreport.ThrowReport
-import matt.prim.str.urlEncodePlusNotPecentForSpaces
+import matt.prim.str.urlEncodePlusNotPercentForSpaces
 import java.awt.Desktop
 import java.net.URI
 import kotlin.system.exitProcess
@@ -68,7 +68,7 @@ fun GuiApp.showExceptionPopup(
 	  }
 	  actionbutton("Submit Bug Report") {
 		val desktop = Desktop.getDesktop()
-		val message = "mailto:deephys@mit.edu?subject=Bug%20Report&body=${ThrowReport(e).text.urlEncodePlusNotPecentForSpaces()}"
+		val message = "mailto:deephys@mit.edu?subject=Bug%20Report&body=${ThrowReport(e).text.urlEncodePlusNotPercentForSpaces()}"
 		val uri: URI = URI.create(message)
 		desktop.mail(uri)
 	  }
