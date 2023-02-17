@@ -193,7 +193,7 @@ fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
 	try {
 	  ensureInFXThreadInPlace {
 		println("showing exception popup for t=$t, e=$e")
-		r = showExceptionPopup(e, shutdown, st)
+		r = showExceptionPopup(t, e, shutdown, st)
 	  }
 	  //	  if (Platform.isFxApplicationThread()) {
 	  //

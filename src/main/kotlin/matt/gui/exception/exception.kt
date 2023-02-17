@@ -15,11 +15,12 @@ import matt.fx.graphics.wrapper.region.RegionWrapper
 import matt.gui.app.GuiApp
 import matt.gui.interact.openInNewWindow
 import matt.gui.mstage.ShowMode.SHOW_AND_WAIT
+import matt.http.url.buildQueryURL
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.profile.err.ExceptionResponse.IGNORE
+import matt.log.report.BugReport
 import matt.log.taball
-import matt.model.code.errreport.ThrowReport
 import matt.prim.str.urlEncode
 import java.awt.Desktop
 import java.net.URI
@@ -30,6 +31,7 @@ import kotlin.system.exitProcess
 private const val STACK_TRACE_SURFACE_COUNT = 200
 
 fun GuiApp.showExceptionPopup(
+  t: Thread,
   e: Throwable,
   shutdown: (App<*>.()->Unit)?,
   st: String
@@ -50,15 +52,15 @@ fun GuiApp.showExceptionPopup(
 	taball("stacktrace SURFACE", stackTraceSurface)
   }
   VBoxWrapperImpl<RegionWrapper<*>>().apply {
-	label(ERROR_POP_UP_TEXT){
+	label(ERROR_POP_UP_TEXT) {
 	  isWrapText = true
 	}
-/*	label("${e::class.simpleName} in $appName") {
-	  isWrapText = true
-	}
-	label("thread=${t.name}") {
-	  isWrapText = true
-	}*/
+	/*	label("${e::class.simpleName} in $appName") {
+		  isWrapText = true
+		}
+		label("thread=${t.name}") {
+		  isWrapText = true
+		}*/
 	textarea(st)
 	flowpane<ButtonWrapper> {
 	  ifMatt {
@@ -67,13 +69,17 @@ fun GuiApp.showExceptionPopup(
 		}
 	  }
 	  actionbutton("Submit Bug Report") {
-		val desktop = Desktop.getDesktop()
-		val message = "mailto:deephys@mit.edu?subject=Bug%20Report&body=${ThrowReport(e).text.urlEncode()}"
-		val uri: URI = URI.create(message)
-		desktop.mail(uri)
+
+		openNewYouTrackIssue(
+		  summary = "Bug Report",
+		  description = BugReport(t = t, e = e).text
+		)
+
 	  }
-	  actionbutton("print stack trace") {
-		e.printStackTrace()
+	  ifMatt {
+		actionbutton("print stack trace") {
+		  e.printStackTrace()
+		}
 	  }
 	  actionbutton("Exit now") {
 		e.printStackTrace()
@@ -91,3 +97,21 @@ fun GuiApp.showExceptionPopup(
   )
   return r
 }
+
+fun openNewYouTrackIssue(
+  summary: String,
+  description: String
+) {
+  val u = buildQueryURL(
+	"https://deephys.youtrack.cloud/newIssue",
+	"project" to "D",
+	"summary" to summary.urlEncode(),
+	"description" to description.urlEncode()
+  ).let {
+	URI(it)
+  }
+  Desktop.getDesktop().browse(u)
+}
+
+
+
