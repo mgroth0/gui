@@ -122,6 +122,10 @@ class AsyncFXActionAbilitiesService(
 	}
   }
 
+  override fun <T> yesOrNoAllowAllCommands(prompts: Map<T, String>): Map<T, YesOrNo> {
+	TODO("Not yet implemented")
+  }
+
   override fun <E: Enum<E>> enum(enumOptions: Array<E>, prompt: String): E {
 	TODO("Not yet implemented")
   }
