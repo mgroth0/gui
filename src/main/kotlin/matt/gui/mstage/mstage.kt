@@ -2,15 +2,15 @@ package matt.gui.mstage
 
 import javafx.stage.StageStyle
 import matt.file.thismachine.thisMachine
-import matt.gui.iconify.iconify
+import matt.fx.graphics.hotkey.hotkeys
+import matt.fx.graphics.wrapper.stage.StageWrapper
+import matt.gui.interact.WindowConfig
+import matt.gui.mscene.MScene
+import matt.gui.mscene.iconify
 import matt.gui.mstage.WMode.CLOSE
 import matt.gui.mstage.WMode.HIDE
 import matt.gui.mstage.WMode.ICONIFY
 import matt.gui.mstage.WMode.NOTHING
-import matt.fx.graphics.hotkey.hotkeys
-import matt.fx.graphics.wrapper.stage.StageWrapper
-import matt.gui.mscene.MScene
-import matt.gui.mscene.iconify
 import matt.model.code.sys.GAMING_WINDOWS
 
 enum class WMode {
@@ -27,11 +27,19 @@ enum class ShowMode {
 }
 
 open class MStage(
-  wMode: WMode = NOTHING,
-  EscClosable: Boolean = false,
-  EnterClosable: Boolean = false,
-  decorated: Boolean = false,
+  var wMode: WMode = WindowConfig.DEFAULT.wMode,
+  EscClosable: Boolean = WindowConfig.DEFAULT.EscClosable,
+  EnterClosable: Boolean = WindowConfig.DEFAULT.EnterClosable,
+  decorated: Boolean = WindowConfig.DEFAULT.decorated,
 ): StageWrapper(if (decorated) StageStyle.DECORATED else StageStyle.UNDECORATED) {
+
+  var decorated = decorated
+	@Synchronized set(value) {
+	  if (value != field && decorated) StageStyle.DECORATED else StageStyle.UNDECORATED
+	  field = value
+	}
+
+
   init {
 	hotkeys {
 	  if (thisMachine == GAMING_WINDOWS) {
@@ -60,5 +68,36 @@ open class MStage(
 	  if (EscClosable) ESCAPE op ::close
 	}
   }
+
+
+  var EnterClosable = EnterClosable
+	@Synchronized set(value) {
+	  if (value != field) {
+		if (value) {
+		  hotkeys {
+			ENTER op ::close
+		  }
+		} else {
+		  TODO()
+		}
+	  }
+	  field = value
+	}
+
+
+  var EscClosable = EscClosable
+	@Synchronized set(value) {
+	  if (value != field) {
+		if (value) {
+		  hotkeys(filter = true) {
+			ESCAPE op ::close
+		  }
+		} else {
+		  TODO()
+		}
+	  }
+	  field = value
+	}
+
 }
 

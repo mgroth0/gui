@@ -9,6 +9,9 @@ import javafx.scene.control.TextInputDialog
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.paint.Color
+import javafx.stage.Modality
+import javafx.stage.Modality.APPLICATION_MODAL
+import javafx.stage.Modality.NONE
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Window
@@ -18,8 +21,6 @@ import matt.file.MFile
 import matt.file.construct.mFile
 import matt.fx.control.lang.actionbutton
 import matt.fx.control.tfx.dialog.alert
-import matt.gui.interact.WinGeom.Centered
-import matt.gui.interact.WinOwn.Auto
 import matt.fx.control.wrapper.control.button.ButtonWrapper
 import matt.fx.control.wrapper.control.button.button
 import matt.fx.control.wrapper.control.text.area.textarea
@@ -41,6 +42,8 @@ import matt.fx.graphics.wrapper.stage.StageWrapper
 import matt.fx.graphics.wrapper.text.text
 import matt.fx.graphics.wrapper.window.WindowWrapper
 import matt.gui.bindgeom.bindGeometry
+import matt.gui.interact.WinGeom.Centered
+import matt.gui.interact.WinOwn.Auto
 import matt.gui.mscene.MScene
 import matt.gui.mstage.MStage
 import matt.gui.mstage.ShowMode
@@ -82,6 +85,7 @@ fun safe(s: String, op: ()->Unit): Boolean {
 
 class MDialog<R> internal constructor(): VBoxWrapperImpl<NodeWrapper>() {
   val stg = MStage(wMode = CLOSE, EscClosable = true).apply {
+	initModality(APPLICATION_MODAL)
 	scene = MScene(this@MDialog)
 	width = 400.0
 	height = 400.0
@@ -353,6 +357,68 @@ sealed class WinOwn {
   abstract fun applyTo(win: StageWrapper)
 }
 
+data class WindowConfig(
+  val showMode: ShowMode = SHOW,
+  val modality: Modality = NONE,
+  val wMode: WMode = NOTHING,
+  val EscClosable: Boolean = false,
+  val EnterClosable: Boolean = false,
+  val own: WinOwn = Auto,
+  val geom: WinGeom = Centered(),
+  val mScene: Boolean = true,
+  val border: Boolean = true,
+  val decorated: Boolean = false,
+  val alwaysOnTop: Boolean = false,
+  val title: String? = null,
+  val beforeShowing: StageWrapper.()->Unit = {},
+) {
+  companion object {
+	val DEFAULT by lazy {
+	  WindowConfig()
+	}
+  }
+
+  fun createWindow(root: ParentWrapper<*>) = MStage(
+	wMode = wMode,
+	EscClosable = EscClosable,
+	EnterClosable = EnterClosable,
+	decorated = decorated
+  ).also {
+	applyToAlreadyCreated(it, root)
+  }
+
+  fun applyTo(window: MStage, root: ParentWrapper<*>) {
+	window.wMode = wMode
+	window.EscClosable = EscClosable
+	window.EnterClosable = EnterClosable
+	window.decorated = decorated
+	applyToAlreadyCreated(window, root)
+  }
+
+  private fun applyToAlreadyCreated(window: MStage, root: ParentWrapper<*>) {
+	window.initModality(modality)
+	window.apply {
+	  isAlwaysOnTop = alwaysOnTop
+	  if (title != null) {
+		require(decorated)
+		this.title = title
+	  }
+	  scene = if (mScene) MScene(root) else Scene(root.node).wrapped()
+	  own.applyTo(this)
+	  geom.applyTo(this)
+	  if (border) {
+		(root as RegionWrapper).border = Color.DARKBLUE.solidBorder()
+	  }
+	  beforeShowing()
+	  when (showMode) {
+		SHOW          -> show()
+		SHOW_AND_WAIT -> showAndWait()
+		DO_NOT_SHOW   -> Unit
+	  }
+	}
+  }
+}
+
 
 fun ParentWrapper<*>.openInNewWindow(
   showMode: ShowMode = SHOW,
@@ -367,32 +433,23 @@ fun ParentWrapper<*>.openInNewWindow(
   alwaysOnTop: Boolean = false,
   title: String? = null,
   beforeShowing: StageWrapper.()->Unit = {},
-): MStage {
-  return MStage(
-	wMode = wMode,
-	EscClosable = EscClosable,
-	EnterClosable = EnterClosable,
-	decorated = decorated
-  ).apply {
-	isAlwaysOnTop = alwaysOnTop
-	if (title != null) {
-	  require(decorated)
-	  this.title = title
-	}
-	scene = if (mScene) MScene(this@openInNewWindow) else Scene(this@openInNewWindow.node).wrapped()
-	own.applyTo(this)
-	geom.applyTo(this)
-	if (border) {
-	  (this@openInNewWindow as RegionWrapper).border = Color.DARKBLUE.solidBorder()
-	}
-	beforeShowing()
-	when (showMode) {
-	  SHOW -> show()
-	  SHOW_AND_WAIT -> showAndWait()
-	  DO_NOT_SHOW -> Unit
-	}
-  }
-}
+) = WindowConfig(
+  showMode = showMode,
+  wMode = wMode,
+  EscClosable = EscClosable,
+  EnterClosable = EnterClosable,
+  own = own,
+  geom = geom,
+  mScene = mScene,
+  border = border,
+  decorated = decorated,
+  alwaysOnTop = alwaysOnTop,
+  title = title,
+  beforeShowing = beforeShowing
+).createWindow(this@openInNewWindow)
+
+
+
 
 fun MFile.openImageInWindow() {
   AnchorPaneWrapperImpl<NodeWrapper>(ImageViewWrapper(this@openImageInWindow.toURI().toString()).apply {
