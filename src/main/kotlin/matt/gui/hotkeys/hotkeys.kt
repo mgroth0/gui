@@ -36,123 +36,174 @@ import java.lang.Thread.sleep
 import kotlin.concurrent.thread
 
 
-
 fun MScene<*>.addDefaultHotkeys() {
+
   val scene = this
 
   /*needed filter to be true here or for some reason LEFT.ctrl.opt.shift wasn't being captured in music app even though it was captured in all other apps (globalhotkeys, brainstorm, kjg)*/
   hotkeys(quickPassForNormalTyping = true, filter = true) {
 
-	LEFT.ctrl.opt { window!!.x -= window!!.width }
-	RIGHT.ctrl.opt { window!!.x += window!!.width }
-	UP.ctrl.opt { window!!.y -= window!!.height }
-	DOWN.ctrl.opt { window!!.y += window!!.height }
+	LEFT.ctrl.opt {
+	  println("window op 1")
+	  window!!.x -= window!!.width
+	}
+	RIGHT.ctrl.opt {
+	  println("window op 2")
+	  window!!.x += window!!.width
+	}
+	UP.ctrl.opt {
+	  println("window op 3")
+	  window!!.y -= window!!.height
+	}
+	DOWN.ctrl.opt {
+	  println("window op 4")
+	  window!!.y += window!!.height
+	}
 
 	val smallShift = 10.0
 
-	LEFT.ctrl.shift { window!!.x -= smallShift }
-	RIGHT.ctrl.shift { window!!.x += smallShift }
-	UP.ctrl.shift { window!!.y -= smallShift }
-	DOWN.ctrl.shift { window!!.y += smallShift }
+	LEFT.ctrl.shift {
+	  println("window op 5")
+	  window!!.x -= smallShift
+	}
+	RIGHT.ctrl.shift {
+	  println("window op 6")
+	  window!!.x += smallShift
+	}
+	UP.ctrl.shift {
+	  println("window op 7")
+	  window!!.y -= smallShift
+	}
+	DOWN.ctrl.shift {
+	  println("window op 8")
+	  window!!.y += smallShift
+	}
 
 	LEFT.ctrl.meta.opt {
+	  println("window op 9")
 	  window!!.width -= smallShift
 	}
 	RIGHT.ctrl.meta.opt {
+	  println("window op 10")
 	  window!!.width -= smallShift
 	  window!!.x += smallShift
 	}
 	UP.ctrl.meta.opt {
+	  println("window op 11")
 	  window!!.height -= smallShift
 	}
 	DOWN.ctrl.meta.opt {
+	  println("window op 12")
 	  window!!.height -= smallShift
 	  window!!.y += smallShift
 	}
 
 	LEFT.ctrl.meta {
+	  println("window op 13")
 	  window!!.width /= 2
 	}
 	RIGHT.ctrl.meta {
+	  println("window op 14")
 	  window!!.width /= 2
 	  window!!.x += window!!.width
 	}
 	UP.ctrl.meta {
+	  println("window op 15")
 	  window!!.height /= 2
 	}
 	DOWN.ctrl.meta {
+	  println("window op 16")
 	  window!!.height /= 2
 	  window!!.y += window!!.height
 	}
 
 
 	LEFT.ctrl.meta.shift.opt {
+	  println("window op 17")
 	  window!!.x -= smallShift
 	  window!!.width += smallShift
 	}
 	RIGHT.ctrl.meta.shift.opt {
+	  println("window op 18")
 	  window!!.width += smallShift
 	}
 	UP.ctrl.meta.shift.opt {
+	  println("window op 19")
 	  window!!.height += smallShift
 	  window!!.y -= smallShift
 	}
 	DOWN.ctrl.meta.shift.opt {
+	  println("window op 20")
 	  window!!.height += smallShift
 
 	}
 
 	LEFT.ctrl.meta.shift {
+	  println("window op 21")
 	  window!!.x -= window!!.width
 	  window!!.width *= 2
 	}
 	RIGHT.ctrl.meta.shift {
+	  println("window op 22")
 	  window!!.width *= 2
 	}
 	UP.ctrl.meta.shift {
+	  println("window op 23")
 	  window!!.y -= window!!.height
 	  window!!.height *= 2
 	}
 	DOWN.ctrl.meta.shift {
+	  println("window op 24")
 	  window!!.height *= 2
 	}
 
-	A.ctrl.opt { window?.left() }
-	D.ctrl.opt { window?.right() }
-	W.ctrl.opt { window?.top() }
-	S.ctrl.opt { window?.bottom() }
+	A.ctrl.opt {
+	  println("window op 25")
+	  window?.left()
+	}
+	D.ctrl.opt {
+	  println("window op 26")
+	  window?.right()
+	}
+	W.ctrl.opt {
+	  println("window op 27");
+	  window?.top()
+	}
+	S.ctrl.opt { println("window op 28");window?.bottom() }
 
-	Z.ctrl.opt { window?.bottomLeft() }
-	E.ctrl.opt { window?.topRight() }
-	Q.ctrl.opt { window?.topLeft() }
-	C.ctrl.opt { window?.bottomRight() }
+	Z.ctrl.opt { println("window op 29"); window?.bottomLeft() }
+	E.ctrl.opt { println("window op 30");window?.topRight() }
+	Q.ctrl.opt { println("window op 31");window?.topLeft() }
+	C.ctrl.opt { println("window op 32");window?.bottomRight() }
 
 	LEFT_BRACKET.ctrl.opt {
+	  println("window op 33");
 	  window?.apply {
 		if (!MattGeneralSettingsNode.reversedDisplays.value!!) lastDisplay()
 		else nextDisplay()
 	  }
 	}
 	RIGHT_BRACKET.ctrl.opt {
+	  println("window op 34");
 	  window?.apply {
 		if (!MattGeneralSettingsNode.reversedDisplays.value!!) nextDisplay()
 		else lastDisplay()
 	  }
 	}
 
-	F.ctrl.opt { (window as? StageWrapper?)?.isFullScreen = !((window as StageWrapper).isFullScreen) }
-	TAB.ctrl.opt { (window as? StageWrapper?)?.max() }
-	ENTER.ctrl.opt { window?.resetPosition() }
-	X.ctrl.opt { iconify(icon) }
+	F.ctrl.opt { println("window op 35");(window as? StageWrapper?)?.isFullScreen = !((window as StageWrapper).isFullScreen) }
+	TAB.ctrl.opt { println("window op 36");(window as? StageWrapper?)?.max() }
+	ENTER.ctrl.opt { println("window op 37");window?.resetPosition() }
+	X.ctrl.opt { println("window op 38");iconify(icon) }
 
-	DIGIT1.ctrl.opt { window?.eighth1() }
-	DIGIT2.ctrl.opt { window?.eighth2() }
-	DIGIT3.ctrl.opt { window?.eighth3() }
-	DIGIT4.ctrl.opt { window?.eighth4() }
-	DIGIT5.ctrl.opt { window?.eighth5() }
-	DIGIT6.ctrl.opt { window?.eighth6() }
-	DIGIT7.ctrl.opt { window?.eighth7() }
-	DIGIT8.ctrl.opt { window?.eighth8() }
+	DIGIT1.ctrl.opt { println("window op 39");window?.eighth1() }
+	DIGIT2.ctrl.opt { println("window op 41"); window?.eighth2() }
+	DIGIT3.ctrl.opt { println("window op 42");window?.eighth3() }
+	DIGIT4.ctrl.opt { println("window op 43");window?.eighth4() }
+	DIGIT5.ctrl.opt { println("window op 44");window?.eighth5() }
+	DIGIT6.ctrl.opt { println("window op 45");window?.eighth6() }
+	DIGIT7.ctrl.opt { println("window op 46"); window?.eighth7() }
+	DIGIT8.ctrl.opt { println("window op 47");window?.eighth8() }
 
 	hotkeys.map { it as HotKey }.forEach {
 	  it.wrapOp {
