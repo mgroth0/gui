@@ -18,7 +18,7 @@ import matt.gui.interact.openInNewWindow
 import matt.gui.mstage.ShowMode.SHOW_AND_WAIT
 import matt.http.http
 import matt.http.method.HTTPMethod.POST
-import matt.http.req.data
+import matt.http.req.write.data
 import matt.http.url.buildQueryURL
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
