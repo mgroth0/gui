@@ -2,6 +2,7 @@ package matt.gui.exception
 
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
+import kotlinx.coroutines.runBlocking
 import matt.exec.app.App
 import matt.fx.control.fxapp.ERROR_POP_UP_TEXT
 import matt.fx.control.lang.actionbutton
@@ -84,10 +85,12 @@ fun GuiApp.showExceptionPopup(
 			try {                //			  val u = "$LOCAL_TEST_URL/issue"
 			  //			  println("u=$u")
 			  val u = "https://deephys.herokuapp.com/issue"
-			  val url = http(u) {
-				method = POST
-				data = BugReport(t = t, e = e).text.encodeToByteArray()
-			  }.requireSuccessful().text
+			  val url =runBlocking {
+				 http(u) {
+				  method = POST
+				  data = BugReport(t = t, e = e).text.encodeToByteArray()
+				}.requireSuccessful().text()
+			  }
 			  runLater {
 				text = "view submitted bug"
 				isDisable = false
