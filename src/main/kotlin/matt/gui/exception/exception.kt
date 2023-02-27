@@ -20,7 +20,7 @@ import matt.gui.mstage.ShowMode.SHOW_AND_WAIT
 import matt.http.http
 import matt.http.method.HTTPMethod.POST
 import matt.http.url.HerokuSite
-import matt.http.url.buildQueryURL
+import matt.http.url.query.buildQueryURL
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.report.BugReport
