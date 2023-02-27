@@ -19,6 +19,7 @@ import matt.gui.interact.openInNewWindow
 import matt.gui.mstage.ShowMode.SHOW_AND_WAIT
 import matt.http.http
 import matt.http.method.HTTPMethod.POST
+import matt.http.url.HerokuSite
 import matt.http.url.buildQueryURL
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
@@ -84,7 +85,8 @@ fun GuiApp.showExceptionPopup(
 		  thread {
 			try {                //			  val u = "$LOCAL_TEST_URL/issue"
 			  //			  println("u=$u")
-			  val u = "https://deephys.herokuapp.com/issue"
+
+			  val u = HerokuSite("deephys").productionHost + "issue"
 			  val url =runBlocking {
 				 http(u) {
 				  method = POST
