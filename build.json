@@ -19,11 +19,6 @@
 	{
 	  "type" : "Project",
 	  "cfg" :  "api",
-	  "path" : ":k:json"
-	},
-	{
-	  "type" : "Project",
-	  "cfg" :  "api",
 	  "path" : ":k:caching"
 	},
 	{
