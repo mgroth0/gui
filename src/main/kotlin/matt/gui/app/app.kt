@@ -23,6 +23,7 @@ import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.bindgeom.bindGeometry
 import matt.gui.exception.showExceptionPopup
+import matt.gui.interact.WindowConfig
 import matt.gui.mscene.MScene
 import matt.gui.mstage.MStage
 import matt.gui.mstage.WMode
@@ -38,187 +39,192 @@ import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import matt.mstruct.rstruct.modID
 import kotlin.reflect.full.createInstance
 
-fun startFXWidget(rootOp: VBoxW.()->Unit) {
-  runFXAppBlocking {
-	root<VBoxW> {
-	  rootOp()
-	}
-  }
+fun startFXWidget(rootOp: VBoxW.() -> Unit) {
+    runFXAppBlocking {
+        root<VBoxW> {
+            rootOp()
+        }
+    }
 }
 
-fun runFXWidgetBlocking(rootOp: VBoxW.()->Unit) {
-  runFXAppBlocking {
-	root<VBoxW> {
-	  rootOp()
-	}
-  }
+fun runFXWidgetBlocking(rootOp: VBoxW.() -> Unit) {
+    runFXAppBlocking {
+        root<VBoxW> {
+            rootOp()
+        }
+    }
 }
 
-fun runFXAppBlocking(fxThread: GuiApp.(args: List<String>)->Unit) {
-  GuiApp(fxThread = fxThread).runBlocking()
+fun runFXAppBlocking(
+    decorated: Boolean = WindowConfig.DEFAULT.decorated,
+    fxThread: GuiApp.(args: List<String>) -> Unit
+) {
+    GuiApp(fxThread = fxThread, decorated = decorated).runBlocking()
 }
 
-@FXNodeWrapperDSL open class GuiApp(
-  args: Array<String> = arrayOf(),
-  val screenIndex: Int? = null,
-  decorated: Boolean = false,
-  wMode: WMode = NOTHING,
-  escClosable: Boolean = false,
-  enterClosable: Boolean = false,
-  requiresBluetooth: Boolean = false,
-  private val fxThread: GuiApp.(args: List<String>)->Unit,
+@FXNodeWrapperDSL
+open class GuiApp(
+    args: Array<String> = arrayOf(),
+    val screenIndex: Int? = null,
+    decorated: Boolean = WindowConfig.DEFAULT.decorated,
+    wMode: WMode = NOTHING,
+    escClosable: Boolean = false,
+    enterClosable: Boolean = false,
+    requiresBluetooth: Boolean = false,
+    private val fxThread: GuiApp.(args: List<String>) -> Unit,
 
-  ): App<GuiApp>(args, requiresBluetooth = requiresBluetooth) {
+    ) : App<GuiApp>(args, requiresBluetooth = requiresBluetooth) {
 
-  var alwaysOnTop
-	get() = stage.isAlwaysOnTop
-	set(value) {
-	  stage.isAlwaysOnTop = value
-	}
+    var alwaysOnTop
+        get() = stage.isAlwaysOnTop
+        set(value) {
+            stage.isAlwaysOnTop = value
+        }
 
-  fun requestFocus() = scene!!.root.requestFocus()
+    fun requestFocus() = scene!!.root.requestFocus()
 
-  var scene: MScene<ParentWrapper<*>>? = null
+    var scene: MScene<ParentWrapper<*>>? = null
 
-  val fxThreadW: GuiApp.(List<String>)->Unit = {
-	val t = tic("fxThreadW", enabled = false)
-	t.toc(0)
-	fxThread(it)
-	t.toc(1)
-	daemon(name = "Window Fixer Daemon") {
-	  while (true) {
-		Window.getWindows().map { it.wrapped() }.forEach {
-		  if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
-			warn("resetting offscreen window")
-			runLaterReturn {
-			  it.x = 0.0
-			  it.y = 0.0
-			  it.width = 500.0
-			  it.height = 500.0
-			}
-		  }
-		}
-		Thread.sleep(5000)
-	  }
-	}
-	t.toc(2)
-	if (scene != null) {
-	  stage.apply {
-		scene = this@GuiApp.scene!!
-		t.toc(2.5)
-		if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
-		  val screen = Screen.getScreens()[this@GuiApp.screenIndex]
-		  val menuY = if (screen == Screen.getPrimary()) NEW_MAC_NOTCH_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
-		  x = screen.bounds.minX
-		  y = screen.bounds.minY + menuY
-		  width = screen.bounds.width
-		  height = screen.bounds.height - menuY
-		}
-		t.toc(2.6)
-	  }.show()
-	  t.toc(2.7)
-	}
-	t.toc(3)
-  }
-
-
-  fun scene(op: MScene<ParentWrapper<*>>.()->Unit) {
-	scene = MScene<ParentWrapper<*>>(VBoxWrapperImpl<NodeWrapper>()).apply(op) /*vbox is placeholder*/
-  }
-
-  fun initRoot(n: ParentWrapper<*>) {
-	scene = MScene(n)
-  }
-
-  inline fun <reified N: ParentWrapperImpl<*, *>> root(op: N.()->Unit = {}): N {
-	val r = N::class.createInstance()
-	initRoot(r.apply(op))
-	return r
-  }
-
-  fun runBlocking(
-	implicitExit: Boolean = true,
-	preFX: (App<*>.()->Unit)? = null,
-	shutdown: (App<*>.()->Unit)? = null,
-	usePreloaderApp: Boolean = false,
-	logContext: LogContext = mattLogContext,
-	t: Reporter? = null
-  ) {
+    val fxThreadW: GuiApp.(List<String>) -> Unit = {
+        val t = tic("fxThreadW", enabled = false)
+        t.toc(0)
+        fxThread(it)
+        t.toc(1)
+        daemon(name = "Window Fixer Daemon") {
+            while (true) {
+                Window.getWindows().map { it.wrapped() }.forEach {
+                    if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
+                        warn("resetting offscreen window")
+                        runLaterReturn {
+                            it.x = 0.0
+                            it.y = 0.0
+                            it.width = 500.0
+                            it.height = 500.0
+                        }
+                    }
+                }
+                Thread.sleep(5000)
+            }
+        }
+        t.toc(2)
+        if (scene != null) {
+            stage.apply {
+                scene = this@GuiApp.scene!!
+                t.toc(2.5)
+                if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
+                    val screen = Screen.getScreens()[this@GuiApp.screenIndex]
+                    val menuY =
+                        if (screen == Screen.getPrimary()) NEW_MAC_NOTCH_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
+                    x = screen.bounds.minX
+                    y = screen.bounds.minY + menuY
+                    width = screen.bounds.width
+                    height = screen.bounds.height - menuY
+                }
+                t.toc(2.6)
+            }.show()
+            t.toc(2.7)
+        }
+        t.toc(3)
+    }
 
 
-	(t as? TracksTime)?.toc("starting GuiApp")
+    fun scene(op: MScene<ParentWrapper<*>>.() -> Unit) {
+        scene = MScene<ParentWrapper<*>>(VBoxWrapperImpl<NodeWrapper>()).apply(op) /*vbox is placeholder*/
+    }
+
+    fun initRoot(n: ParentWrapper<*>) {
+        scene = MScene(n)
+    }
+
+    inline fun <reified N : ParentWrapperImpl<*, *>> root(op: N.() -> Unit = {}): N {
+        val r = N::class.createInstance()
+        initRoot(r.apply(op))
+        return r
+    }
+
+    fun runBlocking(
+        implicitExit: Boolean = true,
+        preFX: (App<*>.() -> Unit)? = null,
+        shutdown: (App<*>.() -> Unit)? = null,
+        usePreloaderApp: Boolean = false,
+        logContext: LogContext = mattLogContext,
+        t: Reporter? = null
+    ) {
 
 
-
-	(t as? TracksTime)?.toc("installed WrapperService")
-
-	val singleRunShutdown = SingleRunLambda {
-	  shutdown?.invoke(this)
-	}
+        (t as? TracksTime)?.toc("starting GuiApp")
 
 
 
-	main(
-	  {
-		singleRunShutdown.invoke()
-	  },
-	  preFX,
-	  logContext = logContext,
-	  t = t
-	)
+        (t as? TracksTime)?.toc("installed WrapperService")
 
-	(t as? TracksTime)?.toc("ran main")
-
-	Platform.setImplicitExit(implicitExit)
+        val singleRunShutdown = SingleRunLambda {
+            shutdown?.invoke(this)
+        }
 
 
-	(t as? TracksTime)?.toc("about to run FX app blocking")
-	(t as? Logger)?.info("launching app (mypid = ${matt.lang.myPid})")
-	runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, reporter = t) {
-	  fxThreadW(args.toList())
-	}
-	singleRunShutdown()
-	ThreadInspectorDaemon.start()
-  }
 
-  override fun extraShutdownHook(
-	t: Thread, e: Throwable, shutdown: (App<*>.()->Unit)?, st: String, exceptionFile: MFile
-  ): ExceptionResponse {
+        main(
+            {
+                singleRunShutdown.invoke()
+            },
+            preFX,
+            logContext = logContext,
+            t = t
+        )
 
-	/*dont delete ..< I find source of disappearing exceptions*/
-	println("in extraShutdownHook")
+        (t as? TracksTime)?.toc("ran main")
+
+        Platform.setImplicitExit(implicitExit)
 
 
-	var r = EXIT
-	try {
-	  ensureInFXThreadInPlace {
-		println("showing exception popup for t=$t, e=$e")
-		r = showExceptionPopup(t, e, shutdown, st)
-	  }
-	  //	  if (Platform.isFxApplicationThread()) {
-	  //
-	  //	  } else {
-	  //		/*thread(name = "error pop up thread", isDaemon = false) {*/
-	  //		println("openning error pop up")
-	  //		runLaterReturn {
-	  //		  r = showExceptionPopup(t, e, shutdown, st, exceptionFile)
-	  //		}
-	  //		println("finished invoking runLater in error pop up thread")
-	  //		//		}
-	  //	  }
-	} catch (e: Exception) {
-	  println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
-	  e.printStackTrace()
-	  return EXIT
-	}
-	return r
-  }
+        (t as? TracksTime)?.toc("about to run FX app blocking")
+        (t as? Logger)?.info("launching app (mypid = ${matt.lang.myPid})")
+        runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, reporter = t) {
+            fxThreadW(args.toList())
+        }
+        singleRunShutdown()
+        ThreadInspectorDaemon.start()
+    }
 
-  val stage by lazy {
-	MStage(
-	  decorated = decorated, wMode = wMode, EscClosable = escClosable, EnterClosable = enterClosable
-	).apply {
-	  bindGeometry(modID.appName)
-	}
-  }
+    override fun extraShutdownHook(
+        t: Thread, e: Throwable, shutdown: (App<*>.() -> Unit)?, st: String, exceptionFile: MFile
+    ): ExceptionResponse {
+
+        /*dont delete ..< I find source of disappearing exceptions*/
+        println("in extraShutdownHook")
+
+
+        var r = EXIT
+        try {
+            ensureInFXThreadInPlace {
+                println("showing exception popup for t=$t, e=$e")
+                r = showExceptionPopup(t, e, shutdown, st)
+            }
+            //	  if (Platform.isFxApplicationThread()) {
+            //
+            //	  } else {
+            //		/*thread(name = "error pop up thread", isDaemon = false) {*/
+            //		println("openning error pop up")
+            //		runLaterReturn {
+            //		  r = showExceptionPopup(t, e, shutdown, st, exceptionFile)
+            //		}
+            //		println("finished invoking runLater in error pop up thread")
+            //		//		}
+            //	  }
+        } catch (e: Exception) {
+            println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
+            e.printStackTrace()
+            return EXIT
+        }
+        return r
+    }
+
+    val stage by lazy {
+        MStage(
+            decorated = decorated, wMode = wMode, EscClosable = escClosable, EnterClosable = enterClosable
+        ).apply {
+            bindGeometry(modID.appName)
+        }
+    }
 }
