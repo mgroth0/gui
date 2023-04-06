@@ -3,6 +3,7 @@ package matt.gui.exception
 import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
 import kotlinx.coroutines.runBlocking
+import matt.async.thread.daemon
 import matt.exec.app.App
 import matt.fx.control.fxapp.ERROR_POP_UP_TEXT
 import matt.fx.control.lang.actionbutton
@@ -37,111 +38,121 @@ import kotlin.system.exitProcess
 private const val STACK_TRACE_SURFACE_COUNT = 200
 
 fun GuiApp.showExceptionPopup(
-  t: Thread, e: Throwable, @Suppress("UNUSED_PARAMETER") shutdown: (App<*>.()->Unit)?, st: String
+    t: Thread, e: Throwable, @Suppress("UNUSED_PARAMETER") shutdown: (App<*>.() -> Unit)?, st: String
 ): ExceptionResponse {
-  var r = EXIT
-  val stackTraceDepth = e.stackTrace.size
-  val stackTraceToShow = e.stackTrace.take(100)
-  val stackTraceLeft = stackTraceDepth - stackTraceToShow.size
-  val stackTraceSurface = if (stackTraceLeft > 0) {
-	e.stackTrace.takeLast(kotlin.math.min(STACK_TRACE_SURFACE_COUNT, stackTraceLeft))
-  } else listOf()
-  val stackTraceInBetween = stackTraceLeft - stackTraceSurface.size
-  taball("stacktrace", stackTraceToShow)
-  if (stackTraceInBetween > 0) {
-	println("\t... and $stackTraceInBetween in between")
-  }
-  if (stackTraceSurface.isNotEmpty()) {
-	taball("stacktrace SURFACE", stackTraceSurface)
-  }
-  VBoxWrapperImpl<RegionWrapper<*>>().apply {
-	label(ERROR_POP_UP_TEXT) {
-	  isWrapText = true
-	}    /*	label("${e::class.simpleName} in $appName") {
+    var r = EXIT
+    val stackTraceDepth = e.stackTrace.size
+    val stackTraceToShow = e.stackTrace.take(100)
+    val stackTraceLeft = stackTraceDepth - stackTraceToShow.size
+    val stackTraceSurface = if (stackTraceLeft > 0) {
+        e.stackTrace.takeLast(kotlin.math.min(STACK_TRACE_SURFACE_COUNT, stackTraceLeft))
+    } else listOf()
+    val stackTraceInBetween = stackTraceLeft - stackTraceSurface.size
+    taball("stacktrace", stackTraceToShow)
+    if (stackTraceInBetween > 0) {
+        println("\t... and $stackTraceInBetween in between")
+    }
+    if (stackTraceSurface.isNotEmpty()) {
+        taball("stacktrace SURFACE", stackTraceSurface)
+    }
+    VBoxWrapperImpl<RegionWrapper<*>>().apply {
+        label(ERROR_POP_UP_TEXT) {
+            isWrapText = true
+        }    /*	label("${e::class.simpleName} in $appName") {
 		  isWrapText = true
 		}
 		label("thread=${t.name}") {
 		  isWrapText = true
 		}*/
-	spacer()
-	textarea(st)
-	//	flowpane<ButtonWrapper> {
-	v {
-	  spacing = 10.0
-	  padding = Insets(10.0)
-	  isFillWidth = true
-	  alignment = CENTER
-	  /*  ifMatt {
-		  actionbutton("Run pre-shutdown operation") {
-			shutdown?.invoke(this@showExceptionPopup)
-		  }
-		}*/
-	  button("Submit Bug Report") {
+        spacer()
+        textarea(st)
+        //	flowpane<ButtonWrapper> {
+        v {
+            spacing = 10.0
+            padding = Insets(10.0)
+            isFillWidth = true
+            alignment = CENTER
+            /*  ifMatt {
+                actionbutton("Run pre-shutdown operation") {
+                  shutdown?.invoke(this@showExceptionPopup)
+                }
+              }*/
+            button("Submit Bug Report") {
 
-		setOnAction {
-		  isDisable = true
+                setOnAction {
+                    isDisable = true
 
-		  text = "submitting (please wait)..."
-		  thread {
-			try {                //			  val u = "$LOCAL_TEST_URL/issue"
-			  //			  println("u=$u")
+                    text = "submitting (please wait)..."
+                    thread {
+                        try {                //			  val u = "$LOCAL_TEST_URL/issue"
+                            //			  println("u=$u")
 
-			  val u = HerokuSite("deephys").productionHost + "issue"
-			  val url =runBlocking {
-				 http(u) {
-				  method = POST
-				  data = BugReport(t = t, e = e).text.encodeToByteArray()
-				}.requireSuccessful().text()
-			  }
-			  runLater {
-				text = "view submitted bug"
-				isDisable = false
-				setOnAction {
-				  Desktop.getDesktop().browse(URI(url))
-				}
-			  }
-			} catch (e: Exception) {
-			  ThrowReport(e).print()
-			  runLater {
-				text = "failed to submit. Please copy and paste the error and send to matt"
-			  }
+                            val u = HerokuSite("deephys").productionHost + "issue"
+                            val url = runBlocking {
+                                http(u) {
+                                    method = POST
+                                    data = BugReport(t = t, e = e).text.encodeToByteArray()
+                                }.requireSuccessful().text()
+                            }
+                            runLater {
+                                text = "view submitted bug"
+                                isDisable = false
 
-			}
+                                setOnAction {
 
-		  }
+									isDisable = true
+									daemon(name="view bug") {
+										/*ON LINUX THIS MUST OCCUR IN ANOTHER THREAD*/
+										Desktop.getDesktop().browse(URI(url))
+										runLater {
+											isDisable = false
+										}
+									}
 
-		}
+                                }
+                            }
+                        } catch (e: Exception) {
+                            ThrowReport(e).print()
+                            runLater {
+                                text = "failed to submit. Please copy and paste the error and send to matt"
+                            }
+
+                        }
+
+                    }
+
+                }
 
 
-	  }
-	  actionbutton("Exit now") {
-		e.printStackTrace()
-		exitProcess(1)
-	  }        /*  ifMatt {
+            }
+            actionbutton("Exit now") {
+                e.printStackTrace()
+                exitProcess(1)
+            }        /*  ifMatt {
 			actionbutton("ignore") {
 			  r = IGNORE
 			  ((it.target as Node).scene.window as Stage).close()
 			}
 		  }*/
-	}
-  }.openInNewWindow(
-	SHOW_AND_WAIT,
-  )
-  return r
+        }
+    }.openInNewWindow(
+        SHOW_AND_WAIT,
+    )
+    return r
 }
 
 fun openNewYouTrackIssue(
-  summary: String, description: String
+    summary: String, description: String
 ) {
-  val u = buildQueryURL(
-	"https://deephys.youtrack.cloud/newIssue",
-	"project" to "D",
-	"summary" to summary.urlEncode(),
-	"description" to description.urlEncode()
-  ).let {
-	URI(it)
-  }
-  Desktop.getDesktop().browse(u)
+    val u = buildQueryURL(
+        "https://deephys.youtrack.cloud/newIssue",
+        "project" to "D",
+        "summary" to summary.urlEncode(),
+        "description" to description.urlEncode()
+    ).let {
+        URI(it)
+    }
+    Desktop.getDesktop().browse(u)
 }
 
 
