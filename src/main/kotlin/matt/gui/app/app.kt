@@ -36,7 +36,7 @@ import matt.log.reporter.TracksTime
 import matt.log.warn.warn
 import matt.model.code.report.Reporter
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
-import matt.mstruct.rstruct.modID
+import matt.rstruct.modID
 import kotlin.reflect.full.createInstance
 
 fun startFXWidget(rootOp: VBoxW.() -> Unit) {
