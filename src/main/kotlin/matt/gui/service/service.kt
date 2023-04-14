@@ -47,7 +47,7 @@ object FXActionAbilitiesService: ActionAbilitiesService {
 	TODO("Not yet implemented")
   }
 
-  override fun <E: Enum<E>> enum(enumOptions: Array<E>, prompt: String): E {
+  override fun <E: Enum<E>> enum(enumOptions: List<E>, prompt: String): E {
 	TODO("Not yet implemented")
   }
 
@@ -126,7 +126,7 @@ class AsyncFXActionAbilitiesService(
 	TODO("Not yet implemented")
   }
 
-  override fun <E: Enum<E>> enum(enumOptions: Array<E>, prompt: String): E {
+  override fun <E: Enum<E>> enum(enumOptions: List<E>, prompt: String): E {
 	TODO("Not yet implemented")
   }
 
