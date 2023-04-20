@@ -87,6 +87,9 @@ class MDialog<R> internal constructor() : VBoxWrapperImpl<NodeWrapper>() {
         scene = MScene(this@MDialog)
         width = 400.0
         height = 400.0
+        setOnCloseRequest {
+            println("CLOSE REQUESTED FOR ${this}")
+        }
     }
     lateinit var confirmButton: ButtonWrapper
     fun confirm() = confirmButton.fire()
@@ -203,8 +206,6 @@ fun <R> dialog(
     } // d.stage„.initAndCenterToOwner(own)
     var r: R? = null
     d.hbox<NodeWrapper> {
-
-
         prefWidthProperty.bind(d.widthProperty)
         alignment = Pos.CENTER
         actionbutton("cancel") {
@@ -220,18 +221,14 @@ fun <R> dialog(
             }
         }
         d.scene!!.addEventFilter(KeyEvent.KEY_PRESSED) {
-            println("DIALOG KEY PRESSED")
             if (it.code == KeyCode.ENTER) {
                 if (d.readyProperty.value) {
                     d.confirmButton.fire()
                 }
             }
-            println("FINISHED DIALOG KEY PRESSED")
         }
     }
-    println("SHOW AND WAIT 1")
     d.window.showAndWait()
-    println("SHOW AND WAIT 2")
     return r
 }
 
