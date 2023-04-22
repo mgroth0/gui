@@ -209,7 +209,7 @@ fun SceneWrapper<*>.showMContextMenu(
             height = 1500.0
         }
     }
-    contextMenus[this.node].apply {
+    val cm = contextMenus[this.node].apply {
         items.clear()
         var node: EventTarget = target
         while (true) {
@@ -218,12 +218,19 @@ fun SceneWrapper<*>.showMContextMenu(
                 items += it.map { it.node }
             }
             try {
-                node = when (node) {
+
+                val maybeNode: EventTarget? = when (node) {
                     is Parent -> node.parent ?: node.scene
                     is Shape -> node.parent
                     is Canvas -> node.parent
                     is Scene -> node.window
                     else -> break
+                }
+                node = maybeNode ?: run {
+                    warn("got null parent in context menu generator again. not showing context menu")
+                    System.err.println("here is the stack trace:")
+                    Thread.dumpStack()
+                    return
                 }
             } catch (e: NullPointerException) {
                 warn("got null parent in context menu generator again")
@@ -236,7 +243,14 @@ fun SceneWrapper<*>.showMContextMenu(
         if (items.isNotEmpty()) separator()
         items += target.wrapped().hotkeyInfoMenu().node
         items += devMenu.node
-    }.node.show(target, xy.first, xy.second)
+    }
+    val sce = target.scene
+    if (sce != null && sce.window != null) {
+        /*without this if statement, I sometimes get errors if the node left the scene or something right after I clicked. Its possible if I put the context menu event in a runAfter*/
+        cm.node.show(target, xy.first, xy.second)
+    } else {
+        warn("did not show context menu because scene or window of target was null (sce=$sce, sce.window=${sce?.window})")
+    }
 }
 
 enum class EventHandlerType {
