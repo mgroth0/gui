@@ -2,7 +2,6 @@ package matt.gui.option
 
 import matt.fx.control.toggle.mech.ToggleMechanism
 import matt.lang.delegation.fullProvider
-import matt.lang.delegation.valProp
 import matt.lang.function.Op
 import matt.model.flowlogic.recursionblocker.RecursionBlocker
 import matt.obs.hold.TypedObservableHolder
