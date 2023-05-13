@@ -33,6 +33,9 @@ import java.net.URI
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
+val deephysSite by lazy {
+    HerokuSite("deephys")
+}
 
 /*100 wasn't enough*/
 private const val STACK_TRACE_SURFACE_COUNT = 200
@@ -87,7 +90,7 @@ fun GuiApp.showExceptionPopup(
                         try {                //			  val u = "$LOCAL_TEST_URL/issue"
                             //			  println("u=$u")
 
-                            val u = HerokuSite("deephys").productionHost + "issue"
+                            val u = deephysSite.productionHost + "issue"
                             val url = runBlocking {
                                 http(u) {
                                     method = POST
