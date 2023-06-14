@@ -153,7 +153,7 @@ fun openNewYouTrackIssue(
         "summary" to summary.urlEncode(),
         "description" to description.urlEncode()
     ).let {
-        URI(it)
+        URI(it.cpath)
     }
     Desktop.getDesktop().browse(u)
 }
