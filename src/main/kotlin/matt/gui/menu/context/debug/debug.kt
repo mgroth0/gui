@@ -4,6 +4,8 @@ import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import matt.fx.control.lang.actionbutton
 import matt.fx.control.wrapper.checkbox.checkbox
+import matt.fx.control.wrapper.control.button.button
+import matt.fx.control.wrapper.control.text.area.textarea
 import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.parent.parent
 import matt.fx.graphics.wrapper.pane.grid.GridPaneWrapper
@@ -142,6 +144,20 @@ class NodeDebugger(
             }
         }
 
+        (debugNode as? DebuggableNode)?.debugActions()?.forEach { action ->
+            val btn = button(action.name)
+            val ta = textarea()
+            btn.setOnAction {
+                ta.text = action.op()
+            }
+        }
+
 
     }
 }
+
+interface DebuggableNode : NodeWrapper {
+    fun debugActions(): Iterable<DebugAction>
+}
+
+class DebugAction(val name: String, val op: () -> String)
