@@ -20,7 +20,7 @@ import matt.gui.interact.openInNewWindow
 import matt.gui.mstage.ShowMode.SHOW_AND_WAIT
 import matt.http.http
 import matt.http.method.HTTPMethod.POST
-import matt.http.url.HerokuSite
+import matt.http.url.MURL
 import matt.http.url.query.buildQueryURL
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
@@ -28,13 +28,15 @@ import matt.log.report.BugReport
 import matt.log.taball
 import matt.model.code.errreport.ThrowReport
 import matt.prim.str.urlEncode
+import matt.rstruct.extraValues
 import java.awt.Desktop
 import java.net.URI
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
 val deephysSite by lazy {
-    HerokuSite("deephys")
+    extraValues["DEEPHYS_URL"]!!
+//    HerokuSite("deephys")
 }
 
 /*100 wasn't enough*/
@@ -90,7 +92,7 @@ fun GuiApp.showExceptionPopup(
                         try {                //			  val u = "$LOCAL_TEST_URL/issue"
                             //			  println("u=$u")
 
-                            val u = deephysSite.productionHost + "issue"
+                            val u = MURL(deephysSite)/*.productionHost*/ + "issue"
                             val url = runBlocking {
                                 http(u) {
                                     method = POST

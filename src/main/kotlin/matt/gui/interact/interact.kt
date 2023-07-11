@@ -54,6 +54,7 @@ import matt.gui.mstage.WMode.NOTHING
 import matt.json.prim.isValidJson
 import matt.lang.noExceptions
 import matt.lang.nullIfExceptions
+import matt.lang.require.requireNotEqual
 import matt.obs.bind.binding
 import matt.obs.bindings.bool.ObsB
 import matt.obs.bindings.bool.not
@@ -121,7 +122,7 @@ val aXBindingStrengthener = WeakHashMap<Stage, ObsVal<Double>>()
 val aYBindingStrengthener = WeakHashMap<Stage, ObsVal<Double>>()
 fun StageWrapper.bindXYToOwnerCenter() {
 
-    require(owner != null) {
+    requireNotNull(owner) {
         "must use initOwner before bindXYToOwnerCenter"
     }
 
@@ -145,7 +146,7 @@ fun StageWrapper.bindXYToOwnerCenter() {
 }
 
 fun StageWrapper.bindHWToOwner() {
-    require(owner != null) {
+    requireNotNull(owner) {
         "must use initOwner before bindXYToOwnerCenter"
     }
     width = owner!!.width
@@ -263,7 +264,7 @@ sealed class WinGeom {
         val height: Double? = null
     ) : WinGeom() {
         override fun applyTo(win: StageWrapper) {
-            require(win.owner != null) { "use initOwner first" }
+            requireNotNull(win.owner) { "use initOwner first" }
             win.x = x ?: win.owner!!.x
             win.y = y ?: win.owner!!.y
             win.height = height ?: win.owner!!.height
@@ -315,7 +316,7 @@ sealed class WinGeom {
 
     object CenteredMinWrapContent : WinGeom() {
         override fun applyTo(win: StageWrapper) {
-            require(win.owner != null) { "use initOwner first" }
+            requireNotNull(win.owner) { "use initOwner first" }
 
             win.bindXYToOwnerCenter()
         }
@@ -323,7 +324,7 @@ sealed class WinGeom {
 
     class MatchOwner : WinGeom() {
         override fun applyTo(win: StageWrapper) {
-            require(win.owner != null) { "use initOwner first" }
+            requireNotNull(win.owner) { "use initOwner first" }
             win.bindXYToOwnerCenter()
             win.bindHWToOwner()
         }

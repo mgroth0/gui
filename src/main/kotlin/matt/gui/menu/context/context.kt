@@ -32,6 +32,7 @@ import matt.gui.interact.openInNewWindow
 import matt.gui.menu.context.EventHandlerType.Filter
 import matt.gui.menu.context.EventHandlerType.Handler
 import matt.gui.menu.context.debug.SceneDebugger
+import matt.lang.require.requireNot
 import matt.log.tab
 import matt.log.warn.warn
 import matt.obs.prop.BindableProperty
@@ -59,7 +60,10 @@ class MContextMenuBuilder(
         }
     }
 
-    fun actionitem(s: String, op: () -> Unit) = SimpleMenuItem(s).apply {
+    fun actionitem(
+        s: String,
+        op: () -> Unit
+    ) = SimpleMenuItem(s).apply {
         isMnemonicParsing = false
         setOnAction {
             op()
@@ -67,7 +71,11 @@ class MContextMenuBuilder(
         }
     }.also { add(it) }
 
-    fun item(s: String = "", g: NW? = null, op: MenuItemWrapper<*>.() -> Unit = {}) =
+    fun item(
+        s: String = "",
+        g: NW? = null,
+        op: MenuItemWrapper<*>.() -> Unit = {}
+    ) =
         SimpleMenuItem(s, g?.node).apply {
             isMnemonicParsing = false
             op()
@@ -76,14 +84,21 @@ class MContextMenuBuilder(
 
     infix fun String.toggles(b: BindableProperty<Boolean>) = checkitem(this, b)
 
-    fun checkitem(s: String, b: Var<Boolean>, op: CheckMenuItemWrapper.() -> Unit = {}) =
+    fun checkitem(
+        s: String,
+        b: Var<Boolean>,
+        op: CheckMenuItemWrapper.() -> Unit = {}
+    ) =
         CheckMenuItemWrapper(s).apply {
             isMnemonicParsing = false
             selectedProperty.bindBidirectional(b)
             op()
         }.also { add(it) }
 
-    fun menu(s: String, op: MenuWrapper.() -> Unit) = MenuWrapper(s).apply {
+    fun menu(
+        s: String,
+        op: MenuWrapper.() -> Unit
+    ) = MenuWrapper(s).apply {
         isMnemonicParsing = false
         op()
     }.also { add(it) }
@@ -98,7 +113,7 @@ class MContextMenuBuilder(
 
 
     fun onRequest(op: MContextMenuBuilder.() -> Unit) {
-        require(!isGen)
+        requireNot(isGen)
         contextMenuItemGens[node]!!.add(op)
 
     }
@@ -221,10 +236,10 @@ fun SceneWrapper<*>.showMContextMenu(
 
                 val maybeNode: EventTarget? = when (node) {
                     is Parent -> node.parent ?: node.scene
-                    is Shape -> node.parent
+                    is Shape  -> node.parent
                     is Canvas -> node.parent
-                    is Scene -> node.window
-                    else -> break
+                    is Scene  -> node.window
+                    else      -> break
                 }
                 node = maybeNode ?: run {
                     warn("got null parent in context menu generator again. not showing context menu")
@@ -272,7 +287,7 @@ private fun NodeWrapper.hotkeyInfoMenu() = MenuWrapper("Click For Hotkey Info").
                 menu(subNode.toString()) {
                     val h = when (type) {
                         Handler -> subNode?.hotKeyHandler
-                        Filter -> subNode?.hotKeyFilter
+                        Filter  -> subNode?.hotKeyFilter
                     }
                     item("\tqp=${h?.quickPassForNormalTyping}")
                     subNode?.hotKeyHandler?.hotkeys?.forEach { hkc ->

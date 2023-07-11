@@ -10,6 +10,7 @@ import matt.fx.graphics.fxthread.runLaterReturn
 import matt.fx.graphics.wrapper.stage.StageWrapper
 import matt.gui.interact.popupTextInput
 import matt.lang.NEVER
+import matt.lang.require.requireNot
 import matt.model.data.dir.YesOrNo
 import matt.model.data.dir.YesOrNo.NO
 import matt.model.data.dir.YesOrNo.YES
@@ -67,7 +68,7 @@ class AsyncFXActionAbilitiesService(
   private val stage: StageWrapper
 ): ActionAbilitiesService {
   override fun confirm(s: String): Boolean {
-	require(!Platform.isFxApplicationThread())
+	  requireNot(Platform.isFxApplicationThread())
 	val response = runLaterReturn {
 	  asyncAlert(
 		CONFIRMATION,
@@ -90,14 +91,14 @@ class AsyncFXActionAbilitiesService(
   }
 
   override fun openFile(prompt: String): String? {
-	require(!Platform.isFxApplicationThread())
+	  requireNot(Platform.isFxApplicationThread())
 	return ensureInFXThreadInPlace {
 	  FXActionAbilitiesService.openFile(prompt)
 	}
   }
 
   override fun yesOrNo(s: String): YesOrNo {
-	require(!Platform.isFxApplicationThread())
+	  requireNot(Platform.isFxApplicationThread())
 	val response = ensureInFXThreadInPlace {
 	  asyncAlert(
 		CONFIRMATION,
