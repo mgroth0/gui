@@ -54,7 +54,6 @@ import matt.gui.mstage.WMode.NOTHING
 import matt.json.prim.isValidJson
 import matt.lang.noExceptions
 import matt.lang.nullIfExceptions
-import matt.lang.require.requireNotEqual
 import matt.obs.bind.binding
 import matt.obs.bindings.bool.ObsB
 import matt.obs.bindings.bool.not
