@@ -241,8 +241,9 @@ fun SceneWrapper<*>.showMContextMenu(
                     is Scene  -> node.window
                     else      -> break
                 }
+                val debugShape = node as? Shape
                 node = maybeNode ?: run {
-                    warn("got null parent in context menu generator again. not showing context menu")
+                    warn("got null parent in context menu generator again. not showing context menu. node=$node, shape=$debugShape, shape.parent=${debugShape?.parent}}")
                     System.err.println("here is the stack trace:")
                     Thread.dumpStack()
                     return
