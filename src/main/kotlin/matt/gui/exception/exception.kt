@@ -61,6 +61,7 @@ fun GuiApp.showExceptionPopup(
         taball("stacktrace SURFACE", stackTraceSurface)
     }
     VBoxWrapperImpl<RegionWrapper<*>>().apply {
+
         label(ERROR_POP_UP_TEXT) {
             isWrapText = true
         }    /*	label("${e::class.simpleName} in $appName") {

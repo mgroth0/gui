@@ -12,8 +12,8 @@ import matt.obs.prop.toVarProp
 fun NW.actionButton(a: GuiAction): ButtonWrapper = actionButton(a.toVarProp())
 
 fun NW.actionButton(a: ObsVal<GuiAction>) = button(a.deepBinding { it.buttonLabel.nonBlockingFXWatcher() }) {
-  enableProperty.bind(a.deepBinding { it.allowed.nonBlockingFXWatcher() })
-  setOnAction {
-	a.value()
-  }
+    enableProperty.bind(a.deepBinding { it.allowed.nonBlockingFXWatcher() })
+    setOnAction {
+        a.value()
+    }
 }

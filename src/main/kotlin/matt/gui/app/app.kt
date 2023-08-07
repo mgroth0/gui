@@ -8,6 +8,7 @@ import matt.exec.app.App
 import matt.file.MFile
 import matt.file.commons.LogContext
 import matt.file.commons.mattLogContext
+import matt.fx.control.fxapp.DEFAULT_THROW_ON_APP_THREAD_THROWABLE
 import matt.fx.control.fxapp.runFXAppBlocking
 import matt.fx.control.wrapper.wrapped.wrapped
 import matt.fx.graphics.fxthread.ensureInFXThreadInPlace
@@ -28,10 +29,10 @@ import matt.gui.mscene.MScene
 import matt.gui.mstage.MStage
 import matt.gui.mstage.WMode
 import matt.gui.mstage.WMode.NOTHING
+import matt.lang.sysprop.props.Monocle
 import matt.log.logger.Logger
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
-import matt.log.profile.stopwatch.tic
 import matt.log.reporter.TracksTime
 import matt.log.warn.warn
 import matt.model.code.report.Reporter
@@ -86,45 +87,52 @@ open class GuiApp(
     var scene: MScene<ParentWrapper<*>>? = null
 
     val fxThreadW: GuiApp.(List<String>) -> Unit = {
-        val t = tic("fxThreadW", enabled = false)
-        t.toc(0)
+//        val t = tic("fxThreadW", enabled = false)
+//        t.toc(0)
         fxThread(it)
-        t.toc(1)
-        daemon(name = "Window Fixer Daemon") {
-            while (true) {
-                Window.getWindows().map { it.wrapped() }.forEach {
-                    if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
-                        warn("resetting offscreen window")
-                        runLaterReturn {
-                            it.x = 0.0
-                            it.y = 0.0
-                            it.width = 500.0
-                            it.height = 500.0
+//        t.toc(1)
+        if (!Monocle.isEnabledInThisRuntime()) {
+            println("running window fixer daemon")
+            daemon(name = "Window Fixer Daemon") {
+                while (true) {
+                    Window.getWindows().map { it.wrapped() }.forEach {
+                        if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
+                            warn("resetting offscreen window")
+                            runLaterReturn {
+                                it.x = 0.0
+                                it.y = 0.0
+                                it.width = 500.0
+                                it.height = 500.0
+                            }
                         }
                     }
+                    Thread.sleep(5000)
                 }
-                Thread.sleep(5000)
             }
+        } else {
+            println("did not run window fixer daemon")
         }
-        t.toc(2)
+//        t.toc(2)
         if (scene != null) {
             stage.apply {
                 scene = this@GuiApp.scene!!
-                t.toc(2.5)
-                if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
-                    val screen = Screen.getScreens()[this@GuiApp.screenIndex]
-                    val menuY =
-                        if (screen == Screen.getPrimary()) NEW_MAC_NOTCH_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
-                    x = screen.bounds.minX
-                    y = screen.bounds.minY + menuY
-                    width = screen.bounds.width
-                    height = screen.bounds.height - menuY
+//                t.toc(2.5)
+                if (!Monocle.isEnabledInThisRuntime()) {
+                    if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
+                        val screen = Screen.getScreens()[this@GuiApp.screenIndex]
+                        val menuY =
+                            if (screen == Screen.getPrimary()) NEW_MAC_NOTCH_ESTIMATE else NEW_MAX_MENU_Y_ESTIMATE_SECONDARY
+                        x = screen.bounds.minX
+                        y = screen.bounds.minY + menuY
+                        width = screen.bounds.width
+                        height = screen.bounds.height - menuY
+                    }
                 }
-                t.toc(2.6)
+//                t.toc(2.6)
             }.show()
-            t.toc(2.7)
+//            t.toc(2.7)
         }
-        t.toc(3)
+//        t.toc(3)
     }
 
 
@@ -148,7 +156,8 @@ open class GuiApp(
         shutdown: (App<*>.() -> Unit)? = null,
         usePreloaderApp: Boolean = false,
         logContext: LogContext = mattLogContext,
-        t: Reporter? = null
+        t: Reporter? = null,
+        throwOnApplicationThreadThrowable: Boolean = DEFAULT_THROW_ON_APP_THREAD_THROWABLE
     ) {
 
 
@@ -170,7 +179,8 @@ open class GuiApp(
             },
             preFX,
             logContext = logContext,
-            t = t
+            t = t,
+            enableExceptionAndShutdownHandlers = !throwOnApplicationThreadThrowable
         )
 
         (t as? TracksTime)?.toc("ran main")
@@ -180,7 +190,12 @@ open class GuiApp(
 
         (t as? TracksTime)?.toc("about to run FX app blocking")
         (t as? Logger)?.info("launching app (mypid = ${matt.lang.myPid})")
-        runFXAppBlocking(args = args, usePreloaderApp = usePreloaderApp, reporter = t) {
+        runFXAppBlocking(
+            args = args,
+            usePreloaderApp = usePreloaderApp,
+            reporter = t,
+            throwOnApplicationThreadThrowable = throwOnApplicationThreadThrowable
+        ) {
             fxThreadW(args.toList())
         }
         singleRunShutdown()
@@ -188,30 +203,20 @@ open class GuiApp(
     }
 
     override fun extraShutdownHook(
-        t: Thread, e: Throwable, shutdown: (App<*>.() -> Unit)?, st: String, exceptionFile: MFile
+        t: Thread,
+        e: Throwable,
+        shutdown: (App<*>.() -> Unit)?,
+        st: String,
+        exceptionFile: MFile
     ): ExceptionResponse {
-
-        /*dont delete ..< I find source of disappearing exceptions*/
+        /*don't delete .. I find source of disappearing exceptions*/
         println("in extraShutdownHook")
-
-
         var r = EXIT
         try {
             ensureInFXThreadInPlace {
                 println("showing exception popup for t=$t, e=$e")
                 r = showExceptionPopup(t, e, shutdown, st)
             }
-            //	  if (Platform.isFxApplicationThread()) {
-            //
-            //	  } else {
-            //		/*thread(name = "error pop up thread", isDaemon = false) {*/
-            //		println("openning error pop up")
-            //		runLaterReturn {
-            //		  r = showExceptionPopup(t, e, shutdown, st, exceptionFile)
-            //		}
-            //		println("finished invoking runLater in error pop up thread")
-            //		//		}
-            //	  }
         } catch (e: Exception) {
             println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
             e.printStackTrace()
