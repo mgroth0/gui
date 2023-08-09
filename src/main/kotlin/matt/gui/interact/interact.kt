@@ -15,7 +15,6 @@ import javafx.stage.Modality.NONE
 import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Window
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import matt.file.MFile
 import matt.file.construct.mFile
@@ -47,7 +46,9 @@ import matt.gui.interact.WinOwn.Auto
 import matt.gui.mscene.MScene
 import matt.gui.mstage.MStage
 import matt.gui.mstage.ShowMode
-import matt.gui.mstage.ShowMode.*
+import matt.gui.mstage.ShowMode.DO_NOT_SHOW
+import matt.gui.mstage.ShowMode.SHOW
+import matt.gui.mstage.ShowMode.SHOW_AND_WAIT
 import matt.gui.mstage.WMode
 import matt.gui.mstage.WMode.CLOSE
 import matt.gui.mstage.WMode.NOTHING
@@ -396,9 +397,9 @@ data class WindowConfig(
         window.initModality(modality)
         window.apply {
             isAlwaysOnTop = alwaysOnTop
-            if (title != null) {
+            if (this@WindowConfig.title != null) {
                 require(decorated)
-                this.title = title
+                this.title = this@WindowConfig.title
             }
             scene = if (mScene) MScene(root) else Scene(root.node).wrapped()
             own.applyTo(this)

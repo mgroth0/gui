@@ -211,13 +211,13 @@ fun SceneWrapper<*>.showMContextMenu(
             parent = parent.parent
         }
     }
-    devMenu.actionitem("open FX Debugger") {
+    devMenu.actionitem("open ${SceneDebugger.TITLE}") {
         SceneDebugger().apply {
             navTo(target.wrapper as NodeWrapper)
         }.openInNewWindow(
             decorated = true,
             alwaysOnTop = true,
-            title = "FX Debugger",
+            title = SceneDebugger.TITLE,
             own = WinOwn.None
         ).apply {
             width = 1000.0

@@ -6,13 +6,17 @@ import matt.fx.control.lang.actionbutton
 import matt.fx.control.wrapper.checkbox.checkbox
 import matt.fx.control.wrapper.control.button.button
 import matt.fx.control.wrapper.control.text.area.textarea
+import matt.fx.graphics.wrapper.imageview.ImageViewWrapper
 import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.parent.parent
 import matt.fx.graphics.wrapper.pane.grid.GridPaneWrapper
 import matt.fx.graphics.wrapper.pane.vbox.VBoxW
 import matt.fx.graphics.wrapper.region.RegionWrapper
+import matt.fx.graphics.wrapper.stage.StageWrapper
 import matt.fx.graphics.wrapper.text.text
 import matt.fx.graphics.wrapper.text.textlike.ColoredText
+import matt.fx.graphics.wrapper.window.HasScene
+import matt.fx.graphics.wrapper.window.WindowWrapper
 import matt.gui.actiontext.actionText
 import matt.lang.go
 import matt.obs.bind.binding
@@ -24,21 +28,37 @@ import matt.prim.str.mybuild.string
 
 class SceneDebugger : VBoxW() {
 
-    var lastNav: NodeDebugger? = null
+    companion object {
+        const val TITLE = "Scene Debugger"
+    }
+
+    private var lastNav: FXObjectDebugger? = null
+
 
     fun navTo(nw: NodeWrapper) = navTo(NodeDebugger(this, nw))
-    fun navTo(nd: NodeDebugger) {
+
+    private fun navTo(nd: FXObjectDebugger) {
         (lastNav?.debugNode as? RegionWrapper<*>)?.border = null
         lastNav = nd
         (nd.debugNode as? RegionWrapper<*>)?.yellow()
         clear()
         val s = nd.debugNode.scene
+        val window = s?.window
+        val windowString = "window: $window"
+        if (window == null) {
+            text(windowString)
+        } else {
+            actionText(windowString) {
+                navTo(WindowDebugger(window))
+            }
+        }
         text("scene: $s")
         val r = s?.root
+        val string = "root: $r"
         if (r == null) {
-            text("root: $r")
+            text(string)
         } else {
-            actionText("root: $r") {
+            actionText(string) {
                 navTo(r)
             }
         }
@@ -46,10 +66,41 @@ class SceneDebugger : VBoxW() {
     }
 }
 
+abstract class FXObjectDebugger : VBoxW() {
+    abstract val debugNode: HasScene
+
+    protected fun staticProp(
+        label: String,
+        value: Any?
+    ) = text(string {
+        +"$label: "
+        +value
+    })
+
+    protected fun dynamicProp(
+        label: String,
+        value: ObsVal<*>
+    ) = text(obsString {
+        appendStatic("$label: ")
+        +value
+    }) {
+        fill = Color.LIGHTBLUE
+    }
+
+}
+
+class WindowDebugger(override val debugNode: WindowWrapper<*>) : FXObjectDebugger() {
+    init {
+        if (debugNode is StageWrapper) {
+            dynamicProp("title", debugNode.titleProperty)
+        }
+    }
+}
+
 class NodeDebugger(
     debugger: SceneDebugger,
-    val debugNode: NodeWrapper
-) : VBoxW() {
+    override val debugNode: NodeWrapper
+) : FXObjectDebugger() {
     init {
 
         val p = debugNode.parent
@@ -74,23 +125,7 @@ class NodeDebugger(
         actionText("node: $debugNode") {
             debugger.navTo(debugNode)
         }
-        fun staticProp(
-            label: String,
-            value: Any?
-        ) = text(string {
-            +"$label: "
-            +value
-        })
 
-        fun dynamicProp(
-            label: String,
-            value: ObsVal<*>
-        ) = text(obsString {
-            appendStatic("$label: ")
-            +value
-        }) {
-            fill = Color.LIGHTBLUE
-        }
         dynamicProp("visible", debugNode.visibleProperty)
         dynamicProp("managed", debugNode.managedProperty)
         dynamicProp("style", debugNode.styleProperty)
@@ -117,10 +152,6 @@ class NodeDebugger(
             dynamicProp("pref width", debugNode.prefWidthProperty)
             dynamicProp("max width", debugNode.maxWidthProperty)
 
-
-
-
-
             checkbox("blue") {
                 selectedProperty.onChange {
                     if (it) n.blue() else {
@@ -144,6 +175,16 @@ class NodeDebugger(
             }
         }
 
+        if (debugNode is ImageViewWrapper) {
+            dynamicProp("fitWidth", debugNode.fitWidthProperty)
+            dynamicProp("fitHeight", debugNode.fitHeightProperty)
+            dynamicProp("isPreserveRatio", debugNode.preserveRatioProperty)
+            dynamicProp("image", debugNode.imageProperty)
+            dynamicProp("image->url", debugNode.imageProperty.binding { it?.url })
+            dynamicProp("image->width", debugNode.imageProperty.binding { it?.width })
+            dynamicProp("image->height", debugNode.imageProperty.binding { it?.height })
+        }
+
         (debugNode as? DebuggableNode)?.debugActions()?.forEach { action ->
             val btn = button(action.name)
             val ta = textarea()
@@ -160,4 +201,7 @@ interface DebuggableNode : NodeWrapper {
     fun debugActions(): Iterable<DebugAction>
 }
 
-class DebugAction(val name: String, val op: () -> String)
+class DebugAction(
+    val name: String,
+    val op: () -> String
+)
