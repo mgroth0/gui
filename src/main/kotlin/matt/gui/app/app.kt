@@ -48,8 +48,8 @@ fun startFXWidget(rootOp: VBoxW.() -> Unit) {
     }
 }
 
-fun runFXWidgetBlocking(rootOp: VBoxW.() -> Unit) {
-    runFXAppBlocking {
+fun runFXWidgetBlocking(decorated: Boolean = false, rootOp: VBoxW.() -> Unit) {
+    runFXAppBlocking(decorated = decorated) {
         root<VBoxW> {
             rootOp()
         }
