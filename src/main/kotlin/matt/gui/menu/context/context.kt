@@ -15,6 +15,7 @@ import matt.collect.map.dmap.withStoringDefault
 import matt.collect.map.lazyMap
 import matt.collect.map.sync.synchronized
 import matt.fx.control.wrapper.contextmenu.ContextMenuWrapper
+import matt.fx.control.wrapper.menu.ContextMenuBuilder
 import matt.fx.control.wrapper.menu.MenuWrapper
 import matt.fx.control.wrapper.menu.checkitem.CheckMenuItemWrapper
 import matt.fx.control.wrapper.menu.item.MenuItemWrapper
@@ -22,6 +23,7 @@ import matt.fx.control.wrapper.menu.item.SimpleMenuItem
 import matt.fx.control.wrapper.wrapped.wrapped
 import matt.fx.control.wrapper.wrapped.wrapper
 import matt.fx.graphics.wrapper.EventTargetWrapper
+import matt.fx.graphics.wrapper.FXNodeWrapperDSL
 import matt.fx.graphics.wrapper.node.NW
 import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.node.impl.NodeWrapperImpl
@@ -45,22 +47,19 @@ import kotlin.reflect.KClass
 
 fun EventTargetWrapper.mcontextmenu(op: MContextMenuBuilder.() -> Unit) = MContextMenuBuilder(this.node).apply(op)
 
+
+
+
+@FXNodeWrapperDSL
 class MContextMenuBuilder(
     val node: EventTarget,
     private val isGen: Boolean = false
-) {
+): ContextMenuBuilder {
 
 
     val genList = mutableListOf<MenuItemWrapper<*>>()
 
-    infix fun String.does(op: () -> Unit) = actionitem(this, op)
-    infix fun String.doesInThread(op: () -> Unit) = actionitem(this) {
-        thread {
-            op()
-        }
-    }
-
-    fun actionitem(
+    override fun actionitem(
         s: String,
         op: () -> Unit
     ) = SimpleMenuItem(s).apply {

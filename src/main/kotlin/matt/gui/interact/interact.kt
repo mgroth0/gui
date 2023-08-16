@@ -64,7 +64,10 @@ import java.net.URI
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
-fun safe(s: String, op: () -> Unit): Boolean {
+fun safe(
+    s: String,
+    op: () -> Unit
+): Boolean {
     var r = false
     alert(
         Alert.AlertType.CONFIRMATION,
@@ -104,6 +107,7 @@ class MDialog<R> internal constructor() : VBoxWrapperImpl<NodeWrapper>() {
     fun setResultConverter(op: () -> R?) {
         resultConverter = op
     }
+
 
     val readyProperty = BindableProperty(true)
 
@@ -194,6 +198,19 @@ fun popupTextInput(
             t.text
         }
     }
+}
+
+fun <R> NodeWrapper.dialog(
+    cfg: MDialog<R>.() -> Unit
+): R? = globalDialog<R> {
+    owner = this@dialog.stage?.node
+    cfg.invoke(this)
+}
+
+private inline fun <R> globalDialog(
+    crossinline cfg: MDialog<R>.() -> Unit
+): R? = dialog<R> {
+    cfg.invoke(this)
 }
 
 fun <R> dialog(
@@ -385,7 +402,10 @@ data class WindowConfig(
         applyToAlreadyCreated(it, root)
     }
 
-    fun applyTo(window: MStage, root: ParentWrapper<*>) {
+    fun applyTo(
+        window: MStage,
+        root: ParentWrapper<*>
+    ) {
         window.wMode = wMode
         window.EscClosable = EscClosable
         window.EnterClosable = EnterClosable
@@ -393,7 +413,10 @@ data class WindowConfig(
         applyToAlreadyCreated(window, root)
     }
 
-    private fun applyToAlreadyCreated(window: MStage, root: ParentWrapper<*>) {
+    private fun applyToAlreadyCreated(
+        window: MStage,
+        root: ParentWrapper<*>
+    ) {
         window.initModality(modality)
         window.apply {
             isAlwaysOnTop = alwaysOnTop
