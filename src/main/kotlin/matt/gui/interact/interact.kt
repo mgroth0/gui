@@ -22,6 +22,7 @@ import matt.fx.control.lang.actionbutton
 import matt.fx.control.tfx.dialog.alert
 import matt.fx.control.wrapper.control.button.ButtonWrapper
 import matt.fx.control.wrapper.control.button.button
+import matt.fx.control.wrapper.control.choice.choicebox
 import matt.fx.control.wrapper.control.text.area.textarea
 import matt.fx.control.wrapper.control.text.field.textfield
 import matt.fx.control.wrapper.wrapped.wrapped
@@ -53,6 +54,7 @@ import matt.gui.mstage.WMode
 import matt.gui.mstage.WMode.CLOSE
 import matt.gui.mstage.WMode.NOTHING
 import matt.json.prim.isValidJson
+import matt.lang.go
 import matt.lang.noExceptions
 import matt.lang.nullIfExceptions
 import matt.obs.bind.binding
@@ -191,11 +193,26 @@ fun popupTextInput(
     prompt: String,
     default: String = ""
 ) = ensureInFXThreadInPlace {
-    dialog<String> {
+    dialog {
         text(prompt)
         val t = textfield(default)
         setResultConverter {
             t.text
+        }
+    }
+}
+
+fun <T : Any> popupChoiceBox(
+    prompt: String,
+    choices: List<T>
+) = ensureInFXThreadInPlace {
+    dialog {
+        text(prompt)
+        val cb = choicebox<T>(
+            values = choices
+        )
+        setResultConverter {
+            cb.value
         }
     }
 }
@@ -218,7 +235,10 @@ fun <R> dialog(
 ): R? {
     val d = MDialog<R>()
     d.apply(cfg)
-    d.stg.initOwner(d.owner ?: if (d.autoOwner) Window.getWindows().firstOrNull() else null)
+    (d.owner ?: if (d.autoOwner) Window.getWindows().firstOrNull() else null)?.go {
+        d.stg.initOwner(it)
+    } ?: d.stg.initNoOwner()
+
     if (d.stg.owner != null) {
         Centered().applyTo(d.stg)
     } // d.stage„.initAndCenterToOwner(own)
@@ -353,7 +373,7 @@ sealed class WinGeom {
 sealed class WinOwn {
     object None : WinOwn() {
         override fun applyTo(win: StageWrapper) {
-            /*do nothing*/
+            win.initNoOwner()
         }
     }
 
@@ -365,7 +385,10 @@ sealed class WinOwn {
 
     object Auto : WinOwn() {
         override fun applyTo(win: StageWrapper) {
-            win.initOwner(Window.getWindows().firstOrNull())
+            Window.getWindows().firstOrNull()?.go {
+                win.initOwner(it)
+            } ?: win.initNoOwner()
+
         }
     }
 

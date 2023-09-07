@@ -10,6 +10,7 @@ import javafx.scene.canvas.Canvas
 import javafx.scene.control.ContextMenu
 import javafx.scene.control.MenuItem
 import javafx.scene.shape.Shape
+import matt.async.thread.namedThread
 import matt.collect.itr.recurse.chain
 import matt.collect.map.dmap.withStoringDefault
 import matt.collect.map.lazyMap
@@ -41,7 +42,6 @@ import matt.obs.prop.BindableProperty
 import matt.obs.prop.Var
 import java.lang.Thread.sleep
 import java.util.*
-import kotlin.concurrent.thread
 import kotlin.reflect.KClass
 
 
@@ -161,7 +161,7 @@ class CmFix : RunOnce() {
                 change.addedSubList.filterIsInstance<ContextMenu>().forEach { cm ->
                     cm.setOnShown {
                         /* I added the thread and runLater, since this still isn't working */
-                        thread {
+                        namedThread("CmFix Thread") {
                             sleep(100)
                             runLater {
                                 cm.sizeToScene()

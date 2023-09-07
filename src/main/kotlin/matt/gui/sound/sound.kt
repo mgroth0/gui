@@ -1,5 +1,6 @@
 package matt.gui.sound
 
+import matt.async.thread.namedThread
 import matt.caching.cache.LRUCache
 import matt.collect.map.dmap.withStoringDefault
 import matt.file.commons.SOUND_FOLDER
@@ -7,7 +8,6 @@ import java.util.concurrent.Semaphore
 import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.Clip
-import kotlin.concurrent.thread
 import kotlin.math.roundToInt
 
 /*
@@ -76,7 +76,7 @@ private val readyClips = LRUCache<Pair<String, Number?>, Clip>(100).withStoringD
 val soundSem = Semaphore(1)
 
 fun prepSoundsInThread(vararg ss: Pair<String, Number?>) {
-    thread {
+    namedThread("prepSoundsInThread Thread") {
         soundSem.acquire()
         ss.forEach {
 //            println("preparing sound: ${it.first}")

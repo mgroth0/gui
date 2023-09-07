@@ -6,11 +6,11 @@ import matt.gui.action.dsl.action
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
 import matt.gui.gui.YesIUseGui
 import matt.gui.resize.DragResizer
-import matt.gui.settings.GeometryNode
 import matt.gui.settings.MattGeneralSettingsNode
 import matt.gui.settings.MattGeneralStateNode
-import matt.gui.settings.MattGeneralStateWindowsNode
 import matt.test.JupiterTestAssertions.assertRunsInOneMinute
+import matt.ui.winloc.GeometryNode
+import matt.ui.winloc.MattGeneralStateWindowsNode
 import kotlin.test.Test
 
 class GuiTests {

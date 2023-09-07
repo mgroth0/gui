@@ -1,11 +1,11 @@
 package matt.gui.iconify
 
 import matt.file.MFile
-import matt.fx.graphics.core.scene.reloadStyle
 import matt.fx.graphics.icon.ICON_HEIGHT
 import matt.fx.graphics.icon.ICON_WIDTH
 import matt.fx.graphics.icon.Icon
 import matt.fx.graphics.style.DarkModeController
+import matt.fx.graphics.style.reloadStyle
 import matt.fx.graphics.win.winfun.noDocking
 import matt.fx.graphics.wrapper.node.setOnDoubleClick
 import matt.fx.graphics.wrapper.pane.vbox.VBoxWrapperImpl

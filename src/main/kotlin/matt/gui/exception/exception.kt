@@ -4,6 +4,7 @@ import javafx.geometry.Insets
 import javafx.geometry.Pos.CENTER
 import kotlinx.coroutines.runBlocking
 import matt.async.thread.daemon
+import matt.async.thread.namedThread
 import matt.exec.app.App
 import matt.fx.control.fxapp.ERROR_POP_UP_TEXT
 import matt.fx.control.lang.actionbutton
@@ -31,7 +32,6 @@ import matt.prim.str.urlEncode
 import matt.rstruct.extraValues
 import java.awt.Desktop
 import java.net.URI
-import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
 val deephysSite by lazy {
@@ -89,7 +89,7 @@ fun GuiApp.showExceptionPopup(
                     isDisable = true
 
                     text = "submitting (please wait)..."
-                    thread {
+                    namedThread("Submit Bug Report Thread") {
                         try {                //			  val u = "$LOCAL_TEST_URL/issue"
                             //			  println("u=$u")
 

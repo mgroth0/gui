@@ -2,6 +2,7 @@ package matt.gui.hotkeys
 
 import javafx.application.Platform.runLater
 import javafx.scene.paint.Color
+import matt.async.thread.namedThread
 import matt.fx.graphics.hotkey.HotKey
 import matt.fx.graphics.hotkey.hotkeys
 import matt.fx.graphics.mag.bottom
@@ -35,7 +36,6 @@ import matt.lang.go
 import matt.lang.scope
 import matt.log.NOPLogger
 import java.lang.Thread.sleep
-import kotlin.concurrent.thread
 
 
 fun MScene<*>.addDefaultHotkeys() = NOPLogger.scope {
@@ -169,7 +169,7 @@ fun MScene<*>.addDefaultHotkeys() = NOPLogger.scope {
             window?.right()
         }
         W.ctrl.opt {
-            println("window op 27");
+            println("window op 27")
             window?.top()
         }
         S.ctrl.opt { println("window op 28");window?.bottom() }
@@ -216,7 +216,7 @@ fun MScene<*>.addDefaultHotkeys() = NOPLogger.scope {
                 reg?.border = FXBorder.solid(Color.YELLOW)
                 it()
                 (reg as? RegionWrapperImpl<*, *>)?.go {
-                    thread {
+                    namedThread(name = "addDefaultHotkeys Thread") {
                         sleep(750)
                         runLater {
                             it.border = it.defaultBorder

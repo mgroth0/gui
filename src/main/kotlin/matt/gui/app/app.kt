@@ -1,6 +1,7 @@
 package matt.gui.app
 
 import javafx.application.Platform
+import javafx.scene.control.ContextMenu
 import javafx.stage.Screen
 import javafx.stage.Window
 import matt.async.thread.daemon
@@ -41,14 +42,17 @@ import matt.rstruct.modID
 import kotlin.reflect.full.createInstance
 
 fun startFXWidget(rootOp: VBoxW.() -> Unit) {
-    runFXAppBlocking {
+    matt.gui.app.runFXAppBlocking {
         root<VBoxW> {
             rootOp()
         }
     }
 }
 
-fun runFXWidgetBlocking(decorated: Boolean = false, rootOp: VBoxW.() -> Unit) {
+fun runFXWidgetBlocking(
+    decorated: Boolean = false,
+    rootOp: VBoxW.() -> Unit
+) {
     runFXAppBlocking(decorated = decorated) {
         root<VBoxW> {
             rootOp()
@@ -58,23 +62,22 @@ fun runFXWidgetBlocking(decorated: Boolean = false, rootOp: VBoxW.() -> Unit) {
 
 fun runFXAppBlocking(
     decorated: Boolean = WindowConfig.DEFAULT.decorated,
-    fxThread: GuiApp.(args: List<String>) -> Unit
+    fxThread: GuiApp.() -> Unit
 ) {
     GuiApp(fxThread = fxThread, decorated = decorated).runBlocking()
 }
 
 @FXNodeWrapperDSL
 open class GuiApp(
-    args: Array<String> = arrayOf(),
     val screenIndex: Int? = null,
     decorated: Boolean = WindowConfig.DEFAULT.decorated,
     wMode: WMode = NOTHING,
     escClosable: Boolean = false,
     enterClosable: Boolean = false,
     requiresBluetooth: Boolean = false,
-    private val fxThread: GuiApp.(args: List<String>) -> Unit,
+    private val fxThread: GuiApp.() -> Unit,
 
-    ) : App<GuiApp>(args, requiresBluetooth = requiresBluetooth) {
+    ) : App<GuiApp>(requiresBluetooth = requiresBluetooth) {
 
     var alwaysOnTop
         get() = stage.isAlwaysOnTop
@@ -86,18 +89,17 @@ open class GuiApp(
 
     var scene: MScene<ParentWrapper<*>>? = null
 
-    val fxThreadW: GuiApp.(List<String>) -> Unit = {
+    val fxThreadW: GuiApp.() -> Unit = {
 //        val t = tic("fxThreadW", enabled = false)
 //        t.toc(0)
-        fxThread(it)
+        fxThread()
 //        t.toc(1)
         if (!Monocle.isEnabledInThisRuntime()) {
-            println("running window fixer daemon")
             daemon(name = "Window Fixer Daemon") {
                 while (true) {
-                    Window.getWindows().map { it.wrapped() }.forEach {
+                    Window.getWindows().filter { it !is ContextMenu }.map { it.wrapped() }.forEach {
                         if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
-                            warn("resetting offscreen window")
+                            warn("resetting offscreen window: ${it},${it.node}")
                             runLaterReturn {
                                 it.x = 0.0
                                 it.y = 0.0
@@ -191,12 +193,11 @@ open class GuiApp(
         (t as? TracksTime)?.toc("about to run FX app blocking")
         (t as? Logger)?.info("launching app (mypid = ${matt.lang.myPid})")
         runFXAppBlocking(
-            args = args,
             usePreloaderApp = usePreloaderApp,
             reporter = t,
             throwOnApplicationThreadThrowable = throwOnApplicationThreadThrowable
         ) {
-            fxThreadW(args.toList())
+            fxThreadW()
         }
         singleRunShutdown()
         ThreadInspectorDaemon.start()
