@@ -11,7 +11,7 @@ import javafx.scene.control.ContextMenu
 import javafx.scene.control.MenuItem
 import javafx.scene.shape.Shape
 import matt.async.thread.namedThread
-import matt.collect.itr.recurse.chain
+import matt.collect.itr.recurse.chain.chain
 import matt.collect.map.dmap.withStoringDefault
 import matt.collect.map.lazyMap
 import matt.collect.map.sync.synchronized
