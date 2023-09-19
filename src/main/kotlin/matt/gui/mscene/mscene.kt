@@ -6,7 +6,7 @@ import javafx.scene.Parent
 import javafx.scene.input.ContextMenuEvent
 import javafx.scene.paint.Color
 import matt.collect.itr.recurse.recurse
-import matt.file.MFile
+import matt.lang.model.file.FsFile
 import matt.file.commons.ICON_FOLDER
 import matt.fx.control.wrapper.wrapped.wrapped
 import matt.fx.graphics.core.scene.NEED_REVERSED_DISPLAYS_FEATURE
@@ -27,7 +27,7 @@ import kotlin.reflect.KClass
 
 open class MScene<R : ParentWrapper<*>>(
     root: R,
-    val icon: MFile,
+    val icon: FsFile,
     userWidth: Double = -1.0,
     userHeight: Double = -1.0
 ) : SceneWrapper<R>(root, userWidth, userHeight) {

@@ -6,7 +6,7 @@ import javafx.stage.Screen
 import javafx.stage.Window
 import matt.async.thread.daemon
 import matt.exec.app.App
-import matt.file.MFile
+import matt.lang.model.file.FsFile
 import matt.file.commons.LogContext
 import matt.file.commons.mattLogContext
 import matt.fx.control.fxapp.DEFAULT_THROW_ON_APP_THREAD_THROWABLE
@@ -30,6 +30,7 @@ import matt.gui.mscene.MScene
 import matt.gui.mstage.MStage
 import matt.gui.mstage.WMode
 import matt.gui.mstage.WMode.NOTHING
+import matt.lang.shutdown.ShutdownContext
 import matt.lang.sysprop.props.Monocle
 import matt.log.logger.Logger
 import matt.log.profile.err.ExceptionResponse
@@ -41,14 +42,19 @@ import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import matt.rstruct.modID
 import kotlin.reflect.full.createInstance
 
-fun startFXWidget(rootOp: VBoxW.() -> Unit) {
-    matt.gui.app.runFXAppBlocking {
+context(ShutdownContext)
+fun startFXWidget(
+    rootOp: VBoxW.() -> Unit
+) {
+    matt.gui.app.runFXAppBlocking() {
         root<VBoxW> {
             rootOp()
         }
     }
 }
 
+
+context(ShutdownContext)
 fun runFXWidgetBlocking(
     decorated: Boolean = false,
     rootOp: VBoxW.() -> Unit
@@ -60,13 +66,20 @@ fun runFXWidgetBlocking(
     }
 }
 
+context(ShutdownContext)
 fun runFXAppBlocking(
     decorated: Boolean = WindowConfig.DEFAULT.decorated,
     fxThread: GuiApp.() -> Unit
 ) {
-    GuiApp(fxThread = fxThread, decorated = decorated).runBlocking()
+    GuiApp(
+        fxThread = fxThread,
+        decorated = decorated,
+    ).runBlocking()
 }
 
+
+
+context(ShutdownContext)
 @FXNodeWrapperDSL
 open class GuiApp(
     val screenIndex: Int? = null,
@@ -75,9 +88,12 @@ open class GuiApp(
     escClosable: Boolean = false,
     enterClosable: Boolean = false,
     requiresBluetooth: Boolean = false,
+
     private val fxThread: GuiApp.() -> Unit,
 
-    ) : App<GuiApp>(requiresBluetooth = requiresBluetooth) {
+    ) : App<GuiApp>(
+    requiresBluetooth = requiresBluetooth,
+) {
 
     var alwaysOnTop
         get() = stage.isAlwaysOnTop
@@ -208,7 +224,7 @@ open class GuiApp(
         e: Throwable,
         shutdown: (App<*>.() -> Unit)?,
         st: String,
-        exceptionFile: MFile
+        exceptionFile: FsFile
     ): ExceptionResponse {
         /*don't delete .. I find source of disappearing exceptions*/
         println("in extraShutdownHook")

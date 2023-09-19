@@ -1,6 +1,6 @@
 package matt.gui.iconify
 
-import matt.file.MFile
+import matt.lang.model.file.FsFile
 import matt.fx.graphics.icon.ICON_HEIGHT
 import matt.fx.graphics.icon.ICON_WIDTH
 import matt.fx.graphics.icon.Icon
@@ -15,7 +15,7 @@ import matt.gui.interact.WinGeom
 import matt.gui.interact.WinOwn
 import matt.gui.interact.openInNewWindow
 
-fun SceneWrapper<*>.iconify(icon: MFile) {
+fun SceneWrapper<*>.iconify(icon: FsFile) {
   var iconWindow: StageWrapper? = null
   println("making icon with $icon")
   VBoxWrapperImpl(Icon(icon)).apply {

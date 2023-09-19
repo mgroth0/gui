@@ -4,6 +4,7 @@ import matt.async.thread.namedThread
 import matt.caching.cache.LRUCache
 import matt.collect.map.dmap.withStoringDefault
 import matt.file.commons.SOUND_FOLDER
+import matt.lang.file.toJFile
 import java.util.concurrent.Semaphore
 import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.AudioSystem
@@ -52,7 +53,8 @@ private val soundsBytes = LRUCache<Pair<String, Number?>, Pair<AudioFormat, Byte
                 s = SOUND_FOLDER.listFiles()!!.first { it.name.substringBefore(".") == s }.name
             }
             val f = SOUND_FOLDER[s]
-            val audioInputStream = AudioSystem.getAudioInputStream(f.absoluteFile)
+            require(f.isAbsolute)
+            val audioInputStream = AudioSystem.getAudioInputStream(f.toJFile())
             val format = audioInputStream.format
 
             val framesPerSec = audioInputStream.format.frameRate

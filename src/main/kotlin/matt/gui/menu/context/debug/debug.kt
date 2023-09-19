@@ -23,7 +23,7 @@ import matt.obs.bind.binding
 import matt.obs.bindings.str.mybuildobs.obsString
 import matt.obs.prop.ObsVal
 import matt.prim.str.joinWithCommas
-import matt.prim.str.mybuild.string
+import matt.prim.str.mybuild.api.string
 
 
 class SceneDebugger : VBoxW() {

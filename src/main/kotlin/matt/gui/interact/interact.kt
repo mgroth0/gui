@@ -16,8 +16,8 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import javafx.stage.Window
 import kotlinx.serialization.json.Json
-import matt.file.MFile
 import matt.file.construct.mFile
+import matt.file.toJioFile
 import matt.fx.control.lang.actionbutton
 import matt.fx.control.tfx.dialog.alert
 import matt.fx.control.wrapper.control.button.ButtonWrapper
@@ -55,6 +55,7 @@ import matt.gui.mstage.WMode.CLOSE
 import matt.gui.mstage.WMode.NOTHING
 import matt.json.prim.isValidJson
 import matt.lang.go
+import matt.lang.model.file.MacFileSystem
 import matt.lang.noExceptions
 import matt.lang.nullIfExceptions
 import matt.obs.bind.binding
@@ -493,7 +494,7 @@ fun ParentWrapper<*>.openInNewWindow(
 ).createWindow(this@openInNewWindow)
 
 
-fun MFile.openImageInWindow() {
+fun matt.file.JioFile.openImageInWindow() {
     AnchorPaneWrapperImpl<NodeWrapper>(ImageViewWrapper(this@openImageInWindow.toURI().toString()).apply {
         isPreserveRatio = true
         runLater {
@@ -505,7 +506,7 @@ fun MFile.openImageInWindow() {
 }
 
 fun ImageViewWrapper.doubleClickToOpenInWindow() {
-    this.setOnDoubleClick { mFile(URI(this.image!!.url)).openImageInWindow() }
+    this.setOnDoubleClick { with(MacFileSystem) { mFile(URI(this@doubleClickToOpenInWindow.image!!.url))}.toJioFile().openImageInWindow() }
 }
 
 fun NodeWrapper.textInput(
