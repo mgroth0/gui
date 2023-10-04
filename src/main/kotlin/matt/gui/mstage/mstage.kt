@@ -11,7 +11,7 @@ import matt.gui.mstage.WMode.CLOSE
 import matt.gui.mstage.WMode.HIDE
 import matt.gui.mstage.WMode.ICONIFY
 import matt.gui.mstage.WMode.NOTHING
-import matt.model.code.sys.GAMING_WINDOWS
+import matt.model.code.sys.WindowsLaptop
 
 enum class WMode {
   CLOSE,
@@ -42,10 +42,10 @@ open class MStage(
 
   init {
 	hotkeys {
-	  if (thisMachine == GAMING_WINDOWS) {
+	  if (thisMachine == WindowsLaptop) {
 		Q.opt op ::close // on Mac, meta-Q quits program. this an OS feature.
 	  }
-	  (if (thisMachine == GAMING_WINDOWS) {
+	  (if (thisMachine == WindowsLaptop) {
 		W.opt
 	  } else W.meta) op when (wMode) {
 		CLOSE   -> ::close

@@ -48,13 +48,11 @@ import kotlin.reflect.KClass
 fun EventTargetWrapper.mcontextmenu(op: MContextMenuBuilder.() -> Unit) = MContextMenuBuilder(this.node).apply(op)
 
 
-
-
 @FXNodeWrapperDSL
 class MContextMenuBuilder(
     val node: EventTarget,
     private val isGen: Boolean = false
-): ContextMenuBuilder {
+) : ContextMenuBuilder {
 
 
     val genList = mutableListOf<MenuItemWrapper<*>>()

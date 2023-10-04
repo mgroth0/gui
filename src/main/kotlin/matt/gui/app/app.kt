@@ -6,7 +6,6 @@ import javafx.stage.Screen
 import javafx.stage.Window
 import matt.async.thread.daemon
 import matt.exec.app.App
-import matt.lang.model.file.FsFile
 import matt.file.commons.LogContext
 import matt.file.commons.mattLogContext
 import matt.fx.control.fxapp.DEFAULT_THROW_ON_APP_THREAD_THROWABLE
@@ -30,6 +29,8 @@ import matt.gui.mscene.MScene
 import matt.gui.mstage.MStage
 import matt.gui.mstage.WMode
 import matt.gui.mstage.WMode.NOTHING
+import matt.lang.model.file.FsFile
+import matt.lang.println
 import matt.lang.shutdown.ShutdownContext
 import matt.lang.sysprop.props.Monocle
 import matt.log.logger.Logger
@@ -37,6 +38,7 @@ import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.reporter.TracksTime
 import matt.log.warn.warn
+import matt.model.code.errreport.ThrowReport
 import matt.model.code.report.Reporter
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import matt.rstruct.modID
@@ -78,7 +80,6 @@ fun runFXAppBlocking(
 }
 
 
-
 context(ShutdownContext)
 @FXNodeWrapperDSL
 open class GuiApp(
@@ -95,6 +96,7 @@ open class GuiApp(
     requiresBluetooth = requiresBluetooth,
 ) {
 
+    private var finishedFxStartOperation = false
     var alwaysOnTop
         get() = stage.isAlwaysOnTop
         set(value) {
@@ -214,6 +216,7 @@ open class GuiApp(
             throwOnApplicationThreadThrowable = throwOnApplicationThreadThrowable
         ) {
             fxThreadW()
+            finishedFxStartOperation = true
         }
         singleRunShutdown()
         ThreadInspectorDaemon.start()
@@ -229,14 +232,30 @@ open class GuiApp(
         /*don't delete .. I find source of disappearing exceptions*/
         println("in extraShutdownHook")
         var r = EXIT
-        try {
-            ensureInFXThreadInPlace {
-                println("showing exception popup for t=$t, e=$e")
-                r = showExceptionPopup(t, e, shutdown, st)
+        if (finishedFxStartOperation) {
+            try {
+                ensureInFXThreadInPlace {
+                    println("showing exception popup for t=$t, e=$e")
+                    r = showExceptionPopup(t, e, shutdown, st)
+                }
+            } catch (e: Throwable) {
+                try {
+                    println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
+                    ThrowReport(e).println()
+                } catch (ee: Throwable) {
+                    println("exception in catch caluse to DefaultUncaughtExceptionHandler Exception Dialog:")
+                    e.printStackTrace()
+                }
+                return EXIT
             }
-        } catch (e: Exception) {
-            println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
-            e.printStackTrace()
+        } else {
+            try {
+                println("exception before FX finished starting")
+                ThrowReport(e).println()
+            } catch (ee: Throwable) {
+                println("exception in catch clause before FX finished starting:")
+                e.printStackTrace()
+            }
             return EXIT
         }
         return r

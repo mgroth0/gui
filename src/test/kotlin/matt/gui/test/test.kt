@@ -8,7 +8,7 @@ import matt.gui.gui.YesIUseGui
 import matt.gui.resize.DragResizer
 import matt.gui.settings.MattGeneralSettingsNode
 import matt.gui.settings.MattGeneralStateNode
-import matt.test.JupiterTestAssertions.assertRunsInOneMinute
+import matt.test.assertions.JupiterTestAssertions.assertRunsInOneMinute
 import matt.ui.winloc.GeometryNode
 import matt.ui.winloc.MattGeneralStateWindowsNode
 import kotlin.test.Test
