@@ -31,7 +31,8 @@ import matt.gui.mstage.WMode
 import matt.gui.mstage.WMode.NOTHING
 import matt.lang.model.file.FsFile
 import matt.lang.println
-import matt.lang.shutdown.ShutdownContext
+import matt.lang.shutdown.CancellableShutdownTask
+import matt.lang.shutdown.MyShutdownContext
 import matt.lang.sysprop.props.Monocle
 import matt.log.logger.Logger
 import matt.log.profile.err.ExceptionResponse
@@ -44,7 +45,7 @@ import matt.model.flowlogic.singlerunlambda.SingleRunLambda
 import matt.rstruct.modID
 import kotlin.reflect.full.createInstance
 
-context(ShutdownContext)
+context(MyShutdownContext<CancellableShutdownTask>)
 fun startFXWidget(
     rootOp: VBoxW.() -> Unit
 ) {
@@ -56,7 +57,7 @@ fun startFXWidget(
 }
 
 
-context(ShutdownContext)
+context(MyShutdownContext<CancellableShutdownTask>)
 fun runFXWidgetBlocking(
     decorated: Boolean = false,
     rootOp: VBoxW.() -> Unit
@@ -68,7 +69,7 @@ fun runFXWidgetBlocking(
     }
 }
 
-context(ShutdownContext)
+context(MyShutdownContext<CancellableShutdownTask>)
 fun runFXAppBlocking(
     decorated: Boolean = WindowConfig.DEFAULT.decorated,
     fxThread: GuiApp.() -> Unit
@@ -80,7 +81,7 @@ fun runFXAppBlocking(
 }
 
 
-context(ShutdownContext)
+context(MyShutdownContext<CancellableShutdownTask>)
 @FXNodeWrapperDSL
 open class GuiApp(
     val screenIndex: Int? = null,

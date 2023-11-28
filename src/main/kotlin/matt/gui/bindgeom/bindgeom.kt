@@ -2,7 +2,7 @@ package matt.gui.bindgeom
 
 import matt.fx.graphics.wrapper.stage.StageWrapper
 import matt.lang.go
-import matt.math.geom.Geometry
+import matt.model.data.rect.DoubleBox
 import matt.ui.winloc.MattGeneralStateWindowsNode
 
 
@@ -27,7 +27,7 @@ private fun StageWrapper.saveGeometryIfValid(key: String) {
     if (!isShowing || isIconified || isFullScreen || x.isNaN() || y.isNaN() || width.isNaN() || height.isNaN()) {
         return
     }
-    MattGeneralStateWindowsNode.nodeByWindowKey[key].geometry.value = Geometry(
+    MattGeneralStateWindowsNode.nodeByWindowKey[key].geometry.value = DoubleBox(
         x,
         y,
         width,
@@ -42,7 +42,7 @@ private fun StageWrapper.loadGeometry(key: String) = apply {
     }
 }
 
-private fun StageWrapper.loadGeometry(geom: Geometry) = apply {
+private fun StageWrapper.loadGeometry(geom: DoubleBox) = apply {
     x = geom.x
     y = geom.y
     width = geom.width

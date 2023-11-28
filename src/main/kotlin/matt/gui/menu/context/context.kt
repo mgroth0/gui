@@ -35,7 +35,7 @@ import matt.gui.interact.openInNewWindow
 import matt.gui.menu.context.EventHandlerType.Filter
 import matt.gui.menu.context.EventHandlerType.Handler
 import matt.gui.menu.context.debug.SceneDebugger
-import matt.lang.require.requireNot
+import matt.lang.assertions.require.requireNot
 import matt.log.tab
 import matt.log.warn.warn
 import matt.obs.prop.BindableProperty

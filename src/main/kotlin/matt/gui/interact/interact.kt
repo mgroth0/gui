@@ -58,6 +58,7 @@ import matt.lang.go
 import matt.lang.model.file.MacFileSystem
 import matt.lang.noExceptions
 import matt.lang.nullIfExceptions
+import matt.model.data.rect.DoubleRectSize
 import matt.obs.bind.binding
 import matt.obs.bindings.bool.ObsB
 import matt.obs.bindings.bool.not
@@ -284,29 +285,27 @@ sealed class WinGeom {
     class ManualOr0(
         val x: Double = 0.0,
         val y: Double = 0.0,
-        val width: Double = 0.0,
-        val height: Double = 0.0
+        val size: DoubleRectSize = DoubleRectSize.ZERO
     ) : WinGeom() {
         override fun applyTo(win: StageWrapper) {
             win.x = x
             win.y = y
-            win.height = height
-            win.width = width
+            win.height = size.height
+            win.width = size.width
         }
     }
 
     class ManualOrOwner(
         val x: Double? = null,
         val y: Double? = null,
-        val width: Double? = null,
-        val height: Double? = null
+        val size: DoubleRectSize? = null
     ) : WinGeom() {
         override fun applyTo(win: StageWrapper) {
             requireNotNull(win.owner) { "use initOwner first" }
             win.x = x ?: win.owner!!.x
             win.y = y ?: win.owner!!.y
-            win.height = height ?: win.owner!!.height
-            win.width = width ?: win.owner!!.width
+            win.height = size?.height ?: win.owner!!.height
+            win.width = size?.width ?: win.owner!!.width
         }
     }
 

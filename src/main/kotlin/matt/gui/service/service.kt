@@ -10,7 +10,7 @@ import matt.fx.graphics.fxthread.runLaterReturn
 import matt.fx.graphics.wrapper.stage.StageWrapper
 import matt.gui.interact.popupTextInput
 import matt.lang.NEVER
-import matt.lang.require.requireNot
+import matt.lang.assertions.require.requireNot
 import matt.model.data.dir.YesOrNo
 import matt.model.data.dir.YesOrNo.NO
 import matt.model.data.dir.YesOrNo.YES
