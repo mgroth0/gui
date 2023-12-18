@@ -3,7 +3,6 @@ package matt.gui.hotkeys
 import javafx.application.Platform.runLater
 import javafx.scene.paint.Color
 import matt.async.thread.namedThread
-import matt.fx.graphics.hotkey.HotKey
 import matt.fx.graphics.hotkey.hotkeys
 import matt.fx.graphics.mag.bottom
 import matt.fx.graphics.mag.bottomLeft
@@ -36,6 +35,7 @@ import matt.lang.go
 import matt.lang.scope
 import matt.log.NOPLogger
 import java.lang.Thread.sleep
+import matt.hotkey.Key
 
 
 fun MScene<*>.addDefaultHotkeys() = NOPLogger.scope {
@@ -172,21 +172,21 @@ fun MScene<*>.addDefaultHotkeys() = NOPLogger.scope {
             println("window op 27")
             window?.top()
         }
-        S.ctrl.opt { println("window op 28");window?.bottom() }
+        Key.S.ctrl.opt { println("window op 28");window?.bottom() }
 
-        Z.ctrl.opt { println("window op 29"); window?.bottomLeft() }
+        Key.Z.ctrl.opt { println("window op 29"); window?.bottomLeft() }
         E.ctrl.opt { println("window op 30");window?.topRight() }
         Q.ctrl.opt { println("window op 31");window?.topLeft() }
         C.ctrl.opt { println("window op 32");window?.bottomRight() }
 
-        LEFT_BRACKET.ctrl.opt {
+        Key.LEFT_BRACKET.ctrl.opt {
             println("window op 33");
             window?.apply {
                 if (!MattGeneralSettingsNode.reversedDisplays.value!!) lastDisplay()
                 else nextDisplay()
             }
         }
-        RIGHT_BRACKET.ctrl.opt {
+        Key.RIGHT_BRACKET.ctrl.opt {
             println("window op 34");
             window?.apply {
                 if (!MattGeneralSettingsNode.reversedDisplays.value!!) nextDisplay()
@@ -194,37 +194,39 @@ fun MScene<*>.addDefaultHotkeys() = NOPLogger.scope {
             }
         }
 
-        F.ctrl.opt {
+        Key.F.ctrl.opt {
             println("window op 35");(window as? StageWrapper?)?.isFullScreen = !((window as StageWrapper).isFullScreen)
         }
-        TAB.ctrl.opt { println("window op 36");(window as? StageWrapper?)?.max() }
-        ENTER.ctrl.opt { println("window op 37");window?.resetPosition() }
-        X.ctrl.opt { println("window op 38");iconify(icon) }
+        Key.TAB.ctrl.opt { println("window op 36");(window as? StageWrapper?)?.max() }
+        Key.RETURN.ctrl.opt { println("window op 37");window?.resetPosition() }
+        Key.X.ctrl.opt { println("window op 38");iconify(icon) }
 
-        DIGIT1.ctrl.opt { println("window op 39");window?.eighth1() }
-        DIGIT2.ctrl.opt { println("window op 41"); window?.eighth2() }
-        DIGIT3.ctrl.opt { println("window op 42");window?.eighth3() }
-        DIGIT4.ctrl.opt { println("window op 43");window?.eighth4() }
-        DIGIT5.ctrl.opt { println("window op 44");window?.eighth5() }
-        DIGIT6.ctrl.opt { println("window op 45");window?.eighth6() }
-        DIGIT7.ctrl.opt { println("window op 46"); window?.eighth7() }
-        DIGIT8.ctrl.opt { println("window op 47");window?.eighth8() }
+        Key.DIGIT_1.ctrl.opt { println("window op 39");window?.eighth1() }
+        Key.DIGIT_2.ctrl.opt { println("window op 41"); window?.eighth2() }
+        Key.DIGIT_3.ctrl.opt { println("window op 42");window?.eighth3() }
+        Key.DIGIT_4.ctrl.opt { println("window op 43");window?.eighth4() }
+        Key.DIGIT_5.ctrl.opt { println("window op 44");window?.eighth5() }
+        Key.DIGIT_6.ctrl.opt { println("window op 45");window?.eighth6() }
+        Key.DIGIT_7.ctrl.opt { println("window op 46"); window?.eighth7() }
+        Key.DIGIT_8.ctrl.opt { println("window op 47");window?.eighth8() }
 
-        hotkeys.map { it as HotKey }.forEach {
-            it.wrapOp {
-                val reg = (scene.root as? RegionWrapper)
-                reg?.border = FXBorder.solid(Color.YELLOW)
-                it()
-                (reg as? RegionWrapperImpl<*, *>)?.go {
-                    namedThread(name = "addDefaultHotkeys Thread") {
-                        sleep(750)
-                        runLater {
-                            it.border = it.defaultBorder
-                        }
+
+        decorateAllOps {
+            val reg = (scene.root as? RegionWrapper)
+            reg?.border = FXBorder.solid(Color.YELLOW)
+            val r = it()
+            (reg as? RegionWrapperImpl<*, *>)?.go {
+                namedThread(name = "addDefaultHotkeys Thread") {
+                    sleep(750)
+                    runLater {
+                        it.border = it.defaultBorder
                     }
                 }
             }
+            r
         }
+
+
     }
 }
 

@@ -62,7 +62,7 @@ open class MStage(
 		}
 
 	  }
-	  if (EnterClosable) ENTER op ::close
+	  if (EnterClosable) RETURN op ::close
 	}
 	hotkeys(filter = true) {
 	  if (EscClosable) ESCAPE op ::close
@@ -75,7 +75,7 @@ open class MStage(
 	  if (value != field) {
 		if (value) {
 		  hotkeys {
-			ENTER op ::close
+			RETURN op ::close
 		  }
 		} else {
 		  TODO()

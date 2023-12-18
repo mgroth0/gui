@@ -289,7 +289,7 @@ private fun NodeWrapper.hotkeyInfoMenu() = MenuWrapper("Click For Hotkey Info").
                     }
                     item("\tqp=${h?.quickPassForNormalTyping}")
                     subNode?.hotKeyHandler?.hotkeys?.forEach { hkc ->
-                        item("\t${hkc.getHotkeys().joinToString { it.toString() }}")
+                        item("\t${hkc.toString()}")
                     }
                 }
             }
