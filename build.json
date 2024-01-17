@@ -24,11 +24,6 @@
     {
       "type": "Project",
       "cfg": "api",
-      "path": ":k:caching"
-    },
-    {
-      "type": "Project",
-      "cfg": "api",
       "path": ":k:model:obsmod"
     },
     {

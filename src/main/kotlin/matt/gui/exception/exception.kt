@@ -43,7 +43,7 @@ val deephysSite by lazy {
 private const val STACK_TRACE_SURFACE_COUNT = 200
 
 fun GuiApp.showExceptionPopup(
-    t: Thread, e: Throwable, @Suppress("UNUSED_PARAMETER") shutdown: (App<*>.() -> Unit)?, st: String
+    t: Thread, e: Throwable, @Suppress("UNUSED_PARAMETER") shutdown: (App.() -> Unit)?, st: String
 ): ExceptionResponse {
     var r = EXIT
     val stackTraceDepth = e.stackTrace.size

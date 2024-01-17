@@ -36,7 +36,9 @@ open class UiWithWarnings : UserInterface {
     }
 
     fun initWarningsWindow() {
+
         VBoxW().apply {
+
             listview(warnings) {
                 simpleCellFactoryFromProps { warning ->
                     warning.message.toVarProp() to ButtonWrapper().apply {
@@ -46,7 +48,9 @@ open class UiWithWarnings : UserInterface {
                     }.toVarProp()
                 }
             }
+
         }.openInNewWindow {
+
             runLater {
                 isAlwaysOnTop = false
                 hide()

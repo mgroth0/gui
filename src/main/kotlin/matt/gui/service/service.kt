@@ -45,11 +45,11 @@ object FXActionAbilitiesService: ActionAbilitiesService {
   }
 
   override fun <T> yesOrNoAllowAllCommands(prompts: Map<T, String>): Map<T, YesOrNo> {
-	TODO("Not yet implemented")
+	TODO()
   }
 
   override fun <E: Enum<E>> enum(enumOptions: List<E>, prompt: String): E {
-	TODO("Not yet implemented")
+	TODO()
   }
 
   override fun input(prompt: String) = popupTextInput(prompt) ?: NEVER
@@ -124,11 +124,11 @@ class AsyncFXActionAbilitiesService(
   }
 
   override fun <T> yesOrNoAllowAllCommands(prompts: Map<T, String>): Map<T, YesOrNo> {
-	TODO("Not yet implemented")
+	TODO()
   }
 
   override fun <E: Enum<E>> enum(enumOptions: List<E>, prompt: String): E {
-	TODO("Not yet implemented")
+	TODO()
   }
 
   override fun input(prompt: String) = popupTextInput(prompt) ?: NEVER

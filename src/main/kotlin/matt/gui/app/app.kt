@@ -42,7 +42,7 @@ import matt.log.warn.warn
 import matt.model.code.errreport.ThrowReport
 import matt.model.code.report.Reporter
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
-import matt.rstruct.modID
+import matt.rstruct.modId
 import kotlin.reflect.full.createInstance
 
 context(MyShutdownContext<CancellableShutdownTask>)
@@ -93,7 +93,7 @@ open class GuiApp(
 
     private val fxThread: GuiApp.() -> Unit,
 
-    ) : App<GuiApp>(
+    ) : App(
     requiresBluetooth = requiresBluetooth,
 ) {
 
@@ -173,8 +173,8 @@ open class GuiApp(
 
     fun runBlocking(
         implicitExit: Boolean = true,
-        preFX: (App<*>.() -> Unit)? = null,
-        shutdown: (App<*>.() -> Unit)? = null,
+        preFX: (App.() -> Unit)? = null,
+        shutdown: (App.() -> Unit)? = null,
         usePreloaderApp: Boolean = false,
         logContext: LogContext = mattLogContext,
         t: Reporter? = null,
@@ -226,7 +226,7 @@ open class GuiApp(
     override fun extraShutdownHook(
         t: Thread,
         e: Throwable,
-        shutdown: (App<*>.() -> Unit)?,
+        shutdown: (App.() -> Unit)?,
         st: String,
         exceptionFile: FsFile
     ): ExceptionResponse {
@@ -266,7 +266,7 @@ open class GuiApp(
         MStage(
             decorated = decorated, wMode = wMode, EscClosable = escClosable, EnterClosable = enterClosable
         ).apply {
-            bindGeometry(modID.appName)
+            bindGeometry(modId.appName)
         }
     }
 }
