@@ -4,7 +4,6 @@ package matt.gui.test
 import matt.fx.graphics.wrapper.pane.vbox.VBoxW
 import matt.gui.action.dsl.action
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
-import matt.gui.gui.YesIUseGui
 import matt.gui.resize.DragResizer
 import matt.gui.settings.MattGeneralSettingsNode
 import matt.gui.settings.MattGeneralStateNode
@@ -20,7 +19,6 @@ class GuiTests {
         MattGeneralSettingsNode
         MattGeneralStateNode
         MattGeneralStateWindowsNode
-        YesIUseGui
     }
 
     @Test

@@ -30,7 +30,6 @@ import matt.gui.mstage.MStage
 import matt.gui.mstage.WMode
 import matt.gui.mstage.WMode.NOTHING
 import matt.lang.model.file.FsFile
-import matt.lang.println
 import matt.lang.shutdown.CancellableShutdownTask
 import matt.lang.shutdown.MyShutdownContext
 import matt.lang.sysprop.props.Monocle
@@ -223,14 +222,13 @@ open class GuiApp(
         ThreadInspectorDaemon.start()
     }
 
-    override fun extraShutdownHook(
+    final override fun extraShutdownHook(
         t: Thread,
         e: Throwable,
         shutdown: (App.() -> Unit)?,
         st: String,
         exceptionFile: FsFile
-    ): ExceptionResponse {
-        /*don't delete .. I find source of disappearing exceptions*/
+    ): ExceptionResponse {/*don't delete .. I find source of disappearing exceptions*/
         println("in extraShutdownHook")
         var r = EXIT
         if (finishedFxStartOperation) {
@@ -242,7 +240,7 @@ open class GuiApp(
             } catch (e: Throwable) {
                 try {
                     println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
-                    ThrowReport(e).println()
+                    ThrowReport(e).print()
                 } catch (ee: Throwable) {
                     println("exception in catch caluse to DefaultUncaughtExceptionHandler Exception Dialog:")
                     e.printStackTrace()
@@ -252,7 +250,7 @@ open class GuiApp(
         } else {
             try {
                 println("exception before FX finished starting")
-                ThrowReport(e).println()
+                ThrowReport(e).print()
             } catch (ee: Throwable) {
                 println("exception in catch clause before FX finished starting:")
                 e.printStackTrace()

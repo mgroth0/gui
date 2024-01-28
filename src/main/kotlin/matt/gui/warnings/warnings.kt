@@ -17,7 +17,7 @@ open class UiWithWarnings : UserInterface {
     private val warningsM = basicMutableObservableListOf<Warning>()
     private val warnings = warningsM.readOnly()
 
-    override fun warn(s: String) {
+    final override fun warn(s: String) {
         ensureInFXThreadOrRunLater {
             warningsM += Warning(s)
         }

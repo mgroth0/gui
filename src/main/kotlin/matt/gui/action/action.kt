@@ -8,6 +8,7 @@ import matt.fx.graphics.wrapper.pane.hbox.h
 import matt.fx.graphics.wrapper.text.text
 import matt.gui.action.button.actionButton
 import matt.gui.menu.context.mcontextmenu
+import matt.hotkey.KeyStroke
 import matt.model.code.idea.UserActionIdea
 import matt.model.obsmod.proceeding.Proceeding
 import matt.obs.bind.binding
@@ -18,7 +19,6 @@ import matt.obs.prop.BindableProperty
 import matt.obs.prop.ObsVal
 import matt.obs.prop.VarProp
 import matt.obs.prop.toVarProp
-import matt.hotkey.KeyStroke
 
 fun EventTargetWrapper.contextMenuAction(action: GuiAction) {
     mcontextmenu {
@@ -46,7 +46,7 @@ open class ActionOnProceeding(
     val action: GuiAction,
     val proceeding: Proceeding?
 ) {
-    override fun toString(): String {
+    final override fun toString(): String {
         return action.buttonLabel.value + " [${proceeding?.name}]"
     }
 }
