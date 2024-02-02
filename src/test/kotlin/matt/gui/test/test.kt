@@ -30,6 +30,6 @@ class GuiTests {
 
         DragResizer.makeResizable(VBoxW().apply {
 
-        }.node, {})
+        }.node) {}
     }
 }

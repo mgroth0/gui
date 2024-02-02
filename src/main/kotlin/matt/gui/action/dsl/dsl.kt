@@ -8,22 +8,22 @@ import matt.obs.prop.ValProp
 
 abstract class UI: UIIdea {
 
-  fun action(
-	buttonLabel: String? = null, op: ()->Unit
-  ) = provider {
-	valProp {
-	  GuiActionImpl(
-		buttonLabel = buttonLabel ?: it, op = op, allowed = ValProp(true)
-	  )
-	}
-  }
+    fun action(
+        buttonLabel: String? = null, op: ()->Unit
+    ) = provider {
+        valProp {
+            GuiActionImpl(
+                buttonLabel = buttonLabel ?: it, op = op, allowed = ValProp(true)
+            )
+        }
+    }
 
 }
 
 fun action(
-  buttonLabel: String, op: ()->Unit
+    buttonLabel: String, op: ()->Unit
 ) = GuiActionImpl(
-  buttonLabel = buttonLabel,
-  op = op,
-  allowed = ValProp(true)
+    buttonLabel = buttonLabel,
+    op = op,
+    allowed = ValProp(true)
 )

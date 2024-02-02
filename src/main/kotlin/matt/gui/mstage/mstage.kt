@@ -14,90 +14,90 @@ import matt.gui.mstage.WMode.NOTHING
 import matt.model.code.sys.WindowsLaptop
 
 enum class WMode {
-  CLOSE,
-  HIDE,
-  NOTHING,
-  ICONIFY
+    CLOSE,
+    HIDE,
+    NOTHING,
+    ICONIFY
 }
 
 enum class ShowMode {
-  SHOW,
-  SHOW_AND_WAIT,
-  DO_NOT_SHOW,
+    SHOW,
+    SHOW_AND_WAIT,
+    DO_NOT_SHOW,
 }
 
 open class MStage(
-  var wMode: WMode = WindowConfig.DEFAULT.wMode,
-  EscClosable: Boolean = WindowConfig.DEFAULT.EscClosable,
-  EnterClosable: Boolean = WindowConfig.DEFAULT.EnterClosable,
-  decorated: Boolean = WindowConfig.DEFAULT.decorated,
+    var wMode: WMode = WindowConfig.DEFAULT.wMode,
+    EscClosable: Boolean = WindowConfig.DEFAULT.EscClosable,
+    EnterClosable: Boolean = WindowConfig.DEFAULT.EnterClosable,
+    decorated: Boolean = WindowConfig.DEFAULT.decorated,
 ): StageWrapper(if (decorated) StageStyle.DECORATED else StageStyle.UNDECORATED) {
 
-  var decorated = decorated
-	@Synchronized set(value) {
-	  if (value != field && decorated) StageStyle.DECORATED else StageStyle.UNDECORATED
-	  field = value
-	}
+    var decorated = decorated
+        @Synchronized set(value) {
+            if (value != field && decorated) StageStyle.DECORATED else StageStyle.UNDECORATED
+            field = value
+        }
 
 
-  init {
-	hotkeys {
-	  if (thisMachine == WindowsLaptop) {
-		Q.opt op ::close // on Mac, meta-Q quits program. this an OS feature.
-	  }
-	  (if (thisMachine == WindowsLaptop) {
-		W.opt
-	  } else W.meta) op when (wMode) {
-		CLOSE   -> ::close
-		HIDE    -> ::hide
-		NOTHING -> {
-		  {}
-		}
+    init {
+        hotkeys {
+            if (thisMachine == WindowsLaptop) {
+                Q.opt op ::close // on Mac, meta-Q quits program. this an OS feature.
+            }
+            (if (thisMachine == WindowsLaptop) {
+                W.opt
+            } else W.meta) op when (wMode) {
+                CLOSE   -> ::close
+                HIDE    -> ::hide
+                NOTHING -> {
+                    {}
+                }
 
-		ICONIFY -> {
-		  {
-			(this@MStage.scene as? MScene<*>)?.iconify()
-			Unit
-		  }
-		}
+                ICONIFY -> {
+                    {
+                        (this@MStage.scene as? MScene<*>)?.iconify()
+                        Unit
+                    }
+                }
 
-	  }
-	  if (EnterClosable) RETURN op ::close
-	}
-	hotkeys(filter = true) {
-	  if (EscClosable) ESCAPE op ::close
-	}
-  }
-
-
-  var EnterClosable = EnterClosable
-	@Synchronized set(value) {
-	  if (value != field) {
-		if (value) {
-		  hotkeys {
-			RETURN op ::close
-		  }
-		} else {
-		  TODO()
-		}
-	  }
-	  field = value
-	}
+            }
+            if (EnterClosable) RETURN op ::close
+        }
+        hotkeys(filter = true) {
+            if (EscClosable) ESCAPE op ::close
+        }
+    }
 
 
-  var EscClosable = EscClosable
-	@Synchronized set(value) {
-	  if (value != field) {
-		if (value) {
-		  hotkeys(filter = true) {
-			ESCAPE op ::close
-		  }
-		} else {
-		  TODO()
-		}
-	  }
-	  field = value
-	}
+    var EnterClosable = EnterClosable
+        @Synchronized set(value) {
+            if (value != field) {
+                if (value) {
+                    hotkeys {
+                        RETURN op ::close
+                    }
+                } else {
+                    TODO()
+                }
+            }
+            field = value
+        }
+
+
+    var EscClosable = EscClosable
+        @Synchronized set(value) {
+            if (value != field) {
+                if (value) {
+                    hotkeys(filter = true) {
+                        ESCAPE op ::close
+                    }
+                } else {
+                    TODO()
+                }
+            }
+            field = value
+        }
 
 }
 

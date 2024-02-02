@@ -65,7 +65,7 @@ import matt.obs.bindings.bool.not
 import matt.obs.prop.BindableProperty
 import matt.obs.prop.ObsVal
 import java.net.URI
-import java.util.*
+import java.util.WeakHashMap
 import kotlin.jvm.optionals.getOrNull
 
 fun safe(
@@ -96,7 +96,7 @@ class MDialog<R> internal constructor() : VBoxWrapperImpl<NodeWrapper>() {
         width = 400.0
         height = 400.0
         setOnCloseRequest {
-            println("CLOSE REQUESTED FOR ${this}")
+            println("CLOSE REQUESTED FOR $this")
         }
     }
     lateinit var confirmButton: ButtonWrapper
@@ -174,8 +174,8 @@ inline fun <reified T> jsonEditor(json: String? = null) = dialog<T?> {
     val goodBind = ta.textProperty.binding {
 
         it != null
-                && it.isValidJson()
-                && noExceptions { Json.decodeFromString<T>(it) }
+            && it.isValidJson()
+            && noExceptions { Json.decodeFromString<T>(it) }
     }
     readyWhen(goodBind)
     ta.border = Color.BLACK.solidBorder() /*so it does not jitter*/

@@ -1,7 +1,6 @@
 package matt.gui.iconify
 
 import matt.fx.graphics.icon.ICON_SIZE
-import matt.lang.model.file.FsFile
 import matt.fx.graphics.icon.Icon
 import matt.fx.graphics.style.DarkModeController
 import matt.fx.graphics.style.reloadStyle
@@ -13,6 +12,7 @@ import matt.fx.graphics.wrapper.stage.StageWrapper
 import matt.gui.interact.WinGeom
 import matt.gui.interact.WinOwn
 import matt.gui.interact.openInNewWindow
+import matt.lang.model.file.FsFile
 
 fun SceneWrapper<*>.iconify(icon: FsFile) {
     var iconWindow: StageWrapper? = null

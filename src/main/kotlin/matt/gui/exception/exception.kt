@@ -90,7 +90,8 @@ fun GuiApp.showExceptionPopup(
 
                     text = "submitting (please wait)..."
                     namedThread("Submit Bug Report Thread") {
-                        try {                //			  val u = "$LOCAL_TEST_URL/issue"
+                        try {
+                            //			  val u = "$LOCAL_TEST_URL/issue"
                             //			  println("u=$u")
 
                             val u = MURL(deephysSite)/*.productionHost*/ + "issue"
@@ -106,14 +107,14 @@ fun GuiApp.showExceptionPopup(
 
                                 setOnAction {
 
-									isDisable = true
-									daemon(name="view bug") {
-										/*ON LINUX THIS MUST OCCUR IN ANOTHER THREAD*/
-										Desktop.getDesktop().browse(URI(url))
-										runLater {
-											isDisable = false
-										}
-									}
+                                    isDisable = true
+                                    daemon(name="view bug") {
+                                        /*ON LINUX THIS MUST OCCUR IN ANOTHER THREAD*/
+                                        Desktop.getDesktop().browse(URI(url))
+                                        runLater {
+                                            isDisable = false
+                                        }
+                                    }
 
                                 }
                             }

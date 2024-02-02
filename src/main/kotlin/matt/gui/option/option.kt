@@ -86,14 +86,12 @@ class ActionNotASetting(
     tooltip: String,
     val op: Op
 ) : Setting<Unit>(
-    BindableProperty(Unit), label = label, tooltip = tooltip, default = Unit
-)
+        BindableProperty(Unit), label = label, tooltip = tooltip, default = Unit
+    )
 
 abstract class SettingsData(val sectionName: String) : TypedObservableHolder() {
 
-    final override fun toStringProps(): Map<String, Any?> {
-        return mapOf("sectionName" to sectionName)
-    }
+    final override fun toStringProps(): Map<String, Any?> = mapOf("sectionName" to sectionName)
 //  override fun toString(): String {
 //	return sectionName
 //  }

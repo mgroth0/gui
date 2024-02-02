@@ -6,7 +6,6 @@ import javafx.scene.Parent
 import javafx.scene.input.ContextMenuEvent
 import javafx.scene.paint.Color
 import matt.collect.itr.recurse.recurse
-import matt.lang.model.file.FsFile
 import matt.file.commons.ICON_FOLDER
 import matt.fx.control.wrapper.wrapped.wrapped
 import matt.fx.graphics.core.scene.NEED_REVERSED_DISPLAYS_FEATURE
@@ -23,6 +22,7 @@ import matt.gui.iconify.iconify
 import matt.gui.menu.context.mcontextmenu
 import matt.gui.menu.context.showMContextMenu
 import matt.gui.settings.MattGeneralSettingsNode
+import matt.lang.model.file.FsFile
 import kotlin.reflect.KClass
 
 open class MScene<R : ParentWrapper<*>>(

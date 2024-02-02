@@ -77,7 +77,5 @@ open class UiWithWarnings : UserInterface {
 }
 
 class Warning(val message: String) {
-    override fun toString(): String {
-        return message
-    }
+    override fun toString(): String = message
 }

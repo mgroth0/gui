@@ -168,7 +168,7 @@ class NodeDebugger(
             debugNode.children.takeIf { it.isNotEmpty() }?.go { it ->
                 text("children:")
                 it.forEach {
-                    actionText("\t${it}") {
+                    actionText("\t$it") {
                         debugger.navTo(it)
                     }
                 }

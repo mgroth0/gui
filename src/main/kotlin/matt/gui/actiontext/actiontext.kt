@@ -7,16 +7,16 @@ import matt.fx.graphics.wrapper.text.text
 import matt.fx.graphics.wrapper.text.textlike.highlightOnHover
 
 fun ET.actionText(text: String, action: ()->Unit) = text(text) {
-  highlightOnHover()
-  onLeftClick {
-	action()
-  }
+    highlightOnHover()
+    onLeftClick {
+        action()
+    }
 }
 
 
 fun ET.actionLabel(text: String, action: ()->Unit) = label(text) {
-  highlightOnHover()
-  onLeftClick {
-	action()
-  }
+    highlightOnHover()
+    onLeftClick {
+        action()
+    }
 }

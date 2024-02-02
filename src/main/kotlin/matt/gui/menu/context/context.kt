@@ -41,7 +41,7 @@ import matt.log.warn.warn
 import matt.obs.prop.BindableProperty
 import matt.obs.prop.Var
 import java.lang.Thread.sleep
-import java.util.*
+import java.util.WeakHashMap
 import kotlin.reflect.KClass
 
 
@@ -276,7 +276,8 @@ private fun NodeWrapper.hotkeyInfoMenu() = MenuWrapper("Click For Hotkey Info").
     fun addInfo(type: EventHandlerType) {
         menu(
             when (type) {
-                Handler -> "handlers"; Filter -> "filters"
+                Handler -> "handlers";
+                Filter -> "filters"
             }
         ) {
 
@@ -289,7 +290,7 @@ private fun NodeWrapper.hotkeyInfoMenu() = MenuWrapper("Click For Hotkey Info").
                     }
                     item("\tqp=${h?.quickPassForNormalTyping}")
                     subNode?.hotKeyHandler?.hotkeys?.forEach { hkc ->
-                        item("\t${hkc.toString()}")
+                        item("\t$hkc")
                     }
                 }
             }

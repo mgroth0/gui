@@ -46,9 +46,7 @@ open class ActionOnProceeding(
     val action: GuiAction,
     val proceeding: Proceeding?
 ) {
-    final override fun toString(): String {
-        return action.buttonLabel.value + " [${proceeding?.name}]"
-    }
+    final override fun toString(): String = action.buttonLabel.value + " [${proceeding?.name}]"
 }
 
 interface GuiAction : UserActionIdea {

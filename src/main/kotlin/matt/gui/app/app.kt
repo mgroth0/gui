@@ -48,7 +48,7 @@ context(MyShutdownContext<CancellableShutdownTask>)
 fun startFXWidget(
     rootOp: VBoxW.() -> Unit
 ) {
-    matt.gui.app.runFXAppBlocking() {
+    matt.gui.app.runFXAppBlocking {
         root<VBoxW> {
             rootOp()
         }
@@ -92,9 +92,9 @@ open class GuiApp(
 
     private val fxThread: GuiApp.() -> Unit,
 
-    ) : App(
-    requiresBluetooth = requiresBluetooth,
-) {
+) : App(
+        requiresBluetooth = requiresBluetooth,
+    ) {
 
     private var finishedFxStartOperation = false
     var alwaysOnTop
@@ -117,7 +117,7 @@ open class GuiApp(
                 while (true) {
                     Window.getWindows().filter { it !is ContextMenu }.map { it.wrapped() }.forEach {
                         if (it.isShowing && it.screen == null && it.pullBackWhenOffScreen) {
-                            warn("resetting offscreen window: ${it},${it.node}")
+                            warn("resetting offscreen window: $it,${it.node}")
                             runLaterReturn {
                                 it.x = 0.0
                                 it.y = 0.0
@@ -230,14 +230,13 @@ open class GuiApp(
         exceptionFile: FsFile
     ): ExceptionResponse {/*don't delete .. I find source of disappearing exceptions*/
         println("in extraShutdownHook")
-        var r = EXIT
-        if (finishedFxStartOperation) {
-            try {
+        return if (finishedFxStartOperation) {
+            runCatching {
                 ensureInFXThreadInPlace {
                     println("showing exception popup for t=$t, e=$e")
-                    r = showExceptionPopup(t, e, shutdown, st)
+                    showExceptionPopup(t, e, shutdown, st)
                 }
-            } catch (e: Throwable) {
+            }.getOrElse {
                 try {
                     println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
                     ThrowReport(e).print()
@@ -245,7 +244,7 @@ open class GuiApp(
                     println("exception in catch caluse to DefaultUncaughtExceptionHandler Exception Dialog:")
                     e.printStackTrace()
                 }
-                return EXIT
+                EXIT
             }
         } else {
             try {
@@ -255,9 +254,8 @@ open class GuiApp(
                 println("exception in catch clause before FX finished starting:")
                 e.printStackTrace()
             }
-            return EXIT
+            EXIT
         }
-        return r
     }
 
     val stage by lazy {
