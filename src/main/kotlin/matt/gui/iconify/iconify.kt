@@ -34,16 +34,21 @@ fun SceneWrapper<*>.iconify(icon: FsFile) {
             (this@iconify.window as StageWrapper).show()
             (scene!!.window as StageWrapper).close()
         }
-    }.openInNewWindow(own = WinOwn.None, geom = WinGeom.ManualOr0(
-        size = ICON_SIZE,
-        x = this@iconify.window!!.x + (this@iconify.window!!.width / 2) - (ICON_SIZE.width / 2),
-        y = this@iconify.window!!.y + (this@iconify.window!!.height / 2) - (ICON_SIZE.height / 2),
-    ), mScene = false, border = false, beforeShowing = {
-        scene!!.reloadStyle(DarkModeController.darkModeProp.value)
-        DarkModeController.darkModeProp.onChangeWithWeak(this) { _, _ ->
+    }.openInNewWindow(
+        own = WinOwn.None,
+        geom =
+            WinGeom.ManualOr0(
+                size = ICON_SIZE,
+                x = this@iconify.window!!.x + (this@iconify.window!!.width / 2) - (ICON_SIZE.width / 2),
+                y = this@iconify.window!!.y + (this@iconify.window!!.height / 2) - (ICON_SIZE.height / 2)
+            ),
+        mScene = false, border = false, beforeShowing = {
             scene!!.reloadStyle(DarkModeController.darkModeProp.value)
+            DarkModeController.darkModeProp.onChangeWithWeak(this) { _, _ ->
+                scene!!.reloadStyle(DarkModeController.darkModeProp.value)
+            }
         }
-    }).apply {
+    ).apply {
         iconWindow = this
         isAlwaysOnTop = true
         noDocking()

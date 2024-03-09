@@ -18,7 +18,7 @@ import matt.fx.graphics.wrapper.text.textlike.ColoredText
 import matt.fx.graphics.wrapper.window.HasScene
 import matt.fx.graphics.wrapper.window.WindowWrapper
 import matt.gui.actiontext.actionText
-import matt.lang.go
+import matt.lang.common.go
 import matt.obs.bind.binding
 import matt.obs.bindings.str.mybuildobs.obsString
 import matt.obs.prop.ObsVal
@@ -72,21 +72,24 @@ abstract class FXObjectDebugger : VBoxW() {
     protected fun staticProp(
         label: String,
         value: Any?
-    ) = text(string {
-        +"$label: "
-        +value
-    })
+    ) = text(
+        string {
+            +"$label: "
+            +value
+        }
+    )
 
     protected fun dynamicProp(
         label: String,
         value: ObsVal<*>
-    ) = text(obsString {
-        appendStatic("$label: ")
-        +value
-    }) {
+    ) = text(
+        obsString {
+            appendStatic("$label: ")
+            +value
+        }
+    ) {
         fill = Color.LIGHTBLUE
     }
-
 }
 
 class WindowDebugger(override val debugNode: WindowWrapper<*>) : FXObjectDebugger() {
@@ -129,7 +132,12 @@ class NodeDebugger(
         dynamicProp("visible", debugNode.visibleProperty)
         dynamicProp("managed", debugNode.managedProperty)
         dynamicProp("style", debugNode.styleProperty)
-        dynamicProp("style class", debugNode.styleClass.binding { it.joinWithCommas() })
+        dynamicProp(
+            "style class",
+            debugNode.styleClass.binding {
+                it.tempDebugCollectionDelegate().joinWithCommas()
+            }
+        )
         dynamicProp("layout x", debugNode.layoutXProperty)
         dynamicProp("layout y", debugNode.layoutYProperty)
         staticProp("grid row", GridPane.getRowIndex(debugNode.node))
@@ -192,8 +200,6 @@ class NodeDebugger(
                 ta.text = action.op()
             }
         }
-
-
     }
 }
 

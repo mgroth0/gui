@@ -6,7 +6,7 @@ import javafx.scene.Parent
 import javafx.scene.input.ContextMenuEvent
 import javafx.scene.paint.Color
 import matt.collect.itr.recurse.recurse
-import matt.file.commons.ICON_FOLDER
+import matt.file.commons.reg.ICON_FOLDER
 import matt.fx.control.wrapper.wrapped.wrapped
 import matt.fx.graphics.core.scene.NEED_REVERSED_DISPLAYS_FEATURE
 import matt.fx.graphics.style.DarkModeController
@@ -70,8 +70,6 @@ open class MScene<R : ParentWrapper<*>>(
             handleContextMenuReq(e)
         }
     }
-
-
 }
 
 
@@ -110,7 +108,6 @@ private fun SceneWrapper<*>.addStyleContextMenu() {
                 }
             }
         }
-
     }
 }
 

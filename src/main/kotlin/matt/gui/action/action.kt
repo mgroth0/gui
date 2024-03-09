@@ -15,10 +15,10 @@ import matt.obs.bind.binding
 import matt.obs.bind.deepBinding
 import matt.obs.bindings.bool.ObsB
 import matt.obs.bindings.str.ObsS
-import matt.obs.prop.BindableProperty
 import matt.obs.prop.ObsVal
-import matt.obs.prop.VarProp
-import matt.obs.prop.toVarProp
+import matt.obs.prop.writable.BindableProperty
+import matt.obs.prop.writable.VarProp
+import matt.obs.prop.writable.toVarProp
 
 fun EventTargetWrapper.contextMenuAction(action: GuiAction) {
     mcontextmenu {
@@ -38,8 +38,6 @@ fun FXHotkeyDSL.action(
 ) {
 
     keystroke op { if (action.allowed.value) action.invoke() }
-//    hotkeys.add(hotkey op {  })
-
 }
 
 open class ActionOnProceeding(

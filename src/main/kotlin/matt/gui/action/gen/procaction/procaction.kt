@@ -11,36 +11,41 @@ import matt.model.obsmod.proceeding.stop.StoppableProceeding
 import matt.obs.bindings.bool.and
 import matt.obs.bindings.comp.eq
 
-fun Proceeding.startProceedingAction(): GuiAction = GuiActionImpl(
-    buttonLabel = startButtonLabel,
-    op = {
-        sendStartSignal()
-    },
-    allowed = (status.eq(OFF) and canStart)
-)
+fun Proceeding.startProceedingAction(): GuiAction =
+    GuiActionImpl(
+        buttonLabel = startButtonLabel,
+        op = {
+            sendStartSignal()
+        },
+        allowed = (status.eq(OFF) and canStart)
+    )
 
-fun StoppableProceeding.stopProceedingAction(): GuiAction = GuiActionImpl(
-    buttonLabel = stopButtonLabel,
-    op = {
-        sendStopSignal()
-    },
-    allowed = status.eq(RUNNING) and canStop
-)
+fun StoppableProceeding.stopProceedingAction(): GuiAction =
+    GuiActionImpl(
+        buttonLabel = stopButtonLabel,
+        op = {
+            sendStopSignal()
+        },
+        allowed = status.eq(RUNNING) and canStop
+    )
 
-fun ThreadProceeding.forceStopProceedingAction(): GuiAction = GuiActionImpl(
-    buttonLabel = "force stop ${this.name}",
-    op = {
-        forceStop()
-    },
-    allowed = status.eq(RUNNING)
-)
+fun ThreadProceeding.forceStopProceedingAction(): GuiAction =
+    GuiActionImpl(
+        buttonLabel = "force stop $name",
+        op = {
+            forceStop()
+        },
+        allowed = status.eq(RUNNING)
+    )
 
-fun StoppableProceeding.startOrStopAction() = OrAction(
-    startProceedingAction(),
-    stopProceedingAction()
-)
+fun StoppableProceeding.startOrStopAction() =
+    OrAction(
+        startProceedingAction(),
+        stopProceedingAction()
+    )
 
-fun ThreadProceeding.startOrForceStopAction() = OrAction(
-    startProceedingAction(),
-    forceStopProceedingAction()
-)
+fun ThreadProceeding.startOrForceStopAction() =
+    OrAction(
+        startProceedingAction(),
+        forceStopProceedingAction()
+    )

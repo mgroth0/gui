@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.Alert
 import javafx.scene.control.Alert.AlertType.WARNING
+import javafx.scene.control.ButtonType
 import javafx.scene.control.TextInputDialog
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
@@ -54,17 +55,18 @@ import matt.gui.mstage.WMode
 import matt.gui.mstage.WMode.CLOSE
 import matt.gui.mstage.WMode.NOTHING
 import matt.json.prim.isValidJson
-import matt.lang.go
+import matt.lang.common.go
+import matt.lang.common.noExceptions
+import matt.lang.common.nullIfExceptions
 import matt.lang.model.file.MacFileSystem
-import matt.lang.noExceptions
-import matt.lang.nullIfExceptions
 import matt.model.data.rect.DoubleRectSize
 import matt.obs.bind.binding
 import matt.obs.bindings.bool.ObsB
 import matt.obs.bindings.bool.not
-import matt.obs.prop.BindableProperty
 import matt.obs.prop.ObsVal
+import matt.obs.prop.writable.BindableProperty
 import java.net.URI
+import java.util.Optional
 import java.util.WeakHashMap
 import kotlin.jvm.optionals.getOrNull
 
@@ -77,9 +79,10 @@ fun safe(
         Alert.AlertType.CONFIRMATION,
         header = s,
         content = s,
-        owner = WindowWrapper.windows().firstOrNull {
-            it.focused
-        }
+        owner =
+            WindowWrapper.windows().firstOrNull {
+                it.focused
+            }
     ) {
         if (it.buttonData.isDefaultButton) {
             op()
@@ -90,15 +93,16 @@ fun safe(
 }
 
 class MDialog<R> internal constructor() : VBoxWrapperImpl<NodeWrapper>() {
-    val stg = MStage(wMode = CLOSE, EscClosable = true).apply {
-        initModality(APPLICATION_MODAL)
-        scene = MScene(this@MDialog)
-        width = 400.0
-        height = 400.0
-        setOnCloseRequest {
-            println("CLOSE REQUESTED FOR $this")
+    val stg =
+        MStage(wMode = CLOSE, EscClosable = true).apply {
+            initModality(APPLICATION_MODAL)
+            scene = MScene(this@MDialog)
+            width = 400.0
+            height = 400.0
+            setOnCloseRequest {
+                println("CLOSE REQUESTED FOR $this")
+            }
         }
-    }
     lateinit var confirmButton: ButtonWrapper
     fun confirm() = confirmButton.fire()
     val window get() = stg
@@ -134,15 +138,17 @@ fun StageWrapper.bindXYToOwnerCenter() {
         "must use initOwner before bindXYToOwnerCenter"
     }
 
-    val xBinding = owner!!.xProperty.binding(owner!!.widthProperty, widthProperty) {
-        (owner!!.x + (owner!!.width / 2)) - width / 2
-    }
+    val xBinding =
+        owner!!.xProperty.binding(owner!!.widthProperty, widthProperty) {
+            (owner!!.x + (owner!!.width / 2)) - width / 2
+        }
 
-    val yBinding = owner!!.yProperty.binding(owner!!.heightProperty, heightProperty) {
-        (owner!!.y + (owner!!.height / 2)) - height / 2
-    }
-    aXBindingStrengthener[this.node] = xBinding
-    aYBindingStrengthener[this.node] = yBinding
+    val yBinding =
+        owner!!.yProperty.binding(owner!!.heightProperty, heightProperty) {
+            (owner!!.y + (owner!!.height / 2)) - height / 2
+        }
+    aXBindingStrengthener[node] = xBinding
+    aYBindingStrengthener[node] = yBinding
     x = xBinding.value
     xBinding.onChange {
         x = it
@@ -168,28 +174,31 @@ fun StageWrapper.bindHWToOwner() {
 }
 
 
-inline fun <reified T> jsonEditor(json: String? = null) = dialog<T?> {
-    val ta = textarea(json ?: "")
+inline fun <reified T> jsonEditor(json: String? = null) =
+    dialog<T?> {
+        val ta = textarea(json ?: "")
 
-    val goodBind = ta.textProperty.binding {
+        val goodBind =
+            ta.textProperty.binding {
 
-        it != null
-            && it.isValidJson()
-            && noExceptions { Json.decodeFromString<T>(it) }
+                it != null
+                    && it.isValidJson()
+                    && noExceptions { Json.decodeFromString<T>(it) }
+            }
+        readyWhen(goodBind)
+        ta.border = Color.BLACK.solidBorder() /*so it does not jitter*/
+        goodBind.onChange {
+            ta.border = if (it) Color.BLACK.solidBorder() else Color.RED.solidBorder()
+        }
+        setResultConverter {
+            ta.text.takeIf { it.isValidJson() }?.let { nullIfExceptions { Json.decodeFromString<T>(it) } }
+        }
     }
-    readyWhen(goodBind)
-    ta.border = Color.BLACK.solidBorder() /*so it does not jitter*/
-    goodBind.onChange {
-        ta.border = if (it) Color.BLACK.solidBorder() else Color.RED.solidBorder()
-    }
-    setResultConverter {
-        ta.text.takeIf { it.isValidJson() }?.let { nullIfExceptions { Json.decodeFromString<T>(it) } }
-    }
-}
 
-fun popupWarning(string: String) = ensureInFXThreadInPlace {
-    alert(WARNING, string).showAndWait()
-}
+fun popupWarning(string: String): Optional<ButtonType> =
+    ensureInFXThreadInPlace {
+        alert(WARNING, string).showAndWait()
+    }
 
 fun popupTextInput(
     prompt: String,
@@ -210,9 +219,10 @@ fun <T : Any> popupChoiceBox(
 ) = ensureInFXThreadInPlace {
     dialog {
         text(prompt)
-        val cb = choicebox<T>(
-            values = choices
-        )
+        val cb =
+            choicebox<T>(
+                values = choices
+            )
         setResultConverter {
             cb.value
         }
@@ -221,16 +231,18 @@ fun <T : Any> popupChoiceBox(
 
 fun <R> NodeWrapper.dialog(
     cfg: MDialog<R>.() -> Unit
-): R? = globalDialog<R> {
-    owner = this@dialog.stage?.node
-    cfg.invoke(this)
-}
+): R? =
+    globalDialog<R> {
+        owner = this@dialog.stage?.node
+        cfg.invoke(this)
+    }
 
 private inline fun <R> globalDialog(
     crossinline cfg: MDialog<R>.() -> Unit
-): R? = dialog<R> {
-    cfg.invoke(this)
-}
+): R? =
+    dialog<R> {
+        cfg.invoke(this)
+    }
 
 fun <R> dialog(
     cfg: MDialog<R>.() -> Unit
@@ -243,7 +255,7 @@ fun <R> dialog(
 
     if (d.stg.owner != null) {
         Centered().applyTo(d.stg)
-    } // d.stage„.initAndCenterToOwner(own)
+    }
     var r: R? = null
     d.hbox<NodeWrapper> {
         prefWidthProperty.bind(d.widthProperty)
@@ -252,14 +264,15 @@ fun <R> dialog(
             styleClass += "CancelButton"
             d.stg.close()
         }
-        d.confirmButton = button("confirm") {
-            styleClass += "ConfirmButton"
-            disableWhen { d.readyProperty.not() }
-            setOnAction {
-                r = d.getResult()
-                d.stg.close()
+        d.confirmButton =
+            button("confirm") {
+                styleClass += "ConfirmButton"
+                disableWhen { d.readyProperty.not() }
+                setOnAction {
+                    r = d.getResult()
+                    d.stg.close()
+                }
             }
-        }
         d.scene!!.addEventFilter(KeyEvent.KEY_PRESSED) {
             if (it.code == KeyCode.ENTER) {
                 if (d.readyProperty.value) {
@@ -323,24 +336,13 @@ sealed class WinGeom {
                 if (bind) win.bindXYToOwnerCenter()
             }
             /*require(win.owner != null) { "use initOwner first" }*/
-
-
         }
     }
 
     object Max : WinGeom() {
         override fun applyTo(win: StageWrapper) {
             win.isMaximized = true
-            //	  win.width = width
-            //	  win.height = height
-            //	  if (win.owner == null) {
-            //		win.centerOnScreen()
-            //	  } else {
-            //		win.bindXYToOwnerCenter()
-            //	  }
             /*require(win.owner != null) { "use initOwner first" }*/
-
-
         }
     }
 
@@ -388,7 +390,6 @@ sealed class WinOwn {
             Window.getWindows().firstOrNull()?.go {
                 win.initOwner(it)
             } ?: win.initNoOwner()
-
         }
     }
 
@@ -408,7 +409,7 @@ data class WindowConfig(
     val decorated: Boolean = false,
     val alwaysOnTop: Boolean = false,
     val title: String? = null,
-    val beforeShowing: StageWrapper.() -> Unit = {},
+    val beforeShowing: StageWrapper.() -> Unit = {}
 ) {
     companion object {
         val DEFAULT by lazy {
@@ -416,14 +417,15 @@ data class WindowConfig(
         }
     }
 
-    fun createWindow(root: ParentWrapper<*>) = MStage(
-        wMode = wMode,
-        EscClosable = EscClosable,
-        EnterClosable = EnterClosable,
-        decorated = decorated
-    ).also {
-        applyToAlreadyCreated(it, root)
-    }
+    fun createWindow(root: ParentWrapper<*>) =
+        MStage(
+            wMode = wMode,
+            EscClosable = EscClosable,
+            EnterClosable = EnterClosable,
+            decorated = decorated
+        ).also {
+            applyToAlreadyCreated(it, root)
+        }
 
     fun applyTo(
         window: MStage,
@@ -476,7 +478,7 @@ fun ParentWrapper<*>.openInNewWindow(
     decorated: Boolean = false,
     alwaysOnTop: Boolean = false,
     title: String? = null,
-    beforeShowing: StageWrapper.() -> Unit = {},
+    beforeShowing: StageWrapper.() -> Unit = {}
 ) = WindowConfig(
     showMode = showMode,
     wMode = wMode,
@@ -494,26 +496,29 @@ fun ParentWrapper<*>.openInNewWindow(
 
 
 fun matt.file.JioFile.openImageInWindow() {
-    AnchorPaneWrapperImpl<NodeWrapper>(ImageViewWrapper(this@openImageInWindow.toURI().toString()).apply {
-        isPreserveRatio = true
-        runLater {
-            fitHeightProperty.bind(scene!!.window!!.heightProperty.cast())
-            fitWidthProperty.bind(scene!!.window!!.widthProperty.cast())
-            this.setOnDoubleClick { (scene!!.window as StageWrapper).close() }
+    AnchorPaneWrapperImpl<NodeWrapper>(
+        ImageViewWrapper(this@openImageInWindow.toUri().toString()).apply {
+            isPreserveRatio = true
+            runLater {
+                fitHeightProperty.bind(scene!!.window!!.heightProperty.cast())
+                fitWidthProperty.bind(scene!!.window!!.widthProperty.cast())
+                setOnDoubleClick { (scene!!.window as StageWrapper).close() }
+            }
         }
-    }).openInNewWindow()
+    ).openInNewWindow()
 }
 
 fun ImageViewWrapper.doubleClickToOpenInWindow() {
-    this.setOnDoubleClick { with(MacFileSystem) { mFile(URI(this@doubleClickToOpenInWindow.image!!.url))}.toJioFile().openImageInWindow() }
+    setOnDoubleClick { with(MacFileSystem) { mFile(URI(this@doubleClickToOpenInWindow.image!!.url)) }.toJioFile().openImageInWindow() }
 }
 
 fun NodeWrapper.textInput(
     default: String = "insert default here",
     prompt: String = "insert prompt here"
-): String? = TextInputDialog(default).apply {
-    initOwner(stage?.node)
-    contentText = prompt
-    initStyle(StageStyle.UTILITY)
-}.showAndWait().getOrNull()
+): String? =
+    TextInputDialog(default).apply {
+        initOwner(stage?.node)
+        contentText = prompt
+        initStyle(StageStyle.UTILITY)
+    }.showAndWait().getOrNull()
 

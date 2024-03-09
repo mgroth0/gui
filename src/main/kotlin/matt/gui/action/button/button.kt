@@ -7,13 +7,14 @@ import matt.fx.graphics.wrapper.node.NW
 import matt.gui.action.GuiAction
 import matt.obs.bind.deepBinding
 import matt.obs.prop.ObsVal
-import matt.obs.prop.toVarProp
+import matt.obs.prop.writable.toVarProp
 
 fun NW.actionButton(a: GuiAction): ButtonWrapper = actionButton(a.toVarProp())
 
-fun NW.actionButton(a: ObsVal<GuiAction>) = button(a.deepBinding { it.buttonLabel.nonBlockingFXWatcher() }) {
-    enableProperty.bind(a.deepBinding { it.allowed.nonBlockingFXWatcher() })
-    setOnAction {
-        a.value()
+fun NW.actionButton(a: ObsVal<GuiAction>) =
+    button(a.deepBinding { it.buttonLabel.nonBlockingFXWatcher() }) {
+        enableProperty.bind(a.deepBinding { it.allowed.nonBlockingFXWatcher() })
+        setOnAction {
+            a.value()
+        }
     }
-}

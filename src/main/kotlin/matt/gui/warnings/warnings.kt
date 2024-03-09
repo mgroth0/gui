@@ -10,7 +10,7 @@ import matt.gui.interact.openInNewWindow
 import matt.model.obj.ui.UserInterface
 import matt.obs.col.olist.basicMutableObservableListOf
 import matt.obs.col.olist.readOnly
-import matt.obs.prop.toVarProp
+import matt.obs.prop.writable.toVarProp
 
 open class UiWithWarnings : UserInterface {
 
@@ -41,14 +41,14 @@ open class UiWithWarnings : UserInterface {
 
             listview(warnings) {
                 simpleCellFactoryFromProps { warning ->
-                    warning.message.toVarProp() to ButtonWrapper().apply {
-                        setOnAction {
-                            removeWarning(warning)
-                        }
-                    }.toVarProp()
+                    warning.message.toVarProp() to
+                        ButtonWrapper().apply {
+                            setOnAction {
+                                removeWarning(warning)
+                            }
+                        }.toVarProp()
                 }
             }
-
         }.openInNewWindow {
 
             runLater {
@@ -69,11 +69,9 @@ open class UiWithWarnings : UserInterface {
                     }
                     update()
                 }
-
             }
         }
     }
-
 }
 
 class Warning(val message: String) {

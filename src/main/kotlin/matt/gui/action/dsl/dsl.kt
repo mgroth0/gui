@@ -9,7 +9,8 @@ import matt.obs.prop.ValProp
 abstract class UI: UIIdea {
 
     fun action(
-        buttonLabel: String? = null, op: ()->Unit
+        buttonLabel: String? = null,
+        op: () -> Unit
     ) = provider {
         valProp {
             GuiActionImpl(
@@ -17,11 +18,11 @@ abstract class UI: UIIdea {
             )
         }
     }
-
 }
 
 fun action(
-    buttonLabel: String, op: ()->Unit
+    buttonLabel: String,
+    op: () -> Unit
 ) = GuiActionImpl(
     buttonLabel = buttonLabel,
     op = op,

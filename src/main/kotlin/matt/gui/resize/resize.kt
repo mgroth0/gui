@@ -9,7 +9,7 @@ import javafx.scene.layout.Region
 
 class DragResizer private constructor(
     private val region: Region,
-    val op: (Double)->Unit
+    val op: (Double) -> Unit
 ) {
     private var y = 0.0
     private var initMinHeight = false
@@ -56,7 +56,7 @@ class DragResizer private constructor(
         const val RESIZE_MARGIN = 5
         fun makeResizable(
             region: Region,
-            op: (Double)->Unit
+            op: (Double) -> Unit
         ) {
             val resizer = DragResizer(region, op)
             region.onMousePressed = EventHandler { event -> resizer.mousePressed(event) }

@@ -5,8 +5,8 @@ import matt.lang.delegation.fullProvider
 import matt.lang.function.Op
 import matt.model.flowlogic.recursionblocker.RecursionBlocker
 import matt.obs.hold.TypedObservableHolder
-import matt.obs.prop.BindableProperty
-import matt.obs.prop.Var
+import matt.obs.prop.writable.BindableProperty
+import matt.obs.prop.writable.Var
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
@@ -35,24 +35,23 @@ class EnumSetting<E : Enum<E>>(
     tooltip: String,
     default: E
 ) : Setting<E>(prop, label = label, tooltip = tooltip, default = default) {
-    fun createBoundToggleMechanism() = ToggleMechanism<E>().apply {
-        val rBlocker = RecursionBlocker()
-        selectValue(prop.value)
-        selectedValue.onChange {
-            if (it != null) {
+    fun createBoundToggleMechanism() =
+        ToggleMechanism<E>().apply {
+            val rBlocker = RecursionBlocker()
+            selectValue(prop.value)
+            selectedValue.onChange {
+                if (it != null) {
+                    rBlocker.with {
+                        prop.value = it
+                    }
+                }
+            }
+            prop.onChange {
                 rBlocker.with {
-                    prop.value = it
+                    selectValue(it)
                 }
             }
         }
-        prop.onChange {
-            rBlocker.with {
-                selectValue(it)
-            }
-        }
-    }
-
-
 }
 
 class IntSetting(
@@ -92,9 +91,6 @@ class ActionNotASetting(
 abstract class SettingsData(val sectionName: String) : TypedObservableHolder() {
 
     final override fun toStringProps(): Map<String, Any?> = mapOf("sectionName" to sectionName)
-//  override fun toString(): String {
-//	return sectionName
-//  }
 
     @PublishedApi
     internal val mSettings = mutableListOf<Setting<*>>()
@@ -119,19 +115,6 @@ abstract class SettingsData(val sectionName: String) : TypedObservableHolder() {
         mSettings += notASetting
         notASetting
     }
-//
-//  protected inner class ActionNotASettingProv(
-//	private val label: String,
-//	private val tooltip: String,
-//	private val action: Op
-//  ) {
-//	operator fun provideDelegate(
-//	  thisRef: TypedObservableHolder,
-//	  prop: KProperty<*>,
-//	) = valProp {
-//
-//	}
-//  }
 
 
     protected inline fun <reified E : Enum<E>> enumSettingProv(
@@ -140,9 +123,10 @@ abstract class SettingsData(val sectionName: String) : TypedObservableHolder() {
         tooltip: String
     ) = fullProvider { tr, p ->
         registeredProp(defaultValue).provideDelegate(this, p).also {
-            mSettings += EnumSetting(
-                E::class, it.getValue(tr, p), label = label, tooltip = tooltip, default = defaultValue
-            )
+            mSettings +=
+                EnumSetting(
+                    E::class, it.getValue(tr, p), label = label, tooltip = tooltip, default = defaultValue
+                )
         }
     }
 
@@ -154,7 +138,7 @@ abstract class SettingsData(val sectionName: String) : TypedObservableHolder() {
     ) {
         operator fun provideDelegate(
             thisRef: TypedObservableHolder,
-            prop: KProperty<*>,
+            prop: KProperty<*>
         ) = registeredProp(defaultValue).provideDelegate(thisRef, prop).also {
             mSettings += BoolSetting(it.getValue(thisRef, prop), label = label, tooltip = tooltip, defaultValue)
         }
@@ -169,16 +153,17 @@ abstract class SettingsData(val sectionName: String) : TypedObservableHolder() {
     ) {
         operator fun provideDelegate(
             thisRef: TypedObservableHolder,
-            prop: KProperty<*>,
+            prop: KProperty<*>
         ) = registeredProp(defaultValue).provideDelegate(thisRef, prop).also {
-            mSettings += IntSetting(
-                it.getValue(thisRef, prop),
-                label = label,
-                tooltip = tooltip,
-                min = min,
-                max = max,
-                default = defaultValue
-            )
+            mSettings +=
+                IntSetting(
+                    it.getValue(thisRef, prop),
+                    label = label,
+                    tooltip = tooltip,
+                    min = min,
+                    max = max,
+                    default = defaultValue
+                )
         }
     }
 
@@ -192,19 +177,18 @@ abstract class SettingsData(val sectionName: String) : TypedObservableHolder() {
     ) {
         operator fun provideDelegate(
             thisRef: TypedObservableHolder,
-            prop: KProperty<*>,
+            prop: KProperty<*>
         ) = registeredProp(defaultValue).provideDelegate(thisRef, prop).also {
-            mSettings += DoubleSetting(
-                it.getValue(thisRef, prop),
-                label = label,
-                tooltip = tooltip,
-                min = min,
-                max = max,
-                default = defaultValue,
-                showControl = showControl
-            )
+            mSettings +=
+                DoubleSetting(
+                    it.getValue(thisRef, prop),
+                    label = label,
+                    tooltip = tooltip,
+                    min = min,
+                    max = max,
+                    default = defaultValue,
+                    showControl = showControl
+                )
         }
     }
-
-
 }

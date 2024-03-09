@@ -14,22 +14,24 @@ import kotlin.test.Test
 
 class GuiTests {
     @Test
-    fun initObjects() = assertRunsInOneMinute {
-        ThreadInspectorDaemon
-        MattGeneralSettingsNode
-        MattGeneralStateNode
-        MattGeneralStateWindowsNode
-    }
-
-    @Test
-    fun constructObjects() = assertRunsInOneMinute {
-        GeometryNode("abc")
-        action("abc") {
-
+    fun initObjects() =
+        assertRunsInOneMinute {
+            ThreadInspectorDaemon
+            MattGeneralSettingsNode
+            MattGeneralStateNode
+            MattGeneralStateWindowsNode
         }
 
-        DragResizer.makeResizable(VBoxW().apply {
+    @Test
+    fun constructObjects() =
+        assertRunsInOneMinute {
+            GeometryNode("abc")
+            action("abc") {
+            }
 
-        }.node) {}
-    }
+            DragResizer.makeResizable(
+                VBoxW().apply {
+                }.node
+            ) {}
+        }
 }

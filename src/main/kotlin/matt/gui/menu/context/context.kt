@@ -12,7 +12,7 @@ import javafx.scene.control.MenuItem
 import javafx.scene.shape.Shape
 import matt.async.thread.namedThread
 import matt.collect.itr.recurse.chain.chain
-import matt.collect.map.dmap.withStoringDefault
+import matt.collect.map.dmap.inter.withStoringDefault
 import matt.collect.map.lazyMap
 import matt.collect.map.sync.synchronized
 import matt.fx.control.wrapper.contextmenu.ContextMenuWrapper
@@ -37,15 +37,15 @@ import matt.gui.menu.context.EventHandlerType.Handler
 import matt.gui.menu.context.debug.SceneDebugger
 import matt.lang.assertions.require.requireNot
 import matt.log.tab
-import matt.log.warn.warn
-import matt.obs.prop.BindableProperty
-import matt.obs.prop.Var
+import matt.log.warn.common.warn
+import matt.obs.prop.writable.BindableProperty
+import matt.obs.prop.writable.Var
 import java.lang.Thread.sleep
 import java.util.WeakHashMap
 import kotlin.reflect.KClass
 
 
-fun EventTargetWrapper.mcontextmenu(op: MContextMenuBuilder.() -> Unit) = MContextMenuBuilder(this.node).apply(op)
+fun EventTargetWrapper.mcontextmenu(op: MContextMenuBuilder.() -> Unit) = MContextMenuBuilder(node).apply(op)
 
 
 @FXNodeWrapperDSL
@@ -112,23 +112,15 @@ class MContextMenuBuilder(
     fun onRequest(op: MContextMenuBuilder.() -> Unit) {
         requireNot(isGen)
         contextMenuItemGens[node]!!.add(op)
-
     }
-    //
-    //  fun <T: Any?> onRequest(keyGetter: ()->T, op: MContextMenuBuilder.(T)->Unit) {
-    //	require(!isGen)
-    //	contextMenuItemsByKey[node]!![key]!!.add(op(keyGetter()))
-    //  }
-
-
 }
 
 private fun getCMItems(node: EventTarget): List<MenuItemWrapper<*>>? {
     val normal = contextMenuItems[node]!!
-    val gen = contextMenuItemGens[node]!!.flatMap {
-        MContextMenuBuilder(node, isGen = true).apply(it).genList
-    }
-    //  val keyGen = contextMenuItemsByKey[node]!!
+    val gen =
+        contextMenuItemGens[node]!!.flatMap {
+            MContextMenuBuilder(node, isGen = true).apply(it).genList
+        }
     return (normal + gen).takeIf { it.isNotEmpty() }
 }
 
@@ -147,7 +139,6 @@ abstract class RunOnce {
             ranOnce += this::class
         }
     }
-
 }
 
 
@@ -173,12 +164,13 @@ class CmFix : RunOnce() {
     }
 }
 
-val contextMenus = lazyMap<Scene, ContextMenuWrapper> {
-    ContextMenuWrapper().apply {
-        isAutoHide = true
-        isAutoFix = true
+val contextMenus =
+    lazyMap<Scene, ContextMenuWrapper> {
+        ContextMenuWrapper().apply {
+            isAutoHide = true
+            isAutoFix = true
+        }
     }
-}
 
 
 /**
@@ -221,42 +213,44 @@ fun SceneWrapper<*>.showMContextMenu(
             height = 1500.0
         }
     }
-    val cm = contextMenus[this.node].apply {
-        items.clear()
-        var node: EventTarget = target
-        while (true) {
-            getCMItems(node)?.let {
-                if (items.isNotEmpty()) separator()
-                items += it.map { it.node }
-            }
-            try {
+    val cm =
+        contextMenus[node].apply {
+            items.clear()
+            var node: EventTarget = target
+            while (true) {
+                getCMItems(node)?.let {
+                    if (items.isNotEmpty()) separator()
+                    items += it.map { it.node }
+                }
+                try {
 
-                val maybeNode: EventTarget? = when (node) {
-                    is Parent -> node.parent ?: node.scene
-                    is Shape  -> node.parent
-                    is Canvas -> node.parent
-                    is Scene  -> node.window
-                    else      -> break
-                }
-                val debugShape = node as? Shape
-                node = maybeNode ?: run {
-                    warn("got null parent in context menu generator again. not showing context menu. node=$node, shape=$debugShape, shape.parent=${debugShape?.parent}}")
+                    val maybeNode: EventTarget? =
+                        when (node) {
+                            is Parent -> node.parent ?: node.scene
+                            is Shape  -> node.parent
+                            is Canvas -> node.parent
+                            is Scene  -> node.window
+                            else      -> break
+                        }
+                    val debugShape = node as? Shape
+                    node = maybeNode ?: run {
+                        warn("got null parent in context menu generator again. not showing context menu. node=$node, shape=$debugShape, shape.parent=${debugShape?.parent}}")
+                        System.err.println("here is the stack trace:")
+                        Thread.dumpStack()
+                        return
+                    }
+                } catch (e: NullPointerException) {
+                    warn("got null parent in context menu generator again")
                     System.err.println("here is the stack trace:")
-                    Thread.dumpStack()
-                    return
+                    e.printStackTrace()
+                    items.add(MenuItem("Got weird null parent in context menu generator! see log for stack trace"))
+                    break
                 }
-            } catch (e: NullPointerException) {
-                warn("got null parent in context menu generator again")
-                System.err.println("here is the stack trace:")
-                e.printStackTrace()
-                items.add(MenuItem("Got weird null parent in context menu generator! see log for stack trace"))
-                break
             }
+            if (items.isNotEmpty()) separator()
+            items += target.wrapped().hotkeyInfoMenu().node
+            items += devMenu.node
         }
-        if (items.isNotEmpty()) separator()
-        items += target.wrapped().hotkeyInfoMenu().node
-        items += devMenu.node
-    }
     val sce = target.scene
     if (sce != null && sce.window != null) {
         /*without this if statement, I sometimes get errors if the node left the scene or something right after I clicked. Its possible if I put the context menu event in a runAfter*/
@@ -271,45 +265,41 @@ enum class EventHandlerType {
 }
 
 
-private fun NodeWrapper.hotkeyInfoMenu() = MenuWrapper("Click For Hotkey Info").apply {
-    val node = this@hotkeyInfoMenu
-    fun addInfo(type: EventHandlerType) {
-        menu(
-            when (type) {
-                Handler -> "handlers";
-                Filter -> "filters"
-            }
-        ) {
+private fun NodeWrapper.hotkeyInfoMenu() =
+    MenuWrapper("Click For Hotkey Info").apply {
+        val node = this@hotkeyInfoMenu
+        fun addInfo(type: EventHandlerType) {
+            menu(
+                when (type) {
+                    Handler -> "handlers"
+                    Filter -> "filters"
+                }
+            ) {
 
 
-            (node.chain { it.parent } + node.scene + node.stage).forEach { subNode ->
-                menu(subNode.toString()) {
-                    val h = when (type) {
-                        Handler -> subNode?.hotKeyHandler
-                        Filter  -> subNode?.hotKeyFilter
-                    }
-                    item("\tqp=${h?.quickPassForNormalTyping}")
-                    subNode?.hotKeyHandler?.hotkeys?.forEach { hkc ->
-                        item("\t$hkc")
+                (node.chain { it.parent } + node.scene + node.stage).forEach { subNode ->
+                    menu(subNode.toString()) {
+                        val h =
+                            when (type) {
+                                Handler -> subNode?.hotKeyHandler
+                                Filter  -> subNode?.hotKeyFilter
+                            }
+                        item("\tqp=${h?.quickPassForNormalTyping}")
+                        subNode?.hotKeyHandler?.hotkeys?.forEach { hkc ->
+                            item("\t$hkc")
+                        }
                     }
                 }
             }
         }
+
+
+        setOnAction {
+            items.clear()
+            addInfo(Handler)
+            addInfo(Filter)
+        }
     }
-
-
-    setOnAction {
-        items.clear()
-        addInfo(Handler)
-        addInfo(Filter)
-
-
-    }
-    //  setOnMouseClicked {
-    //
-    //  }
-
-}
 
 
 private val contextMenuItems =

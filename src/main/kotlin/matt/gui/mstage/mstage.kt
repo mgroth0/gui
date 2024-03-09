@@ -23,14 +23,14 @@ enum class WMode {
 enum class ShowMode {
     SHOW,
     SHOW_AND_WAIT,
-    DO_NOT_SHOW,
+    DO_NOT_SHOW
 }
 
 open class MStage(
     var wMode: WMode = WindowConfig.DEFAULT.wMode,
     EscClosable: Boolean = WindowConfig.DEFAULT.EscClosable,
     EnterClosable: Boolean = WindowConfig.DEFAULT.EnterClosable,
-    decorated: Boolean = WindowConfig.DEFAULT.decorated,
+    decorated: Boolean = WindowConfig.DEFAULT.decorated
 ): StageWrapper(if (decorated) StageStyle.DECORATED else StageStyle.UNDECORATED) {
 
     var decorated = decorated
@@ -43,25 +43,27 @@ open class MStage(
     init {
         hotkeys {
             if (thisMachine == WindowsLaptop) {
-                Q.opt op ::close // on Mac, meta-Q quits program. this an OS feature.
+                Q.opt op ::close /* on Mac, meta-Q quits program. this an OS feature. */
             }
-            (if (thisMachine == WindowsLaptop) {
-                W.opt
-            } else W.meta) op when (wMode) {
-                CLOSE   -> ::close
-                HIDE    -> ::hide
-                NOTHING -> {
-                    {}
-                }
+            (
+                if (thisMachine == WindowsLaptop) {
+                    W.opt
+                } else W.meta
+            ) op
+                when (wMode) {
+                    CLOSE   -> ::close
+                    HIDE    -> ::hide
+                    NOTHING -> {
+                        {}
+                    }
 
-                ICONIFY -> {
-                    {
-                        (this@MStage.scene as? MScene<*>)?.iconify()
-                        Unit
+                    ICONIFY -> {
+                        {
+                            (this@MStage.scene as? MScene<*>)?.iconify()
+                            Unit
+                        }
                     }
                 }
-
-            }
             if (EnterClosable) RETURN op ::close
         }
         hotkeys(filter = true) {
@@ -98,6 +100,5 @@ open class MStage(
             }
             field = value
         }
-
 }
 

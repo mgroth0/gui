@@ -6,8 +6,8 @@ import javafx.stage.Screen
 import javafx.stage.Window
 import matt.async.thread.daemon
 import matt.exec.app.App
-import matt.file.commons.LogContext
-import matt.file.commons.mattLogContext
+import matt.file.commons.logctx.LogContext
+import matt.file.commons.reg.mattLogContext
 import matt.fx.control.fxapp.DEFAULT_THROW_ON_APP_THREAD_THROWABLE
 import matt.fx.control.fxapp.runFXAppBlocking
 import matt.fx.control.wrapper.wrapped.wrapped
@@ -29,34 +29,22 @@ import matt.gui.mscene.MScene
 import matt.gui.mstage.MStage
 import matt.gui.mstage.WMode
 import matt.gui.mstage.WMode.NOTHING
+import matt.lang.j.myPid
 import matt.lang.model.file.FsFile
-import matt.lang.shutdown.CancellableShutdownTask
-import matt.lang.shutdown.MyShutdownContext
-import matt.lang.sysprop.props.Monocle
+import matt.lang.shutdown.TypicalShutdownContext
+import matt.lang.sysprop.props.j.Monocle
 import matt.log.logger.Logger
 import matt.log.profile.err.ExceptionResponse
 import matt.log.profile.err.ExceptionResponse.EXIT
 import matt.log.reporter.TracksTime
-import matt.log.warn.warn
-import matt.model.code.errreport.ThrowReport
+import matt.log.warn.common.warn
+import matt.model.code.errreport.createThrowReport
 import matt.model.code.report.Reporter
 import matt.model.flowlogic.singlerunlambda.SingleRunLambda
-import matt.rstruct.modId
+import matt.rstruct.desktop.modId
 import kotlin.reflect.full.createInstance
 
-context(MyShutdownContext<CancellableShutdownTask>)
-fun startFXWidget(
-    rootOp: VBoxW.() -> Unit
-) {
-    matt.gui.app.runFXAppBlocking {
-        root<VBoxW> {
-            rootOp()
-        }
-    }
-}
-
-
-context(MyShutdownContext<CancellableShutdownTask>)
+context(TypicalShutdownContext)
 fun runFXWidgetBlocking(
     decorated: Boolean = false,
     rootOp: VBoxW.() -> Unit
@@ -68,19 +56,19 @@ fun runFXWidgetBlocking(
     }
 }
 
-context(MyShutdownContext<CancellableShutdownTask>)
+context(TypicalShutdownContext)
 fun runFXAppBlocking(
     decorated: Boolean = WindowConfig.DEFAULT.decorated,
     fxThread: GuiApp.() -> Unit
 ) {
     GuiApp(
         fxThread = fxThread,
-        decorated = decorated,
+        decorated = decorated
     ).runBlocking()
 }
 
 
-context(MyShutdownContext<CancellableShutdownTask>)
+context(TypicalShutdownContext)
 @FXNodeWrapperDSL
 open class GuiApp(
     val screenIndex: Int? = null,
@@ -90,10 +78,10 @@ open class GuiApp(
     enterClosable: Boolean = false,
     requiresBluetooth: Boolean = false,
 
-    private val fxThread: GuiApp.() -> Unit,
+    private val fxThread: GuiApp.() -> Unit
 
 ) : App(
-        requiresBluetooth = requiresBluetooth,
+        requiresBluetooth = requiresBluetooth
     ) {
 
     private var finishedFxStartOperation = false
@@ -108,10 +96,7 @@ open class GuiApp(
     var scene: MScene<ParentWrapper<*>>? = null
 
     val fxThreadW: GuiApp.() -> Unit = {
-//        val t = tic("fxThreadW", enabled = false)
-//        t.toc(0)
         fxThread()
-//        t.toc(1)
         if (!Monocle.isEnabledInThisRuntime()) {
             daemon(name = "Window Fixer Daemon") {
                 while (true) {
@@ -132,11 +117,9 @@ open class GuiApp(
         } else {
             println("did not run window fixer daemon")
         }
-//        t.toc(2)
         if (scene != null) {
             stage.apply {
                 scene = this@GuiApp.scene!!
-//                t.toc(2.5)
                 if (!Monocle.isEnabledInThisRuntime()) {
                     if (this@GuiApp.screenIndex != null && this@GuiApp.screenIndex < Screen.getScreens().size) {
                         val screen = Screen.getScreens()[this@GuiApp.screenIndex]
@@ -148,11 +131,8 @@ open class GuiApp(
                         height = screen.bounds.height - menuY
                     }
                 }
-//                t.toc(2.6)
             }.show()
-//            t.toc(2.7)
         }
-//        t.toc(3)
     }
 
 
@@ -187,9 +167,10 @@ open class GuiApp(
 
         (t as? TracksTime)?.toc("installed WrapperService")
 
-        val singleRunShutdown = SingleRunLambda {
-            shutdown?.invoke(this)
-        }
+        val singleRunShutdown =
+            SingleRunLambda {
+                shutdown?.invoke(this)
+            }
 
 
 
@@ -209,7 +190,7 @@ open class GuiApp(
 
 
         (t as? TracksTime)?.toc("about to run FX app blocking")
-        (t as? Logger)?.info("launching app (mypid = ${matt.lang.myPid})")
+        (t as? Logger)?.info("launching app (mypid = $myPid)")
         runFXAppBlocking(
             usePreloaderApp = usePreloaderApp,
             reporter = t,
@@ -228,7 +209,8 @@ open class GuiApp(
         shutdown: (App.() -> Unit)?,
         st: String,
         exceptionFile: FsFile
-    ): ExceptionResponse {/*don't delete .. I find source of disappearing exceptions*/
+    ): ExceptionResponse {
+        /*don't delete .. I find source of disappearing exceptions*/
         println("in extraShutdownHook")
         return if (finishedFxStartOperation) {
             runCatching {
@@ -239,7 +221,7 @@ open class GuiApp(
             }.getOrElse {
                 try {
                     println("exception in DefaultUncaughtExceptionHandler Exception Dialog:")
-                    ThrowReport(e).print()
+                    createThrowReport(e).print()
                 } catch (ee: Throwable) {
                     println("exception in catch caluse to DefaultUncaughtExceptionHandler Exception Dialog:")
                     e.printStackTrace()
@@ -249,7 +231,7 @@ open class GuiApp(
         } else {
             try {
                 println("exception before FX finished starting")
-                ThrowReport(e).print()
+                createThrowReport(e).print()
             } catch (ee: Throwable) {
                 println("exception in catch clause before FX finished starting:")
                 e.printStackTrace()
