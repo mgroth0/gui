@@ -26,7 +26,7 @@ import matt.prim.str.joinWithCommas
 import matt.prim.str.mybuild.api.string
 
 
-class SceneDebugger : VBoxW() {
+class SceneDebugger : VBoxW(childClass = NodeWrapper::class) {
 
     companion object {
         const val TITLE = "Scene Debugger"
@@ -66,7 +66,7 @@ class SceneDebugger : VBoxW() {
     }
 }
 
-abstract class FXObjectDebugger : VBoxW() {
+abstract class FXObjectDebugger : VBoxW(childClass = NodeWrapper::class) {
     abstract val debugNode: HasScene
 
     protected fun staticProp(

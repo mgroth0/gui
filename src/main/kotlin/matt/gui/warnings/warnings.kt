@@ -5,6 +5,7 @@ import matt.fx.control.wrapper.control.button.ButtonWrapper
 import matt.fx.control.wrapper.control.list.listview
 import matt.fx.graphics.fxthread.ensureInFXThreadInPlace
 import matt.fx.graphics.fxthread.ensureInFXThreadOrRunLater
+import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.pane.vbox.VBoxW
 import matt.gui.interact.openInNewWindow
 import matt.model.obj.ui.UserInterface
@@ -37,7 +38,7 @@ open class UiWithWarnings : UserInterface {
 
     fun initWarningsWindow() {
 
-        VBoxW().apply {
+        VBoxW(childClass = NodeWrapper::class).apply {
 
             listview(warnings) {
                 simpleCellFactoryFromProps { warning ->

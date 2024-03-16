@@ -92,11 +92,11 @@ fun safe(
     return r
 }
 
-class MDialog<R> internal constructor() : VBoxWrapperImpl<NodeWrapper>() {
+class MDialog<R> internal constructor() : VBoxWrapperImpl<NodeWrapper>(childClass = NodeWrapper::class) {
     val stg =
         MStage(wMode = CLOSE, EscClosable = true).apply {
             initModality(APPLICATION_MODAL)
-            scene = MScene(this@MDialog)
+            scene = MScene(this@MDialog, rootCls = MDialog::class)
             width = 400.0
             height = 400.0
             setOnCloseRequest {
@@ -213,7 +213,7 @@ fun popupTextInput(
     }
 }
 
-fun <T : Any> popupChoiceBox(
+inline fun <reified T : Any> popupChoiceBox(
     prompt: String,
     choices: List<T>
 ) = ensureInFXThreadInPlace {
@@ -449,7 +449,7 @@ data class WindowConfig(
                 require(decorated)
                 this.title = this@WindowConfig.title
             }
-            scene = if (mScene) MScene(root) else Scene(root.node).wrapped()
+            scene = if (mScene) MScene(root, rootCls = ParentWrapper::class) else Scene(root.node).wrapped()
             own.applyTo(this)
             geom.applyTo(this)
             if (border) {
@@ -500,8 +500,8 @@ fun matt.file.JioFile.openImageInWindow() {
         ImageViewWrapper(this@openImageInWindow.toUri().toString()).apply {
             isPreserveRatio = true
             runLater {
-                fitHeightProperty.bind(scene!!.window!!.heightProperty.cast())
-                fitWidthProperty.bind(scene!!.window!!.widthProperty.cast())
+                fitHeightProperty.bind(scene!!.window!!.heightProperty)
+                fitWidthProperty.bind(scene!!.window!!.widthProperty)
                 setOnDoubleClick { (scene!!.window as StageWrapper).close() }
             }
         }

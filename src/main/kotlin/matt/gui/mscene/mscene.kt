@@ -3,6 +3,7 @@ package matt.gui.mscene
 import javafx.event.Event
 import javafx.scene.Node
 import javafx.scene.Parent
+import javafx.scene.Scene
 import javafx.scene.input.ContextMenuEvent
 import javafx.scene.paint.Color
 import matt.collect.itr.recurse.recurse
@@ -29,20 +30,23 @@ open class MScene<R : ParentWrapper<*>>(
     root: R,
     val icon: FsFile,
     userWidth: Double = -1.0,
-    userHeight: Double = -1.0
-) : SceneWrapper<R>(root, userWidth, userHeight) {
+    userHeight: Double = -1.0,
+    rootCls: KClass<R>
+) : SceneWrapper<R>(Scene(root.node, userWidth, userHeight), rootCls) {
     constructor(
         root: R,
         icon: String,
         userWidth: Double = -1.0,
-        userHeight: Double = -1.0
-    ) : this(root, ICON_FOLDER["white/$icon.png"], userWidth = userWidth, userHeight = userHeight)
+        userHeight: Double = -1.0,
+        rootCls: KClass<R>
+    ) : this(root, ICON_FOLDER["white/$icon.png"], userWidth = userWidth, userHeight = userHeight, rootCls)
 
     constructor(
         root: R,
         userWidth: Double = -1.0,
-        userHeight: Double = -1.0
-    ) : this(root, "chunk", userWidth = userWidth, userHeight = userHeight)
+        userHeight: Double = -1.0,
+        rootCls: KClass<R>
+    ) : this(root, "chunk", userWidth = userWidth, userHeight = userHeight, rootCls)
 
 
     private fun handleContextMenuReq(e: Event) {

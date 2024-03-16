@@ -137,11 +137,18 @@ open class GuiApp(
 
 
     fun scene(op: MScene<ParentWrapper<*>>.() -> Unit) {
-        scene = MScene<ParentWrapper<*>>(VBoxWrapperImpl<NodeWrapper>()).apply(op) /*vbox is placeholder*/
+        scene =
+            MScene(
+                VBoxWrapperImpl<NodeWrapper>(),
+                -1.0,
+                -1.0,
+                ParentWrapper::class
+            )
+                .apply(op) /*vbox is placeholder*/
     }
 
     fun initRoot(n: ParentWrapper<*>) {
-        scene = MScene(n)
+        scene = MScene(n, rootCls = ParentWrapper::class)
     }
 
     inline fun <reified N : ParentWrapperImpl<*, *>> root(op: N.() -> Unit = {}): N {

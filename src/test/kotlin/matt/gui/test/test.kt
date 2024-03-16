@@ -1,6 +1,7 @@
 package matt.gui.test
 
 
+import matt.fx.graphics.wrapper.node.NodeWrapper
 import matt.fx.graphics.wrapper.pane.vbox.VBoxW
 import matt.gui.action.dsl.action
 import matt.gui.app.threadinspectordaemon.ThreadInspectorDaemon
@@ -30,7 +31,7 @@ class GuiTests {
             }
 
             DragResizer.makeResizable(
-                VBoxW().apply {
+                VBoxW(childClass = NodeWrapper::class).apply {
                 }.node
             ) {}
         }

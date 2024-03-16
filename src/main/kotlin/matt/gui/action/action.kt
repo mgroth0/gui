@@ -78,7 +78,7 @@ fun GridPaneWrapper<*>.actionOnProceedingRow(ap: ObsVal<out ActionOnProceeding>)
     }
 }
 
-fun <A : ActionOnProceeding> GridPaneWrapper<*>.actionOnProceedingRow(
+inline fun <reified A : ActionOnProceeding> GridPaneWrapper<*>.actionOnProceedingRow(
     ap: BindableProperty<A>,
     choices: List<A>
 ) {
